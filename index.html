@@ -227,6 +227,61 @@
   .service-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:600;color:var(--cream);letter-spacing:.03em;margin-bottom:1.2rem;line-height:1.2;}
   .service-desc{font-family:'Tenor Sans',sans-serif;font-size:.86rem;color:rgba(249,246,240,.6);line-height:2;}
 
+  /* SERVICE BUTTON */
+  .service-btn{
+    display:inline-block;margin-top:2rem;padding:.75rem 1.8rem;
+    background:transparent;border:1px solid var(--brass);color:var(--brass);
+    font-family:'Tenor Sans',sans-serif;font-size:.62rem;letter-spacing:.32em;
+    text-transform:uppercase;cursor:pointer;transition:background .4s,color .4s;
+  }
+  .service-btn:hover{background:var(--brass);color:var(--cream);}
+  .service-btn-wishlist{
+    display:inline-flex;align-items:center;gap:.6rem;margin-top:2rem;
+    padding:.75rem 1.8rem;background:var(--green2);border:1px solid var(--brass);
+    color:var(--brass);font-family:'Tenor Sans',sans-serif;font-size:.62rem;
+    letter-spacing:.28em;text-transform:uppercase;cursor:pointer;
+    transition:background .4s,color .4s;
+  }
+  .service-btn-wishlist:hover{background:var(--brass);color:var(--cream);}
+  .service-btn-wishlist svg{width:13px;height:13px;fill:currentColor;flex-shrink:0;}
+
+  /* SELECT field */
+  .form-select{
+    width:100%;background:transparent;border:none;border-bottom:1px solid rgba(166,128,72,.22);
+    color:var(--ink);padding:.7rem 0;font-family:'Tenor Sans',sans-serif;font-size:.92rem;
+    line-height:1.8;outline:none;transition:border-color .5s;
+    -webkit-appearance:none;appearance:none;cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23A68048'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 4px center;
+  }
+  .form-select:focus{border-bottom-color:var(--brass);}
+  .form-select option{color:#1E1B18;background:#fff;}
+
+  /* CONFIRMATION POPUP */
+  #confirm-overlay{
+    position:fixed;inset:0;z-index:99000;background:rgba(20,48,29,.7);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;pointer-events:none;transition:opacity .5s;
+  }
+  #confirm-overlay.show{opacity:1;pointer-events:all;}
+  #confirm-box{
+    background:var(--cream);border:1px solid var(--brass);
+    padding:3.5rem 4rem;max-width:480px;width:90%;text-align:center;
+    position:relative;transform:translateY(20px);transition:transform .5s;
+  }
+  #confirm-overlay.show #confirm-box{transform:translateY(0);}
+  .confirm-icon{font-size:2rem;color:var(--brass);margin-bottom:1.2rem;letter-spacing:.1em;}
+  .confirm-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:600;color:var(--green);margin-bottom:.8rem;letter-spacing:.04em;}
+  .confirm-msg{font-family:'Tenor Sans',sans-serif;font-size:.85rem;color:var(--muted);line-height:1.9;letter-spacing:.03em;}
+  .confirm-close{
+    margin-top:2rem;display:inline-block;padding:.75rem 2.2rem;
+    background:var(--green);border:1px solid var(--green);color:var(--cream);
+    font-family:'Tenor Sans',sans-serif;font-size:.65rem;letter-spacing:.35em;
+    text-transform:uppercase;cursor:pointer;transition:background .4s;
+  }
+  .confirm-close:hover{background:var(--brass);border-color:var(--brass);}
+  .confirm-hairline{width:36px;height:1px;background:var(--brass);margin:.8rem auto 1.5rem;}
+
   /* MOBILE */
   @media(max-width:768px){
     .about-grid,.form-row{grid-template-columns:1fr;}
@@ -374,16 +429,22 @@
       <div class="service-num">Service 01</div>
       <div class="service-title">Custom Development</div>
       <p class="service-desc">Tailor-made web applications built from the ground up. No bloat, just high-performance code designed to scale with your business.</p>
+      <button class="service-btn" onclick="openEnquiry('Custom Development')">Commission a Build</button>
     </div>
     <div class="service-card reveal">
       <div class="service-num">Service 02</div>
       <div class="service-title">Luxury Redesign</div>
       <p class="service-desc">Turning outdated interfaces into premium digital experiences. We breathe "quiet luxury" into your existing platform, focusing on sophisticated typography and intuitive UX.</p>
+      <button class="service-btn" onclick="openEnquiry('Luxury Redesign')">Request a Redesign</button>
     </div>
     <div class="service-card reveal">
       <div class="service-num">Service 03</div>
       <div class="service-title">Premium Templates</div>
       <p class="service-desc">Carefully crafted, ready-to-deploy digital foundations. Designed for those who demand a high-end aesthetic without the timeline of a custom build.</p>
+      <button class="service-btn-wishlist" onclick="openEnquiry('Early Access — AZ Premium Templates')">
+        <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Join the Waitlist
+      </button>
     </div>
   </div>
 </section>
@@ -497,16 +558,45 @@
     <div class="contact-frame">
       <div style="height:1.5rem"></div>
       <div class="form-row">
-        <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Full name"></div>
-        <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com"></div>
+        <div class="form-group"><label class="form-label">Your Name</label><input type="text" id="f-name" class="form-input" placeholder="Full name"></div>
+        <div class="form-group"><label class="form-label">Email Address</label><input type="email" id="f-email" class="form-input" placeholder="your@email.com"></div>
       </div>
-      <div class="form-group"><label class="form-label">Subject</label><input type="text" class="form-input" placeholder="Project enquiry…"></div>
-      <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" placeholder="Tell me about your project…"></textarea></div>
+      <div class="form-group"><label class="form-label">Subject</label><input type="text" id="f-subject" class="form-input" placeholder="Project enquiry…"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Budget Range</label>
+          <select id="f-budget" class="form-select">
+            <option value="" disabled selected>Select your budget</option>
+            <option value="$10 – $100">$10 – $100</option>
+            <option value="$100 – $500">$100 – $500</option>
+            <option value="$500 – $1,000">$500 – $1,000</option>
+            <option value="$1,000 – $2,500">$1,000 – $2,500</option>
+            <option value="$2,500 – $5,000">$2,500 – $5,000</option>
+            <option value="$5,000 – $10,000">$5,000 – $10,000</option>
+            <option value="$10,000+">$10,000+</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end;">
+          <p style="font-family:'Tenor Sans',sans-serif;font-size:.72rem;color:var(--muted);line-height:1.7;letter-spacing:.03em;padding-bottom:.7rem;">All budgets are welcome. This helps us tailor the right solution for you.</p>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Message</label><textarea id="f-message" class="form-textarea" placeholder="Tell me about your project…"></textarea></div>
       <button class="submit-btn" onclick="submitForm()">Send Message</button>
       <div id="form-status"></div>
     </div>
   </div>
 </section>
+
+<!-- CONFIRMATION POPUP -->
+<div id="confirm-overlay" onclick="closeConfirm(event)">
+  <div id="confirm-box">
+    <div class="confirm-icon">✦</div>
+    <div class="confirm-title">Message Received</div>
+    <div class="confirm-hairline"></div>
+    <p class="confirm-msg">Thank you for reaching out. Ali will review your enquiry personally and be in touch shortly.<br><br>We look forward to building something exceptional together.</p>
+    <button class="confirm-close" onclick="closeConfirm()">Close</button>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -836,11 +926,58 @@ document.getElementById('assistantBody').addEventListener('mouseleave', () => {
 });
 // ─────────────────────────────────────────────────────────────────────────────
 
-// FORM
+// OPEN ENQUIRY — pre-fills subject and scrolls to form
+function openEnquiry(subject){
+  document.getElementById('f-subject').value = subject;
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>{ document.getElementById('f-name').focus(); }, 700);
+}
+
+// SUBMIT FORM — sends to WhatsApp + shows confirmation
 function submitForm(){
-  const s=document.getElementById('form-status');
-  s.textContent='Sending…';
-  setTimeout(()=>{s.textContent='Message received. A response will follow shortly.';},1200);
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const subject = document.getElementById('f-subject').value.trim();
+  const budget  = document.getElementById('f-budget').value;
+  const message = document.getElementById('f-message').value.trim();
+
+  if(!name || !email || !message){
+    const s = document.getElementById('form-status');
+    s.style.color='#8B1A1A';
+    s.textContent = 'Please fill in your name, email, and message.';
+    setTimeout(()=>{ s.textContent=''; },3500);
+    return;
+  }
+
+  // Build WhatsApp message
+  const wa_number = "+8801819827310"; // ← Replace with Ali's WhatsApp number (no + or spaces)
+  const wa_text = [
+    '🌿 *New Enquiry — Ali Zawad Portfolio*',
+    '',
+    `*Name:* ${name}`,
+    `*Email:* ${email}`,
+    `*Subject:* ${subject || 'General Enquiry'}`,
+    `*Budget:* ${budget || 'Not specified'}`,
+    '',
+    `*Message:*`,
+    message
+  ].join('\n');
+
+  const wa_url = `https://wa.me/${wa_number}?text=${encodeURIComponent(wa_text)}`;
+  window.open(wa_url, '_blank');
+
+  // Clear the form
+  ['f-name','f-email','f-subject','f-message'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('f-budget').selectedIndex = 0;
+
+  // Show confirmation popup
+  setTimeout(()=>{ document.getElementById('confirm-overlay').classList.add('show'); }, 400);
+}
+
+function closeConfirm(e){
+  if(!e || e.target === document.getElementById('confirm-overlay') || e.target.classList.contains('confirm-close')){
+    document.getElementById('confirm-overlay').classList.remove('show');
+  }
 }
 
 // NAV subtle scroll
