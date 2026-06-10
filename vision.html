@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>His Vision — Ali Zawad</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0C1A13;
+  --ink2:   #192B1E;
+  --ink3:   #0A1410;
+  --cream:  #F6F3EE;
+  --cream2: #ECE9E1;
+  --white:  #FDFCFA;
+  --brass:  #9B7840;
+  --brass2: #C4A263;
+  --muted:  #6A6155;
+  --rule:   rgba(155,120,64,.18);
+  --rule2:  rgba(155,120,64,.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.75;overflow-x:hidden;cursor:none}
+#cur{position:fixed;width:6px;height:6px;background:var(--brass);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:transform .1s}
+#cur-r{position:fixed;width:22px;height:22px;border:1px solid var(--brass);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:all .22s ease;opacity:.45}
+@keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* NAV AVATAR */
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(155,120,64,.45);
+  flex-shrink: 0;
+  display: block;
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:68px;padding:0 4.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(246,243,238,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;letter-spacing:.12em;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.6rem}
+.nav-logo em{color:var(--brass);font-style:italic}
+.nav-links{display:flex;gap:2.2rem;list-style:none;align-items:center}
+.nav-links a{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .25s;font-weight:400}
+.nav-links a:hover{color:var(--brass)}
+.nav-sep{width:1px;height:14px;background:var(--rule)}
+.nav-page-link{color:var(--brass) !important;border:1px solid rgba(155,120,64,.3) !important;padding:.3rem .9rem !important;font-size:.58rem !important;transition:background .25s, color .25s !important}
+.nav-page-link.active{background:rgba(155,120,64,.08) !important}
+.nav-page-link:hover{background:var(--brass) !important;color:var(--ink) !important}
+.nav-cta{padding:.5rem 1.6rem;background:var(--ink);color:var(--cream);font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:400;transition:background .3s;border:1px solid var(--ink)}
+.nav-cta:hover{background:var(--brass);border-color:var(--brass)}
+.nav-pulse{width:5px;height:5px;border-radius:50%;background:var(--brass);animation:pulse-dot 2.8s infinite}
+
+/* VISION HERO */
+.vision-hero{min-height:100vh;padding:12rem 4.5rem 8rem;position:relative;overflow:hidden;display:flex;align-items:center;background:var(--ink3)}
+.vh-grid{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(155,120,64,.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(155,120,64,.04) 1px,transparent 1px);background-size:80px 80px}
+.vh-radial{position:absolute;top:-10%;right:-5%;width:55%;height:70%;background:radial-gradient(ellipse at top right,rgba(155,120,64,.08) 0%,transparent 65%)}
+.vh-radial2{position:absolute;bottom:-10%;left:-5%;width:40%;height:50%;background:radial-gradient(ellipse at bottom left,rgba(155,120,64,.05) 0%,transparent 65%)}
+.vh-inner{position:relative;z-index:2;max-width:900px}
+.vh-eyebrow{font-size:.6rem;letter-spacing:.52em;text-transform:uppercase;color:var(--brass);margin-bottom:2.8rem;font-weight:400;display:flex;align-items:center;gap:1rem}
+.vh-eyebrow::before{content:'';width:32px;height:1px;background:var(--brass);opacity:.5}
+.vh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6.5rem);font-weight:300;line-height:.9;letter-spacing:.04em;color:var(--cream);margin-bottom:3rem}
+.vh-title em{color:var(--brass);font-style:italic;display:block}
+.vh-sub{font-size:.88rem;color:rgba(247,244,239,.4);max-width:520px;line-height:2.2;margin-bottom:3.5rem}
+.vh-manifesto-line{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:rgba(247,244,239,.55);line-height:1.8;max-width:620px}
+.vh-manifesto-line em{color:var(--brass);font-style:normal}
+.vh-scroll-hint{position:absolute;bottom:3.5rem;left:4.5rem;z-index:2;display:flex;align-items:center;gap:1rem}
+.vh-scroll-line{width:40px;height:1px;background:rgba(155,120,64,.35)}
+.vh-scroll-txt{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.35em;text-transform:uppercase;color:rgba(155,120,64,.4)}
+
+/* MANIFESTO */
+.manifesto-section{padding:10rem 4.5rem;background:var(--white)}
+.mf-inner{max-width:1100px;margin:0 auto}
+.mf-header{margin-bottom:7rem}
+.mf-super{font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:var(--brass);margin-bottom:1rem;opacity:.8}
+.mf-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;color:var(--ink);letter-spacing:.03em;line-height:1.15}
+.mf-rule{width:24px;height:1px;background:var(--brass);margin-top:1.2rem}
+.mf-points{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.mf-point{padding:4rem 3.5rem;background:var(--white);transition:background .35s;position:relative;overflow:hidden}
+.mf-point:hover{background:var(--cream)}
+.mf-point::before{content:'';position:absolute;top:0;left:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--brass),transparent);opacity:0;transition:opacity .4s}
+.mf-point:hover::before{opacity:.3}
+.mf-point-num{font-family:'Cormorant Garamond',serif;font-size:4.5rem;font-weight:300;color:var(--brass);opacity:.08;line-height:1;position:absolute;top:1.5rem;right:2rem}
+.mf-point-label{font-size:.58rem;letter-spacing:.42em;text-transform:uppercase;color:rgba(155,120,64,.6);margin-bottom:1.2rem}
+.mf-point-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:500;color:var(--ink);letter-spacing:.02em;margin-bottom:1.2rem;line-height:1.2}
+.mf-point-text{font-size:.84rem;color:rgba(12,26,19,.5);line-height:2.1}
+.mf-point-text strong{color:rgba(12,26,19,.78);font-weight:400}
+.mf-point-text em{color:var(--muted);font-style:italic}
+.mf-point-full{grid-column:span 2;background:rgba(155,120,64,.02)}
+
+/* FUTURE */
+.future-section{padding:10rem 4.5rem;background:var(--cream2);position:relative;overflow:hidden}
+.fs-grid{position:absolute;inset:0;background-image:linear-gradient(to right,rgba(155,120,64,.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(155,120,64,.03) 1px,transparent 1px);background-size:50px 50px}
+.fs-inner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+.fs-header{margin-bottom:6rem}
+.fs-super{font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:var(--brass);margin-bottom:1rem;opacity:.8}
+.fs-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;color:var(--ink);letter-spacing:.03em}
+.fs-rule{width:24px;height:1px;background:var(--brass);margin-top:1.2rem}
+.future-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule)}
+.fg-card{padding:3rem 2.8rem;background:var(--white);border-right:1px solid var(--rule);position:relative;transition:background .35s}
+.fg-card:last-child{border-right:none}
+.fg-card:hover{background:var(--cream)}
+.fg-icon{width:36px;height:36px;border:1px solid rgba(155,120,64,.25);display:flex;align-items:center;justify-content:center;margin-bottom:1.8rem}
+.fg-icon svg{width:16px;height:16px;fill:none;stroke:var(--brass);stroke-width:1.5;opacity:.7}
+.fg-title{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;color:var(--ink);margin-bottom:.9rem;letter-spacing:.02em}
+.fg-text{font-size:.8rem;color:rgba(12,26,19,.48);line-height:2}
+.fg-text em{font-style:italic;color:var(--muted)}
+
+/* STATEMENTS BAND */
+.statements-band{background:var(--ink2);padding:7rem 4.5rem;border-top:1px solid rgba(155,120,64,.1);border-bottom:1px solid rgba(155,120,64,.1)}
+.sb-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4rem}
+.sb-q{font-family:'Cormorant Garamond',serif;font-size:2.5rem;color:var(--brass);opacity:.22;line-height:1;margin-bottom:.4rem}
+.sb-text{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;font-weight:300;color:rgba(247,244,239,.55);line-height:1.8}
+.sb-attr{font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(155,120,64,.4);margin-top:1.2rem}
+
+/* ESSAY */
+.essay-section{padding:10rem 4.5rem;background:var(--ink3)}
+.es-inner{max-width:760px;margin:0 auto}
+.es-header{margin-bottom:5rem}
+.es-super{font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:rgba(155,120,64,.6);margin-bottom:1rem}
+.es-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;color:var(--cream);letter-spacing:.03em;line-height:1.1}
+.es-title em{color:var(--brass);font-style:italic}
+.es-rule{width:24px;height:1px;background:var(--brass);margin-top:1.2rem}
+.es-body{font-size:.9rem;color:rgba(247,244,239,.45);line-height:2.3;margin-bottom:1.8rem}
+.es-body strong{color:rgba(247,244,239,.8);font-weight:400}
+.es-ctas{display:flex;gap:1rem;margin-top:3.5rem;flex-wrap:wrap}
+.btn-brass{padding:.9rem 2.6rem;background:var(--brass);border:1px solid var(--brass);color:var(--ink);font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;text-decoration:none;font-weight:500;font-family:'DM Sans',sans-serif;transition:background .3s}
+.btn-brass:hover{background:var(--brass2);border-color:var(--brass2)}
+.btn-ghost{padding:.9rem 2.6rem;background:transparent;border:1px solid rgba(247,244,239,.18);color:rgba(247,244,239,.55);font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;text-decoration:none;font-weight:400;font-family:'DM Sans',sans-serif;transition:border-color .3s,color .3s}
+.btn-ghost:hover{border-color:var(--brass);color:var(--brass)}
+
+/* FOOTER */
+footer{background:var(--ink3);padding:5.5rem 4.5rem 3rem;border-top:1px solid rgba(155,120,64,.12)}
+.ft-top{max-width:1100px;margin:0 auto 4rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:4rem}
+.ft-col-title{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:rgba(155,120,64,.5);margin-bottom:1.6rem}
+.ft-logo-big{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:400;color:var(--cream);letter-spacing:.1em}
+.ft-logo-big em{color:var(--brass);font-style:italic}
+.ft-tagline{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(247,244,239,.22);margin-top:.5rem;font-weight:300}
+.ft-links-list{display:flex;flex-direction:column;gap:.65rem}
+.ft-links-list a{font-size:.72rem;color:rgba(247,244,239,.3);text-decoration:none;letter-spacing:.1em;transition:color .25s}
+.ft-links-list a:hover{color:var(--brass)}
+.ft-social{display:flex;gap:.7rem;margin-top:1.5rem}
+.ft-soc-link{width:36px;height:36px;border:1px solid rgba(155,120,64,.2);display:flex;align-items:center;justify-content:center;color:rgba(247,244,239,.3);text-decoration:none;transition:all .25s}
+.ft-soc-link:hover{border-color:var(--brass);color:var(--brass)}
+.ft-bottom{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(155,120,64,.08);padding-top:2rem;flex-wrap:wrap;gap:1rem}
+.ft-copy{font-size:.56rem;letter-spacing:.28em;color:rgba(247,244,239,.18)}
+.ft-status{display:flex;align-items:center;gap:.7rem;font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.18em;color:rgba(155,120,64,.4);text-transform:uppercase}
+.ft-status-dot{width:5px;height:5px;border-radius:50%;background:#3ecf4a;animation:pulse-dot 2s infinite}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .85s ease,transform .85s ease}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--cream2)}
+::-webkit-scrollbar-thumb{background:rgba(155,120,64,.25)}
+
+@media(max-width:1000px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .vision-hero,.manifesto-section,.future-section,.essay-section,.statements-band{padding:5.5rem 1.5rem}
+  .vision-hero{padding-top:9rem;min-height:80vh}
+  .mf-points{grid-template-columns:1fr}
+  .mf-point-full{grid-column:span 1}
+  .future-grid{grid-template-columns:1fr}
+  .fg-card{border-right:none;border-bottom:1px solid var(--rule)}
+  .sb-inner{grid-template-columns:1fr}
+  .es-ctas{flex-direction:column}
+  footer{padding:3.5rem 1.5rem 2rem}
+  .ft-top{grid-template-columns:1fr;gap:2.5rem}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:.8rem}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="ali-avatar.jpeg" alt="Ali Zawad" class="nav-avatar">
+    Ali <em>Zawad</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#skills">Skills</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#testimonials">Testimonials</a></li>
+    <li><div class="nav-sep"></div></li>
+    <li><a href="story.html" class="nav-page-link">His Story</a></li>
+    <li><a href="vision.html" class="nav-page-link active">His Vision</a></li>
+    <li><div class="nav-sep"></div></li>
+    <li><a href="index.html#contact-strip" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="nav-pulse"></div>
+</nav>
+
+<!-- VISION HERO -->
+<div class="vision-hero">
+  <div class="vh-grid"></div>
+  <div class="vh-radial"></div>
+  <div class="vh-radial2"></div>
+  <div class="vh-inner">
+    <div class="vh-eyebrow">The Vision</div>
+    <h1 class="vh-title">His<em>Vision</em></h1>
+    <p class="vh-sub">A manifesto on where the web is going, what digital craft truly means, and why most websites are a missed opportunity.</p>
+    <p class="vh-manifesto-line">
+      "The web is not a medium for displaying information. It is a medium for creating <em>experience</em>. The best digital products don't just work — they make people feel something."
+    </p>
+  </div>
+  <div class="vh-scroll-hint">
+    <div class="vh-scroll-line"></div>
+    <div class="vh-scroll-txt">Scroll to read</div>
+  </div>
+</div>
+
+<!-- MANIFESTO POINTS -->
+<section class="manifesto-section">
+  <div class="mf-inner">
+    <div class="mf-header reveal">
+      <div class="mf-super">The Manifesto</div>
+      <h2 class="mf-title">What Ali Believes About<br>Digital Design &amp; Engineering</h2>
+      <div class="mf-rule"></div>
+    </div>
+    <div class="mf-points">
+      <div class="mf-point reveal">
+        <div class="mf-point-num">1</div>
+        <div class="mf-point-label">Belief 01</div>
+        <div class="mf-point-title">Most Websites Are Failing Their Owners</div>
+        <p class="mf-point-text">
+          The majority of business websites are built once and forgotten. They're templated, generic, and <strong>instantly forgettable</strong>. They communicate nothing distinctive about the business they represent. They load slowly, they don't convert, and they make nobody proud.
+          <br><br>
+          This is not a technology problem. It's a standards problem. The tools to build exceptional web experiences have never been more accessible. The failure is a failure of ambition — of settling for what's fast and cheap over what's right and lasting.
+        </p>
+      </div>
+      <div class="mf-point reveal d1">
+        <div class="mf-point-num">2</div>
+        <div class="mf-point-label">Belief 02</div>
+        <div class="mf-point-title">Your Website Is the Highest-Leverage Asset You Have</div>
+        <p class="mf-point-text">
+          A great salesperson works 8 hours a day. A great website works 24 hours a day, every day, in every timezone, to every person who looks you up. <strong>It's the first impression that can't be controlled — unless you control it deliberately.</strong>
+          <br><br>
+          Every business, every professional, every creator has a website. The question is whether that website is working for them or against them. There is no neutral. Every element either builds trust or erodes it.
+        </p>
+      </div>
+      <div class="mf-point reveal">
+        <div class="mf-point-num">3</div>
+        <div class="mf-point-label">Belief 03</div>
+        <div class="mf-point-title">Performance Is a Form of Respect</div>
+        <p class="mf-point-text">
+          When a website loads slowly, it is — without any visible action — communicating something to the user: <em>your time is not important to me.</em> Every hundred milliseconds of delay has a measurable cost in engagement, conversion, and perception.
+          <br><br>
+          <strong>Speed is not a technical preference. It is a design value.</strong> The best websites feel instant — not because they hide their loading, but because they are actually fast. This requires architectural decisions, not loading spinners.
+        </p>
+      </div>
+      <div class="mf-point reveal d1">
+        <div class="mf-point-num">4</div>
+        <div class="mf-point-label">Belief 04</div>
+        <div class="mf-point-title">The Gap Between Designer and Engineer Must Disappear</div>
+        <p class="mf-point-text">
+          The handoff model — designer produces a mockup, engineer implements it — is fundamentally broken. Great digital products require decisions that span both disciplines simultaneously. <strong>An engineer who understands aesthetics catches design problems before they're built.</strong>
+          <br><br>
+          The most memorable digital experiences were built by people who refused to stay in their lane. Ali refuses to stay in his lane. This is not a bug — it's the point.
+        </p>
+      </div>
+      <div class="mf-point mf-point-full reveal">
+        <div class="mf-point-num">5</div>
+        <div class="mf-point-label">Belief 05 — The Core Conviction</div>
+        <div class="mf-point-title">Luxury Isn't About Price. It's About Intentionality.</div>
+        <p class="mf-point-text">
+          When Ali talks about luxury design, he doesn't mean expensive. He means <strong>intentional</strong>. Every font choice, every spacing decision, every animation timing, every colour — these are not arbitrary. In a cheap website, nothing is chosen; everything is defaulted. In a luxury website, every detail has been considered.
+          <br><br>
+          The result isn't just prettier — it's <em>more trustworthy</em>. Humans are extraordinarily good at detecting when care has been taken. When a website feels premium, users — even ones who couldn't articulate why — extend more trust to the business it represents. They stay longer. They convert more readily. They remember.
+          <br><br>
+          This is not a stylistic preference. <strong>This is a measurable commercial advantage.</strong> Building with intentionality is not an aesthetic indulgence — it is the smartest business decision a digital presence can make.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE OF THE WEB -->
+<section class="future-section">
+  <div class="fs-grid"></div>
+  <div class="fs-inner">
+    <div class="fs-header reveal">
+      <div class="fs-super">What's Next</div>
+      <h2 class="fs-title">How Ali Sees the Web Evolving</h2>
+      <div class="fs-rule"></div>
+    </div>
+    <div class="future-grid">
+      <div class="fg-card reveal">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+        <div class="fg-title">AI Will Commoditise the Average</div>
+        <p class="fg-text">AI tools are already producing acceptable websites in minutes. This will accelerate. What this means is that <em>average</em> becomes free — and <em>exceptional</em> becomes rarer and more valuable than ever. Ali builds for the upper end.</p>
+      </div>
+      <div class="fg-card reveal d1">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+        <div class="fg-title">Performance Becomes a Differentiator</div>
+        <p class="fg-text">As attention spans shorten and competition increases, the gap between a 1-second load and a 4-second load becomes a chasm. The businesses that invest in performance engineering today will own their categories tomorrow.</p>
+      </div>
+      <div class="fg-card reveal d2">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="fg-title">Personalisation at Scale</div>
+        <p class="fg-text">The next generation of digital products will not show the same experience to every user. Personalisation, driven by behaviour and context, will become a baseline expectation — not a luxury feature.</p>
+      </div>
+      <div class="fg-card reveal">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+        <div class="fg-title">Micro-Interactions Become Language</div>
+        <p class="fg-text">Subtle motion, responsive feedback, ambient interaction — these are not decorative. They are the language users use to understand whether a system is trustworthy and capable. Ali already speaks this language fluently.</p>
+      </div>
+      <div class="fg-card reveal d1">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="fg-title">Trust Is Rebuilt Through Design</div>
+        <p class="fg-text">In an era of AI-generated content and deepfakes, design quality becomes a credibility signal. A carefully crafted, human-feeling digital presence communicates authenticity in ways that AI-generated defaults cannot.</p>
+      </div>
+      <div class="fg-card reveal d2">
+        <div class="fg-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+        <div class="fg-title">The Era of Digital Craftsmanship</div>
+        <p class="fg-text">Just as mass production elevated handcrafted goods, the AI era will elevate handcrafted digital experiences. The web is entering an age where <em>how</em> something was made matters as much as what it does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENTS -->
+<div class="statements-band">
+  <div class="sb-inner">
+    <div class="sb-item reveal">
+      <div class="sb-q">"</div>
+      <p class="sb-text">The best developers I've worked with aren't just coders. They're translators — they take what a business needs to communicate and they build the exact digital vessel for that message.</p>
+      <div class="sb-attr">— On what great engineering looks like</div>
+    </div>
+    <div class="sb-item reveal d1">
+      <div class="sb-q">"</div>
+      <p class="sb-text">A client once told me my site felt like it was built by someone who actually cared. That's the review I want every time. Care shows. Always.</p>
+      <div class="sb-attr">— On the measure of good work</div>
+    </div>
+    <div class="sb-item reveal d2">
+      <div class="sb-q">"</div>
+      <p class="sb-text">The web is the most democratic publishing medium in history. The fact that most businesses use it to show a logo and a phone number is, frankly, a tragedy I want to fix.</p>
+      <div class="sb-attr">— On the missed potential of the web</div>
+    </div>
+  </div>
+</div>
+
+<!-- ESSAY / CTA -->
+<section class="essay-section">
+  <div class="es-inner">
+    <div class="es-header reveal">
+      <div class="es-super">The Invitation</div>
+      <h2 class="es-title">If This Vision <em>Resonates</em> With You</h2>
+      <div class="es-rule"></div>
+    </div>
+    <p class="es-body reveal">
+      Then we probably think about the web the same way. You're not looking for someone to fill a brief — you're looking for someone to help you think through what your digital presence should <strong>actually be</strong>. What it should say, how it should feel, what it should make people do.
+    </p>
+    <p class="es-body reveal d1">
+      That's precisely the kind of work Ali is here to do. Not just implementing designs or writing code — but <strong>thinking alongside you</strong>, bringing both the strategic and the technical perspective, and building something that lasts.
+    </p>
+    <p class="es-body reveal d1">
+      The best collaborations start with a conversation. Not a brief, not a requirements doc — just a real exchange about what you're building and why it matters. Ali will tell you honestly whether he thinks he's the right person for it. If he is, you'll know exactly what to expect.
+    </p>
+    <div class="es-ctas reveal d2">
+      <a href="index.html#contact-strip" class="btn-brass">Start a Conversation</a>
+      <a href="story.html" class="btn-ghost">Read His Story →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo-big">Ali <em>Zawad</em></div>
+      <div class="ft-tagline">Full Stack Engineer — Available for Hire</div>
+      <div class="ft-social">
+        <a href="https://www.linkedin.com/in/ali-zawadoffical/" target="_blank" class="ft-soc-link" title="LinkedIn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.75S5.53 3.23 6.5 3.23s1.75.79 1.75 1.75-.78 1.75-1.75 1.75zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.19 20 7 20 12.47V19z"/></svg>
+        </a>
+        <a href="https://x.com/alizawadX" target="_blank" class="ft-soc-link" title="X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="mailto:shammopersonal@gmail.com" class="ft-soc-link" title="Email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="0"/><polyline points="22,4 12,13 2,4"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-title">Navigation</div>
+      <div class="ft-links-list">
+        <a href="index.html#skills">Skills &amp; Expertise</a>
+        <a href="index.html#projects">Selected Projects</a>
+        <a href="index.html#testimonials">Client Testimonials</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#contact-strip">Get in Touch</a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-title">Deep Dives</div>
+      <div class="ft-links-list">
+        <a href="story.html">His Story →</a>
+        <a href="vision.html">His Vision →</a>
+        <a href="mailto:shammopersonal@gmail.com">Direct Email</a>
+        <a href="https://www.linkedin.com/in/ali-zawadoffical/" target="_blank">LinkedIn Profile</a>
+        <a href="https://x.com/alizawadX" target="_blank">X / Twitter</a>
+      </div>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <div class="ft-copy">© 2026 Ali Zawad — All Rights Reserved</div>
+    <div class="ft-status"><div class="ft-status-dot"></div>Available for New Projects</div>
+  </div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-r');
+document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2)';ring.style.opacity='.25';});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';ring.style.opacity='.45';});
+});
+const revObs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis');}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+</script>
+</body>
+</html>

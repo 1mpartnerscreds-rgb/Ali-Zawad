@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>His Story — Ali Zawad</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0C1A13;
+  --ink2:   #192B1E;
+  --ink3:   #0A1410;
+  --cream:  #F6F3EE;
+  --cream2: #ECE9E1;
+  --white:  #FDFCFA;
+  --brass:  #9B7840;
+  --brass2: #C4A263;
+  --muted:  #6A6155;
+  --rule:   rgba(155,120,64,.18);
+  --rule2:  rgba(155,120,64,.10);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  line-height:1.75;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CURSOR */
+#cur  { position:fixed; width:6px; height:6px; background:var(--brass); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:transform .1s; }
+#cur-r { position:fixed; width:22px; height:22px; border:1px solid var(--brass); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:all .22s ease; opacity:.45; }
+
+/* NAV AVATAR */
+.nav-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(155,120,64,.45);
+  flex-shrink: 0;
+  display: block;
+}
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:900;
+  height:68px; padding:0 4.5rem;
+  display:flex; align-items:center; justify-content:space-between;
+  background:rgba(246,243,238,.97); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--rule);
+}
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:500; letter-spacing:.12em; color:var(--ink); text-decoration:none; display:flex; align-items:center; gap:.6rem; }
+.nav-logo em { color:var(--brass); font-style:italic; }
+.nav-links { display:flex; gap:2.2rem; list-style:none; align-items:center; }
+.nav-links a { font-size:.62rem; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .25s; font-weight:400; }
+.nav-links a:hover { color:var(--brass); }
+.nav-sep { width:1px; height:14px; background:var(--rule); }
+.nav-page-link { color:var(--brass) !important; border:1px solid rgba(155,120,64,.3) !important; padding:.3rem .9rem !important; font-size:.58rem !important; transition:background .25s, color .25s !important; }
+.nav-page-link.active { background:rgba(155,120,64,.08) !important; }
+.nav-page-link:hover { background:var(--brass) !important; color:var(--ink) !important; }
+.nav-cta { padding:.5rem 1.6rem; background:var(--ink); color:var(--cream); font-size:.6rem; letter-spacing:.28em; text-transform:uppercase; text-decoration:none; font-family:'DM Sans',sans-serif; font-weight:400; transition:background .3s; border:1px solid var(--ink); }
+.nav-cta:hover { background:var(--brass); border-color:var(--brass); }
+@keyframes pulse-dot { 0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)} }
+.nav-pulse { width:5px; height:5px; border-radius:50%; background:var(--brass); animation:pulse-dot 2.8s infinite; }
+
+/* STORY HERO */
+.story-hero {
+  min-height:85vh; padding:12rem 4.5rem 8rem;
+  background:var(--ink3); position:relative; overflow:hidden;
+  display:flex; align-items:flex-end;
+}
+.sh-bg {
+  position:absolute; inset:0;
+  background-image: linear-gradient(to right, rgba(155,120,64,.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(155,120,64,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+.sh-glow { position:absolute; bottom:0; left:0; width:60%; height:60%; background:radial-gradient(ellipse at bottom left, rgba(155,120,64,.07) 0%, transparent 65%); }
+.sh-side-text {
+  position:absolute; right:5rem; top:50%; transform:translateY(-50%);
+  writing-mode:vertical-lr; font-family:'DM Mono',monospace;
+  font-size:.52rem; letter-spacing:.35em; color:rgba(155,120,64,.22);
+  text-transform:uppercase;
+}
+.sh-inner { position:relative; z-index:2; max-width:780px; }
+.sh-eyebrow {
+  font-size:.6rem; letter-spacing:.52em; text-transform:uppercase;
+  color:var(--brass); margin-bottom:2.5rem; font-weight:400;
+  display:flex; align-items:center; gap:1rem;
+}
+.sh-eyebrow::before { content:''; width:28px; height:1px; background:var(--brass); opacity:.5; }
+.sh-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:300; line-height:.9; letter-spacing:.04em; color:var(--cream);
+  margin-bottom:2.5rem;
+}
+.sh-title em { color:var(--brass); font-style:italic; display:block; }
+.sh-sub { font-size:.82rem; color:rgba(247,244,239,.42); max-width:480px; line-height:2; }
+.sh-chapter-tag {
+  position:absolute; bottom:3rem; right:4.5rem;
+  font-family:'DM Mono',monospace; font-size:.52rem;
+  letter-spacing:.32em; color:rgba(155,120,64,.35);
+  text-transform:uppercase;
+}
+
+/* TIMELINE */
+.timeline-section { padding:9rem 4.5rem; background:var(--white); }
+.tl-inner { max-width:900px; margin:0 auto; }
+.tl-header { margin-bottom:6rem; }
+.tl-super { font-size:.58rem; letter-spacing:.5em; text-transform:uppercase; color:var(--brass); margin-bottom:1rem; }
+.tl-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:400; color:var(--ink); letter-spacing:.03em; line-height:1.15; }
+.tl-rule { width:24px; height:1px; background:var(--brass); margin-top:1.2rem; }
+
+.timeline { position:relative; padding-left:3rem; }
+.timeline::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:1px; background:linear-gradient(to bottom, transparent, var(--rule) 5%, var(--rule) 95%, transparent);
+}
+.tl-entry { position:relative; margin-bottom:5rem; }
+.tl-entry:last-child { margin-bottom:0; }
+.tl-dot {
+  position:absolute; left:-3.25rem; top:.35rem;
+  width:9px; height:9px; border-radius:50%;
+  background:var(--brass); border:2px solid var(--white);
+  box-shadow:0 0 0 3px rgba(155,120,64,.2);
+}
+.tl-year {
+  font-family:'DM Mono',monospace; font-size:.58rem;
+  letter-spacing:.4em; color:rgba(155,120,64,.55);
+  text-transform:uppercase; margin-bottom:.6rem;
+}
+.tl-entry-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:500; color:var(--ink);
+  letter-spacing:.02em; margin-bottom:.8rem; line-height:1.2;
+}
+.tl-entry-text {
+  font-size:.88rem; color:rgba(12,26,19,.55); line-height:2.1; max-width:620px;
+}
+.tl-entry-text strong { color:var(--ink); font-weight:400; }
+.tl-tag {
+  display:inline-block; margin-top:.9rem;
+  font-family:'DM Mono',monospace; font-size:.52rem;
+  letter-spacing:.2em; color:var(--brass); border:1px solid rgba(155,120,64,.22);
+  padding:2px 10px; text-transform:uppercase; margin-right:.4rem;
+}
+
+/* PULL QUOTE */
+.pull-section { background:var(--ink2); padding:7rem 4.5rem; }
+.pull-inner { max-width:760px; margin:0 auto; text-align:center; }
+.pull-mark { font-family:'Cormorant Garamond',serif; font-size:5rem; color:var(--brass); opacity:.2; line-height:1; margin-bottom:-1rem; }
+.pull-quote {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.4rem,2.8vw,2.2rem); font-style:italic; font-weight:300;
+  color:var(--cream); line-height:1.65; letter-spacing:.02em;
+}
+.pull-attr { margin-top:2.5rem; font-size:.62rem; letter-spacing:.42em; text-transform:uppercase; color:rgba(155,120,64,.5); }
+
+/* VALUES */
+.values-section { padding:9rem 4.5rem; background:var(--cream); }
+.vs-inner { max-width:1100px; margin:0 auto; }
+.vs-header { margin-bottom:5.5rem; }
+.vs-super { font-size:.58rem; letter-spacing:.5em; text-transform:uppercase; color:var(--brass); margin-bottom:1rem; }
+.vs-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:400; color:var(--ink); }
+.vs-rule { width:24px; height:1px; background:var(--brass); margin-top:1.2rem; }
+.values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--rule); border:1px solid var(--rule); }
+.value-card { background:var(--white); padding:3rem 2.6rem; transition:background .35s; }
+.value-card:hover { background:var(--cream2); }
+.vc-num { font-family:'DM Mono',monospace; font-size:.58rem; letter-spacing:.4em; color:rgba(155,120,64,.4); margin-bottom:1.6rem; }
+.vc-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:500; color:var(--ink); letter-spacing:.03em; margin-bottom:1rem; }
+.vc-text { font-size:.82rem; color:rgba(12,26,19,.52); line-height:2; }
+.vc-text em { font-style:italic; color:var(--muted); }
+
+/* ORIGIN */
+.origin-section { padding:9rem 4.5rem; background:var(--ink3); }
+.os-inner {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1.6fr; gap:7rem; align-items:start;
+}
+.os-left { position:sticky; top:9rem; }
+.os-label { font-size:.58rem; letter-spacing:.5em; text-transform:uppercase; color:rgba(155,120,64,.5); margin-bottom:1rem; }
+.os-heading {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,4vw,3rem); font-weight:400; color:var(--cream);
+  letter-spacing:.04em; line-height:1.1; margin-bottom:2rem;
+}
+.os-heading em { color:var(--brass); font-style:italic; }
+.os-mini-stats { display:flex; flex-direction:column; gap:1px; margin-top:3rem; border:1px solid rgba(155,120,64,.15); }
+.os-stat { padding:1rem 1.4rem; background:rgba(255,255,255,.02); border-bottom:1px solid rgba(155,120,64,.08); }
+.os-stat:last-child { border-bottom:none; }
+.os-stat-n { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:300; color:var(--brass); line-height:1; }
+.os-stat-l { font-size:.54rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(247,244,239,.28); margin-top:.3rem; }
+.os-p { font-size:.9rem; color:rgba(247,244,239,.5); line-height:2.2; margin-bottom:2rem; }
+.os-p strong { color:rgba(247,244,239,.8); font-weight:400; }
+.os-p em { font-style:italic; color:rgba(247,244,239,.6); }
+
+/* CTA BAND */
+.cta-band { background:var(--ink); padding:6rem 4.5rem; }
+.ctab-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:3rem; flex-wrap:wrap; }
+.ctab-left h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:300; color:var(--cream); letter-spacing:.04em; line-height:1.2; }
+.ctab-left h2 em { color:var(--brass); font-style:italic; }
+.ctab-left p { font-size:.84rem; color:rgba(247,244,239,.38); margin-top:.8rem; }
+.ctab-btns { display:flex; gap:1rem; }
+.btn-p { padding:.9rem 2.6rem; background:var(--brass); border:1px solid var(--brass); color:var(--ink); font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; text-decoration:none; font-weight:500; font-family:'DM Sans',sans-serif; transition:background .3s; }
+.btn-p:hover { background:var(--brass2); border-color:var(--brass2); }
+.btn-s { padding:.9rem 2.6rem; background:transparent; border:1px solid rgba(247,244,239,.2); color:rgba(247,244,239,.6); font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; text-decoration:none; font-weight:400; font-family:'DM Sans',sans-serif; transition:border-color .3s, color .3s; }
+.btn-s:hover { border-color:var(--brass); color:var(--brass); }
+
+/* FOOTER */
+footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px solid rgba(155,120,64,.12); }
+.ft-top { max-width:1100px; margin:0 auto 4rem; display:grid; grid-template-columns:1fr 1fr 1fr; gap:4rem; }
+.ft-col-title { font-family:'DM Mono',monospace; font-size:.56rem; letter-spacing:.4em; text-transform:uppercase; color:rgba(155,120,64,.5); margin-bottom:1.6rem; }
+.ft-logo-big { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:400; color:var(--cream); letter-spacing:.1em; }
+.ft-logo-big em { color:var(--brass); font-style:italic; }
+.ft-tagline { font-size:.68rem; letter-spacing:.28em; text-transform:uppercase; color:rgba(247,244,239,.22); margin-top:.5rem; font-weight:300; }
+.ft-links-list { display:flex; flex-direction:column; gap:.65rem; }
+.ft-links-list a { font-size:.72rem; color:rgba(247,244,239,.3); text-decoration:none; letter-spacing:.1em; transition:color .25s; }
+.ft-links-list a:hover { color:var(--brass); }
+.ft-social { display:flex; gap:.7rem; margin-top:1.5rem; }
+.ft-soc-link { width:36px; height:36px; border:1px solid rgba(155,120,64,.2); display:flex; align-items:center; justify-content:center; color:rgba(247,244,239,.3); text-decoration:none; transition:all .25s; }
+.ft-soc-link:hover { border-color:var(--brass); color:var(--brass); }
+.ft-bottom { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(155,120,64,.08); padding-top:2rem; flex-wrap:wrap; gap:1rem; }
+.ft-copy { font-size:.56rem; letter-spacing:.28em; color:rgba(247,244,239,.18); }
+.ft-status { display:flex; align-items:center; gap:.7rem; font-family:'DM Mono',monospace; font-size:.52rem; letter-spacing:.18em; color:rgba(155,120,64,.4); text-transform:uppercase; }
+.ft-status-dot { width:5px; height:5px; border-radius:50%; background:#3ecf4a; animation:pulse-dot 2s infinite; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(18px); transition:opacity .85s ease, transform .85s ease; }
+.reveal.vis { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
+
+::-webkit-scrollbar{width:2px}
+::-webkit-scrollbar-track{background:var(--cream2)}
+::-webkit-scrollbar-thumb{background:rgba(155,120,64,.25)}
+
+@media(max-width:1000px){
+  nav{padding:0 1.5rem}
+  .nav-links{display:none}
+  .story-hero,.timeline-section,.pull-section,.values-section,.origin-section,.cta-band{padding:5.5rem 1.5rem}
+  .story-hero{padding-top:9rem; min-height:70vh; align-items:flex-end}
+  .os-inner{grid-template-columns:1fr; gap:3rem}
+  .os-left{position:static}
+  .values-grid{grid-template-columns:1fr}
+  .ctab-inner{flex-direction:column}
+  footer{padding:3.5rem 1.5rem 2rem}
+  .ft-top{grid-template-columns:1fr;gap:2.5rem}
+  .ft-bottom{flex-direction:column;align-items:flex-start;gap:.8rem}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="ali-avatar.jpeg" alt="Ali Zawad" class="nav-avatar">
+    Ali <em>Zawad</em>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#skills">Skills</a></li>
+    <li><a href="index.html#projects">Projects</a></li>
+    <li><a href="index.html#testimonials">Testimonials</a></li>
+    <li><div class="nav-sep"></div></li>
+    <li><a href="story.html" class="nav-page-link active">His Story</a></li>
+    <li><a href="vision.html" class="nav-page-link">His Vision</a></li>
+    <li><div class="nav-sep"></div></li>
+    <li><a href="index.html#contact-strip" class="nav-cta">Hire Me</a></li>
+  </ul>
+  <div class="nav-pulse"></div>
+</nav>
+
+<!-- STORY HERO -->
+<div class="story-hero">
+  <div class="sh-bg"></div>
+  <div class="sh-glow"></div>
+  <div class="sh-side-text">Chapter One · The Beginning</div>
+  <div class="sh-inner">
+    <div class="sh-eyebrow">The Story</div>
+    <h1 class="sh-title">His<em>Story</em></h1>
+    <p class="sh-sub">A journey from curiosity to craft — from a young mind fascinated by the web to a full stack engineer trusted by founders and businesses worldwide.</p>
+  </div>
+  <div class="sh-chapter-tag">Portfolio 2026 — Ali Zawad</div>
+</div>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+  <div class="tl-inner">
+    <div class="tl-header reveal">
+      <div class="tl-super">The Journey</div>
+      <h2 class="tl-title">Where It All Began</h2>
+      <div class="tl-rule"></div>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-entry reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year">The Beginning</div>
+        <div class="tl-entry-title">A Browser, A Blank Page, A Question</div>
+        <p class="tl-entry-text">
+          Ali's relationship with the web began not with a textbook, but with a question: <strong>"How does this actually work?"</strong> As a teenager, he found himself endlessly fascinated by how pixels became experiences — how a line of code could produce something a person would feel. He opened a browser, pressed F12, and never really closed it.
+          <br><br>
+          It started with tweaking HTML on forum sites, replacing default backgrounds, changing fonts. Small experiments with outsized consequences — each one pulling him deeper into the craft. The web wasn't just a technology to him; it was a medium. And he intended to master it.
+        </p>
+        <span class="tl-tag">HTML & CSS</span>
+        <span class="tl-tag">Self-taught</span>
+      </div>
+
+      <div class="tl-entry reveal d1">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Early Craft</div>
+        <div class="tl-entry-title">From Hobbyist to Builder</div>
+        <p class="tl-entry-text">
+          What began as curiosity became commitment. Ali moved from HTML into JavaScript, then to the full stack — teaching himself Node.js, building crude APIs, breaking things deliberately just to understand how they worked. Every bug was a lesson. Every late night was an investment.
+          <br><br>
+          He built his first real project for a friend's small business — a simple site, nothing complex. But the feeling of handing over something that <strong>worked, looked good, and made someone proud</strong> — that was the moment that confirmed everything. This was what he was meant to do.
+        </p>
+        <span class="tl-tag">JavaScript</span>
+        <span class="tl-tag">Node.js</span>
+        <span class="tl-tag">First Clients</span>
+      </div>
+
+      <div class="tl-entry reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Growing Up</div>
+        <div class="tl-entry-title">The Framework Years</div>
+        <p class="tl-entry-text">
+          As the web matured, so did Ali. React arrived and changed everything — he embraced it entirely, learning not just the syntax but the philosophy. He understood that great frontend wasn't about knowing more APIs; it was about <strong>thinking in components, in state, in user experience</strong>.
+          <br><br>
+          He studied design as seriously as he studied code. He learned to read a layout the way a typographer reads a page. He understood that the best engineers are the ones who understand why something should look and feel a certain way — not just how to implement it.
+        </p>
+        <span class="tl-tag">React</span>
+        <span class="tl-tag">Next.js</span>
+        <span class="tl-tag">Design Thinking</span>
+      </div>
+
+      <div class="tl-entry reveal d1">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Professional Era</div>
+        <div class="tl-entry-title">Building for Real Stakes</div>
+        <p class="tl-entry-text">
+          With 5+ years behind him, Ali stepped fully into professional work. His clients weren't hobbyists anymore — they were founders raising investment rounds, executives building personal authority, businesses that needed their online presence to work as hard as they did.
+          <br><br>
+          He built Startup Solution, 1M Partners, CBR Construction, Ahmed Mobasher — each one a case study in what happens when engineering precision meets design excellence. One client said he delivered <strong>two weeks ahead of schedule</strong>. Another said working with him felt like having a co-founder. That kind of feedback doesn't happen by accident.
+        </p>
+        <span class="tl-tag">Full Stack</span>
+        <span class="tl-tag">Production Deployments</span>
+        <span class="tl-tag">25+ Projects</span>
+      </div>
+
+      <div class="tl-entry reveal">
+        <div class="tl-dot"></div>
+        <div class="tl-year">Today</div>
+        <div class="tl-entry-title">The Studio — Available, Ambitious, Building</div>
+        <p class="tl-entry-text">
+          Today, Ali operates as an independent engineer and digital studio. He is available globally, works with clients across industries, and brings the same level of intentionality to every project — whether it's a $100 landing page or a $10,000 enterprise platform.
+          <br><br>
+          His philosophy is simple: <strong>your website is your finest representative</strong>. It speaks for you when you're not in the room. Ali's job is to make sure it says exactly the right thing, at the highest possible standard.
+        </p>
+        <span class="tl-tag">Available for Hire</span>
+        <span class="tl-tag">Global</span>
+        <span class="tl-tag">Independent Studio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-section">
+  <div class="pull-inner reveal">
+    <div class="pull-mark">"</div>
+    <p class="pull-quote">I didn't start as a developer. I started as someone who couldn't stop asking how things worked. The code came second. The obsession came first.</p>
+    <div class="pull-attr">— Ali Zawad</div>
+  </div>
+</div>
+
+<!-- VALUES -->
+<section class="values-section">
+  <div class="vs-inner">
+    <div class="vs-header reveal">
+      <div class="vs-super">What Drives Him</div>
+      <h2 class="vs-title">Core Principles</h2>
+      <div class="vs-rule"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <div class="vc-num">01</div>
+        <div class="vc-title">Craft Over Convenience</div>
+        <p class="vc-text">Templates are shortcuts. Ali doesn't take shortcuts. Every decision — from architecture to animation timing — is deliberate, considered, and built to last. The right way takes longer. It's worth it.</p>
+      </div>
+      <div class="value-card reveal d1">
+        <div class="vc-num">02</div>
+        <div class="vc-title">Performance Is Non-Negotiable</div>
+        <p class="vc-text">A beautiful website that loads slowly is a failure. Ali treats performance as a design constraint, not an afterthought. Speed is part of the experience — always.</p>
+      </div>
+      <div class="value-card reveal d2">
+        <div class="vc-num">03</div>
+        <div class="vc-title">The Client's Success Is the Measure</div>
+        <p class="vc-text">Technical excellence means nothing if the client's goals aren't met. Every project starts with understanding what success looks like for the person commissioning the work — not the developer delivering it.</p>
+      </div>
+      <div class="value-card reveal">
+        <div class="vc-num">04</div>
+        <div class="vc-title">Design and Engineering Are One Discipline</div>
+        <p class="vc-text">The divide between designer and developer is false. Great digital products require both sensibilities in the same mind. Ali refuses to build something visually mediocre, and refuses to ship code that doesn't hold up.</p>
+      </div>
+      <div class="value-card reveal d1">
+        <div class="vc-num">05</div>
+        <div class="vc-title">Honest Communication</div>
+        <p class="vc-text">Ali doesn't promise what he can't deliver. He doesn't disappear mid-project. He tells clients the truth — about timelines, about trade-offs, about what will and won't work. Trust is built in the details.</p>
+      </div>
+      <div class="value-card reveal d2">
+        <div class="vc-num">06</div>
+        <div class="vc-title">Perpetual Curiosity</div>
+        <p class="vc-text">The same question that put him in front of a browser at 13 still drives him today: <em>how does this actually work?</em> The web keeps evolving. Ali keeps learning. That's not a choice — it's a disposition.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section class="origin-section">
+  <div class="os-inner">
+    <div class="os-left reveal">
+      <div class="os-label">In Numbers</div>
+      <h2 class="os-heading">Five years of building the <em>right</em> way</h2>
+      <div class="os-mini-stats">
+        <div class="os-stat"><div class="os-stat-n">5+</div><div class="os-stat-l">Years of Professional Experience</div></div>
+        <div class="os-stat"><div class="os-stat-n">25+</div><div class="os-stat-l">Projects Delivered</div></div>
+        <div class="os-stat"><div class="os-stat-n">100%</div><div class="os-stat-l">Client Satisfaction Rate</div></div>
+        <div class="os-stat"><div class="os-stat-n">2wks</div><div class="os-stat-l">Ahead of Schedule (1M Partners)</div></div>
+        <div class="os-stat"><div class="os-stat-n">Open</div><div class="os-stat-l">Available for New Work Now</div></div>
+      </div>
+    </div>
+    <div class="os-right reveal d1">
+      <p class="os-p">There's a version of this story where Ali takes the standard path. Enrolls in a university program, earns a degree in Computer Science, lands a junior role at a company, works through the levels. That path is fine. It works for a lot of people.</p>
+      <p class="os-p">It just wasn't his path. <strong>Ali is, fundamentally, self-made.</strong> Not in the clichéd sense of the word, but in the literal one: he built his skills the same way a craftsman builds a trade — through practice, failure, repetition, and obsessive attention to the details that most people skip.</p>
+      <p class="os-p">The self-taught path is harder in some ways. There's no curriculum, no structured feedback, no safety net. You either figure it out or you don't. But it produces something the traditional path often doesn't: a developer who actually <strong>understands the full picture</strong>, from architecture to aesthetics, from deployment pipeline to pixel spacing.</p>
+      <p class="os-p">Today, Ali brings that complete picture to every engagement. When you hire him, you're not getting a specialist who will hand off the design to someone else and wait for a ticket to be filed. You're getting <strong>one person who can see the whole thing</strong> and build it with the coherence that only that kind of vision allows.</p>
+      <p class="os-p">His clients have felt the difference. A two-week early delivery here. A co-founder-level commitment there. An engineering team that was <em>genuinely impressed</em> by the code quality. These aren't marketing claims — they're quotes from people who have worked with him and are willing to say so publicly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="ctab-inner">
+    <div class="ctab-left reveal">
+      <h2>Now you know the story.<br><em>Let's write the next chapter.</em></h2>
+      <p>Ali is available for new projects. Reach out — he responds personally.</p>
+    </div>
+    <div class="ctab-btns reveal d1">
+      <a href="index.html#contact-strip" class="btn-p">Get in Touch</a>
+      <a href="vision.html" class="btn-s">His Vision →</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-top">
+    <div>
+      <div class="ft-logo-big">Ali <em>Zawad</em></div>
+      <div class="ft-tagline">Full Stack Engineer — Available for Hire</div>
+      <div class="ft-social">
+        <a href="https://www.linkedin.com/in/ali-zawadoffical/" target="_blank" class="ft-soc-link" title="LinkedIn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.75S5.53 3.23 6.5 3.23s1.75.79 1.75 1.75-.78 1.75-1.75 1.75zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.19 20 7 20 12.47V19z"/></svg>
+        </a>
+        <a href="https://x.com/alizawadX" target="_blank" class="ft-soc-link" title="X">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="mailto:shammopersonal@gmail.com" class="ft-soc-link" title="Email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="0"/><polyline points="22,4 12,13 2,4"/></svg>
+        </a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-title">Navigation</div>
+      <div class="ft-links-list">
+        <a href="index.html#skills">Skills &amp; Expertise</a>
+        <a href="index.html#projects">Selected Projects</a>
+        <a href="index.html#testimonials">Client Testimonials</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#contact-strip">Get in Touch</a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-title">Deep Dives</div>
+      <div class="ft-links-list">
+        <a href="story.html">His Story →</a>
+        <a href="vision.html">His Vision →</a>
+        <a href="mailto:shammopersonal@gmail.com">Direct Email</a>
+        <a href="https://www.linkedin.com/in/ali-zawadoffical/" target="_blank">LinkedIn Profile</a>
+        <a href="https://x.com/alizawadX" target="_blank">X / Twitter</a>
+      </div>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <div class="ft-copy">© 2026 Ali Zawad — All Rights Reserved</div>
+    <div class="ft-status"><div class="ft-status-dot"></div>Available for New Projects</div>
+  </div>
+</footer>
+
+<script>
+const cur = document.getElementById('cur'), ring = document.getElementById('cur-r');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+  ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a, button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.style.transform = 'translate(-50%,-50%) scale(2)'; ring.style.opacity = '.25'; });
+  el.addEventListener('mouseleave', () => { cur.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '.45'; });
+});
+const revObs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('vis'); }), { threshold: .08 });
+document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+</script>
+</body>
+</html>
