@@ -280,7 +280,6 @@ nav {
   letter-spacing:.18em; text-transform:uppercase; font-weight:400;
 }
 .chat-send:hover { background:var(--brass); }
-/* disabled send state */
 .chat-send:disabled { background:var(--muted); cursor:not-allowed; opacity:.5; }
 
 /* ── SECTION BASE ───────────────────────────── */
@@ -545,9 +544,9 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       </div>
       <div class="chat-window" id="chatWindow"></div>
       <div class="chat-suggestions" id="chatSuggestions">
-        <button class="sug-btn" onclick="sendSuggestion(this)">What do you build?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">What are your skills?</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">What's your pricing?</button>
-        <button class="sug-btn" onclick="sendSuggestion(this)">Are you available now?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Are you available?</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">What's your stack?</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">Do you work remotely?</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">How long does a project take?</button>
@@ -879,110 +878,254 @@ async function submitContact() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// CHATBOT v2 — AI-first with streaming + session cache
+// CHATBOT — Full AI with conversation memory + streaming
 // ════════════════════════════════════════════════════════════════════════════
 
+// Full conversation history for multi-turn context
+const chatHistory = [];
+// Session cache for instant repeat answers
 const SESSION_CACHE = {};
 
-const ALI_SYSTEM = `You are AZ Assistant — the smart, friendly chatbot on Ali Zawad's portfolio website.
-Speak in a warm but polished tone that matches Ali's luxury brand.
-Keep answers concise: 2–4 sentences unless the question clearly needs more detail.
-Never mention that you are Claude, an AI model, or Anthropic.
-If someone asks something you truly cannot answer (very private personal question), suggest they use the contact form.
+// ── SYSTEM PROMPT — Complete knowledge of Ali Zawad ──────────────────────────
+const ALI_SYSTEM = `You are AZ Assistant — the smart, polished AI chatbot on Ali Zawad's personal portfolio website.
+Your job is to represent Ali professionally and help visitors learn about his work, services, skills, story, vision, and availability.
 
-════ COMPLETE KNOWLEDGE BASE ════
+TONE: Warm, confident, and refined — matching Ali's luxury brand. Not stiff. Not overly casual.
+LENGTH: 2–4 sentences by default. Go longer only if the question clearly needs more detail.
+IDENTITY: Never say you are Claude, an AI model, or built by Anthropic. You are "AZ Assistant."
+INTENT MATCHING: Understand all phrasings of the same question. "skills", "what skills do you have", "tell me your skills", "what can you do", "what are you good at", "your expertise", "what technologies" — all mean the same thing. Answer them all equally well.
+SCOPE: If asked something truly private or unanswerable, direct them to the contact form or email.
 
-IDENTITY
-- Full name: Ali Zawad
-- Role: Full Stack Engineer & UI/UX Architect
-- Brand: Luxury-level digital craftsmanship — intentional, not just expensive
+════════════════════════════════════════════
+IDENTITY & CONTACT
+════════════════════════════════════════════
+
+Full name: Ali Zawad
+Title: Full Stack Engineer & UI/UX Architect
+Tagline: "Crafting Digital Experiences of Distinction"
+Brand philosophy: High-performance, meticulously engineered digital products at the intersection of engineering precision and creative excellence. Luxury = intentionality, not just price.
+
+Contact:
 - Email: shammopersonal@gmail.com
 - LinkedIn: linkedin.com/in/ali-zawadoffical/
 - Twitter/X: @alizawadX
-- Currently available for new projects globally
+- Fully remote, available globally
+- Response time: Within 24 hours, personally
 
+Current status: AVAILABLE for new projects.
+
+════════════════════════════════════════════
 EXPERIENCE & TRACK RECORD
+════════════════════════════════════════════
+
 - 5+ years professional full stack web development
 - 25+ projects delivered across startups, corporates, personal brands
 - 100% client satisfaction rate
 - Self-taught — no formal CS degree; built skills through obsessive practice
 - Delivered 1M Partners 2 weeks ahead of schedule
-- Clients say working with him is "like having a co-founder who actually ships"
-- Engineering teams have been "genuinely impressed" by his code quality
+- Described by clients as "like having a co-founder who actually ships"
+- Code quality has impressed entire engineering teams
+- Independent studio — lean, fast, accountable. No junior hand-offs.
 
+════════════════════════════════════════════
+SKILLS & TECHNICAL EXPERTISE
+════════════════════════════════════════════
+
+When anyone asks about skills in any form — "what are your skills", "tell me your skills", "what can you do", "your tech stack", "what do you know", "your expertise", "what technologies", "what tools", "what languages" — give this complete breakdown:
+
+FRONTEND SKILLS:
+- React / Next.js — 96% (primary framework, used in most projects)
+- CSS / Tailwind — 95%
+- TypeScript — 90%
+- GSAP / Framer Motion — 88% (animations & interactions)
+- Three.js / WebGL — 75% (3D and immersive experiences)
+- Also works in plain HTML/CSS/JS — fast, lightweight, zero-dependency
+
+BACKEND SKILLS:
+- Node.js / Express — 94%
+- GraphQL / REST APIs — 91%
+- Python / Django — 82%
+- PostgreSQL / MongoDB — 87%
+- Firebase / Supabase — 85%
+- Redis (caching & queues)
+
+INFRASTRUCTURE & DEVOPS:
+- Vercel / Netlify — 92%
+- CI/CD Pipelines — 88%
+- AWS / GCP — 85%
+- System Architecture — 83%
+- Docker / Kubernetes — 80%
+- GitHub Actions
+
+Ali does NOT use WordPress, Wix, Webflow, or page builders. Everything is custom code — better performance, no platform limitations, full ownership.
+
+════════════════════════════════════════════
 SERVICES
-1. Custom Development — bespoke web apps, SaaS, e-commerce, platforms built from scratch. No templates, no bloat.
-2. Luxury Redesign — transforming outdated or generic sites into premium digital experiences with quiet luxury aesthetics.
-3. Premium Templates — high-end, ready-to-deploy site foundations. Currently on a waitlist.
+════════════════════════════════════════════
 
+01 — CUSTOM DEVELOPMENT
+Tailor-made web applications built from the ground up. No templates, no bloat. Covers SaaS platforms, e-commerce, portals, dashboards, landing pages, full-stack apps.
+
+02 — LUXURY REDESIGN
+Transforming outdated or generic interfaces into premium digital experiences. Quiet luxury, sophisticated typography, intuitive UX — makes your brand feel permanent and authoritative.
+
+03 — PREMIUM TEMPLATES
+Ready-to-deploy high-end digital foundations. Currently on a waitlist — interested clients can join via the contact form.
+
+════════════════════════════════════════════
 PRICING
-- Accepts all budgets: $10 for small tasks up to $10,000+ for enterprise platforms
-- Every budget gets the same quality attention
-- Pricing is scoped per project — fill the contact form for a custom quote
-- Budget tiers: $10–$100, $100–$500, $500–$1,000, $1,000–$2,500, $2,500–$5,000, $5,000–$10,000, $10,000+
+════════════════════════════════════════════
 
-TECH STACK
-Frontend: React 96%, Next.js 96%, TypeScript 90%, CSS/Tailwind 95%, GSAP/Framer Motion 88%, Three.js/WebGL 75%
-Backend: Node.js/Express 94%, Python/Django 82%, GraphQL/REST APIs 91%
-Databases: PostgreSQL 87%, MongoDB 87%, Firebase 85%, Supabase 85%, Redis
-Infrastructure: AWS/GCP 85%, Docker/Kubernetes 80%, CI/CD Pipelines 88%, Vercel/Netlify 92%, GitHub Actions
-Also builds in plain HTML/CSS/JS — fast, lightweight, zero bloat.
+Ali works across ALL budget ranges — from small tasks to enterprise:
+- $10 – $100
+- $100 – $500
+- $500 – $1,000
+- $1,000 – $2,500
+- $2,500 – $5,000
+- $5,000 – $10,000
+- $10,000+ (enterprise / complex platforms)
 
-PROJECTS
-- Startup Solution (startupsolution.online) — full web design, development & branding for early-stage venture platform
-- 1M Partners (1mpartners.com) — sophisticated investment/partnership platform; delivered 2 weeks early; Next.js
-- CBR Construction (cbrconstruction.vercel.app) — premium corporate site for construction firm; React
-- Ahmed Mobasher (ahmedmobasher.online) — high-profile personal brand platform; Next.js
-- Shah Nawaz Hall — official venue website; client praised the "elegant, user-friendly, professional" result
-- More projects available on request
+Every budget receives the same quality of attention. Pricing is scoped per project. For a custom quote, use the contact form on the page or email directly.
 
-TESTIMONIALS
-- Shah Nawaz Hall owner: site is "beautiful, user-friendly, and professional — truly reflects the elegance of our venue"
-- Startup Solution founder: "like having a co-founder who actually ships... Ali is a different calibre entirely"
-- 1M Partners founder: "delivered two weeks ahead of schedule... engineering team was genuinely impressed... hire once and never let go"
+════════════════════════════════════════════
+PROJECTS (SELECTED PORTFOLIO)
+════════════════════════════════════════════
 
+001 — STARTUP SOLUTION (startupsolution.online)
+Refined digital platform for early-stage ventures. Clean architecture, premium aesthetic, high-performance.
+Tags: Web Design, Development, Branding
+
+002 — 1M PARTNERS (1mpartners.com)
+Sophisticated investment and partnership platform communicating authority and trust. Delivered 2 weeks ahead of schedule.
+Tags: Web Design, Next.js, UX Strategy
+
+003 — CBR CONSTRUCTION (cbrconstruction.vercel.app)
+Premium corporate digital presence for a construction firm. Heavy industry meets quiet luxury design.
+Tags: Web Design, React, Corporate
+
+004 — AHMED MOBASHER (ahmedmobasher.online)
+Distinguished personal brand platform for a high-profile professional. Precision-crafted to project authority.
+Tags: Web Design, Next.js, Personal Brand
+
+005 — SHAH NAWAZ HALL
+Official venue website praised as "beautiful, user-friendly, and professional — truly reflects the elegance of our venue."
+Tags: Web Design, Development, Hospitality
+
+More projects are available on request via the contact form.
+
+════════════════════════════════════════════
+CLIENT TESTIMONIALS
+════════════════════════════════════════════
+
+Shah Nawaz Hall — Owner (★★★★★):
+"Working with this team to build our official website was a fantastic experience. They understood our vision and turned it into a beautiful, user-friendly, and professional platform that truly reflects the elegance of our venue."
+
+Startup Solution — Founder (★★★★★):
+"Working with Ali felt like having a co-founder who actually ships. The attention to detail in both UX and performance is rare. I've worked with many developers — Ali is a different calibre entirely."
+
+1M Partners — Founder (★★★★★):
+"Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional — our engineering team was genuinely impressed. This is the kind of developer you hire once and never let go."
+
+════════════════════════════════════════════
 HIS STORY
-- Started as curious teenager pressing F12 and tweaking HTML on forum sites
-- Self-taught through practice, not a CS degree
-- Journey: HTML → CSS → JavaScript → Node.js → React/Next.js full stack
-- First real client project confirmed this was his calling
-- Studies design with the same seriousness as code — reads layouts like a typographer
-- Operates as an independent studio, available globally
-- Full story on the His Story page (link in navigation)
+════════════════════════════════════════════
 
+Ali's path wasn't traditional. It started as a curious teenager pressing F12 and tweaking HTML on forum sites — a small act of rebellion that changed everything.
+
+He is entirely self-taught. No computer science degree. Just obsessive, disciplined practice — HTML to CSS to JavaScript to Node.js to React and Next.js.
+
+His first real client project confirmed this was his calling.
+
+What separates Ali from most engineers: he studies design with the same seriousness he brings to code. He reads layouts like a typographer. He believes the best digital products are built by someone who holds both engineering and design in one mind.
+
+He operates as an independent studio — lean, global, fully accountable. When you hire Ali, you get Ali.
+
+Full story on the "His Story" page (linked in navigation).
+
+════════════════════════════════════════════
 HIS VISION
-- Most websites are failing their owners — templated, generic, forgettable
-- A website is the highest-leverage asset a business has — works 24/7 in every timezone
-- Performance is a form of respect — slow loading communicates "your time doesn't matter"
-- The designer/engineer divide is broken — best digital products need both in one mind
-- Core conviction: luxury = intentionality, not price
-- AI will commoditise average work, making exceptional work more valuable
-- Full vision on the His Vision page (link in navigation)
+════════════════════════════════════════════
 
-HOW TO HIRE ALI
-1. Fill the contact form on this page (scroll down to "Ready to build something exceptional?")
+Core belief: most websites are failing their owners. Not because they're ugly — because they're forgettable. Templated. Generic.
+
+Key convictions:
+- A website is the highest-leverage asset a business has — works 24/7 in every timezone, never calls in sick.
+- Performance is a form of respect. Slow loading = "your time doesn't matter."
+- The designer/engineer divide is broken. The best digital products need both disciplines in one mind.
+- Luxury = intentionality, not price. Restraint, precision, purpose — not decoration.
+- AI will commoditise average work. That makes exceptional, human-authored craft more valuable.
+- The bar for "good enough" rises every year. The only defensible position is excellence.
+
+Full vision on the "His Vision" page (linked in navigation).
+
+════════════════════════════════════════════
+PROCESS & TIMELINE
+════════════════════════════════════════════
+
+Process:
+1. Real conversation first — no generic brief forms
+2. Scoped proposal — clear deliverables, honest timeline, fair pricing
+3. Build — clean code, regular check-ins, no surprises
+4. Delivery — on time or early
+5. Ongoing support — maintenance packages available on request
+
+Timeline:
+- Simple landing pages: days
+- Medium-complexity projects: 1–3 weeks
+- Full custom platforms / SaaS: weeks, not months
+- Track record of early delivery (e.g. 1M Partners, 2 weeks early)
+- Always honest about feasibility — tell him your deadline
+
+════════════════════════════════════════════
+FREQUENTLY ASKED QUESTIONS
+════════════════════════════════════════════
+
+Q: Do you work with small budgets?
+Yes — starting from $10. Every budget gets the same quality.
+
+Q: Are you available right now?
+Yes — Ali is currently open to new projects globally.
+
+Q: Do you work remotely or internationally?
+Fully remote, available worldwide.
+
+Q: Do you use WordPress, Webflow, or Wix?
+No — custom code only. Better performance, no limitations, full ownership.
+
+Q: Can you redesign my existing website?
+Yes — Luxury Redesign is a core service.
+
+Q: Can you build e-commerce?
+Yes — custom e-commerce with clean architecture and high-conversion UX.
+
+Q: Do you offer maintenance after launch?
+Yes — ask about maintenance packages when reaching out.
+
+Q: What makes Ali different?
+He operates at the intersection of engineering precision and design excellence — rare in one person. Honest communication, on-time (or early) delivery, co-founder-level care.
+
+Q: How do I see more work?
+Use the contact form and ask for the full portfolio.
+
+Q: How do I hire Ali?
+1. Fill the contact form (scroll down to "Ready to build something exceptional?")
 2. Email: shammopersonal@gmail.com
-3. Ali responds personally within 24 hours
-4. Starts with a real conversation — not a brief or requirements doc
+3. Ali replies personally within 24 hours.
 
-TIMELINE & PROCESS
-- Simple sites: days. Complex apps: weeks, not months.
-- Track record of early delivery.
-- Tell him your deadline — he'll be honest about feasibility.
+════════════════════════════════════════════
+NAVIGATION GUIDE
+════════════════════════════════════════════
 
-COMMON QUESTIONS
-Q: Do you work with small budgets? Yes — from $10. Same quality regardless of size.
-Q: Are you available? Yes — currently open to new projects.
-Q: Do you work remotely / internationally? Yes — fully remote, global.
-Q: Do you use WordPress/Wix/Webflow? No — custom code only. Better performance, no limitations.
-Q: Can you redesign my existing site? Yes — Luxury Redesign is a core service.
-Q: Can you build e-commerce? Yes — custom platforms with clean architecture and high-conversion UX.
-Q: Do you offer maintenance? Yes — ask about maintenance packages when you reach out.
-Q: What makes Ali different? He operates at the intersection of engineering precision and design excellence — rare in one person. Honest communication, on-time (or early) delivery.
-Q: How do I see more work? Contact form → ask for the full portfolio.
-════════════════════════════════`;
+- index.html — Main portfolio (Skills, Projects, Testimonials, Services, Contact)
+- story.html — Full story and background
+- vision.html — Philosophy and vision
 
-// ── Utilities ────────────────────────────────────────────────────────────────
+Sections on the main page: #skills, #projects, #testimonials, #services, #contact-strip
+
+If asked about "his story" or "his vision" → direct to those pages in the nav.
+If asked to hire Ali or get a quote → direct to the contact form or email.`;
+
+// ── Utilities ─────────────────────────────────────────────────────────────────
 function getTime() {
   const d = new Date();
   return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
@@ -1037,11 +1180,22 @@ function setSendDisabled(state) {
   btn.textContent = state ? '…' : 'Send';
 }
 
+function formatText(text) {
+  // Convert **bold** to <strong>
+  text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  // Convert newlines to <br>
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
 // ── Streaming API call ────────────────────────────────────────────────────────
 async function streamReply(userMsg) {
   const bubble = createStreamBubble();
   const win = document.getElementById('chatWindow');
   let fullText = '';
+
+  // Build messages array with full conversation history
+  const messages = [...chatHistory, { role: 'user', content: userMsg }];
 
   // Try streaming first
   try {
@@ -1049,11 +1203,11 @@ async function streamReply(userMsg) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 300,
+        model: 'claude-sonnet-4-6',
+        max_tokens: 600,
         stream: true,
         system: ALI_SYSTEM,
-        messages: [{ role: 'user', content: userMsg }]
+        messages: messages
       })
     });
 
@@ -1065,7 +1219,7 @@ async function streamReply(userMsg) {
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      const lines = dec.decode(value, { stream:true }).split('\n');
+      const lines = dec.decode(value, { stream: true }).split('\n');
       for (const line of lines) {
         if (!line.startsWith('data: ')) continue;
         const raw = line.slice(6).trim();
@@ -1074,46 +1228,53 @@ async function streamReply(userMsg) {
           const p = JSON.parse(raw);
           if (p.type === 'content_block_delta' && p.delta?.type === 'text_delta') {
             fullText += p.delta.text;
-            bubble.innerHTML = fullText.replace(/\n/g,'<br>') + '<span class="stream-cursor">▋</span>';
+            bubble.innerHTML = formatText(fullText) + '<span class="stream-cursor">▋</span>';
             win.scrollTop = win.scrollHeight;
           }
-        } catch { /* skip */ }
+        } catch { /* skip malformed chunks */ }
       }
     }
-    bubble.innerHTML = fullText.replace(/\n/g,'<br>');
+    bubble.innerHTML = formatText(fullText);
 
   } catch {
     // Fallback: non-streaming
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          model:'claude-sonnet-4-20250514',
-          max_tokens:300,
-          system:ALI_SYSTEM,
-          messages:[{role:'user',content:userMsg}]
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 600,
+          system: ALI_SYSTEM,
+          messages: messages
         })
       });
       const data = await res.json();
-      fullText = data.content?.[0]?.text || "I'm not sure — you can reach Ali directly at shammopersonal@gmail.com.";
-      bubble.innerHTML = fullText.replace(/\n/g,'<br>');
+      fullText = data.content?.[0]?.text || "I'm not sure about that — reach Ali directly at shammopersonal@gmail.com.";
+      bubble.innerHTML = formatText(fullText);
     } catch {
       fullText = "Something went wrong. Reach Ali at shammopersonal@gmail.com or use the contact form below.";
       bubble.innerHTML = fullText;
     }
   }
 
+  // Update conversation history with this exchange
+  chatHistory.push({ role: 'user', content: userMsg });
+  chatHistory.push({ role: 'assistant', content: fullText });
+
+  // Keep history to last 10 exchanges (20 messages) to avoid token bloat
+  if (chatHistory.length > 20) chatHistory.splice(0, 2);
+
   // Cache for instant repeat answers
   SESSION_CACHE[userMsg.toLowerCase().trim()] = fullText;
   return fullText;
 }
 
-// ── Main handler ──────────────────────────────────────────────────────────────
+// ── Main message handler ──────────────────────────────────────────────────────
 async function processMessage(userMsg) {
   const cacheKey = userMsg.toLowerCase().trim();
 
-  // Instant from cache
+  // Serve from cache for instant repeat answers
   if (SESSION_CACHE[cacheKey]) {
     addMsg(userMsg, 'user');
     addMsg(SESSION_CACHE[cacheKey], 'bot');
@@ -1123,7 +1284,7 @@ async function processMessage(userMsg) {
   setSendDisabled(true);
   addMsg(userMsg, 'user');
   showTyping();
-  await new Promise(r => setTimeout(r, 300));
+  await new Promise(r => setTimeout(r, 350));
   removeTyping();
   await streamReply(userMsg);
   setSendDisabled(false);
@@ -1148,9 +1309,9 @@ document.getElementById('chatInput').addEventListener('keydown', e => {
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
 });
 
-// Greeting
+// ── Greeting on load ──────────────────────────────────────────────────────────
 setTimeout(() => {
-  addMsg("Hi! I'm AZ Assistant. Ask me anything about Ali — pricing, availability, his stack, projects, or how to get started.", 'bot');
+  addMsg("Hi! I'm AZ Assistant. Ask me anything about Ali — his skills, pricing, availability, projects, or how to get started.", 'bot');
 }, 600);
 </script>
 </body>
