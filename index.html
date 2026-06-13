@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ali Zawad — Full Stack Engineer</title>
+<title>Ali Zawad, Full Stack Engineer & UI/UX Architect</title>
+<meta name="description" content="Ali Zawad builds high-performance, premium digital products. Full Stack Engineer and UI/UX Architect, available for custom development, luxury redesigns, and SaaS platforms.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ─────────────────────────────────── */
@@ -23,6 +24,8 @@
   --rule2:     rgba(155,120,64,.10);
   --shadow:    0 2px 8px rgba(12,26,19,.08), 0 8px 32px rgba(12,26,19,.06);
   --shadow-lg: 0 4px 24px rgba(12,26,19,.14), 0 16px 64px rgba(12,26,19,.10);
+  --danger:    #8B1A1A;
+  --success:   #1A6B38;
 }
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; font-size:16px; }
@@ -40,15 +43,31 @@ body {
 #cur    { position:fixed; width:6px; height:6px; background:var(--brass); border-radius:50%; pointer-events:none; z-index:99999; transform:translate(-50%,-50%); transition:transform .1s; }
 #cur-r  { position:fixed; width:22px; height:22px; border:1px solid var(--brass); border-radius:50%; pointer-events:none; z-index:99998; transform:translate(-50%,-50%); transition:all .22s ease; opacity:.45; }
 
+/* ── AVAILABILITY BANNER ────────────────────── */
+.avail-banner {
+  background:var(--ink3);
+  border-bottom:1px solid rgba(155,120,64,.15);
+  padding:.42rem 4.5rem;
+  display:flex; align-items:center; justify-content:center; gap:1.2rem;
+  position:fixed; top:0; left:0; right:0; z-index:950;
+}
+.avail-dot { width:6px; height:6px; border-radius:50%; background:#3ecf4a; animation:pulse-dot 2s infinite; flex-shrink:0; }
+.avail-text { font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.32em; text-transform:uppercase; color:rgba(155,120,64,.7); }
+.avail-text strong { color:var(--brass2); font-weight:400; }
+.avail-close { margin-left:auto; background:none; border:none; color:rgba(155,120,64,.4); cursor:pointer; font-size:.75rem; line-height:1; padding:.1rem; transition:color .2s; }
+.avail-close:hover { color:var(--brass); }
+
 /* ── NAV ────────────────────────────────────── */
 nav {
-  position:fixed; top:0; left:0; right:0; z-index:900;
+  position:fixed; top:26px; left:0; right:0; z-index:900;
   height:68px; padding:0 4.5rem;
   display:flex; align-items:center; justify-content:space-between;
   background:rgba(246,243,238,.97);
   backdrop-filter:blur(14px);
   border-bottom:1px solid var(--rule);
+  transition:top .3s;
 }
+nav.banner-hidden { top:0; }
 .nav-logo {
   font-family:'Cormorant Garamond',serif;
   font-size:1.2rem; font-weight:500; letter-spacing:.12em;
@@ -68,8 +87,6 @@ nav {
 }
 .nav-links a:hover { color:var(--brass); }
 .nav-links a:hover::after { width:100%; }
-.nav-links a.active { color:var(--brass); }
-.nav-links a.active::after { width:100%; }
 .nav-sep { width:1px; height:14px; background:var(--rule); }
 .nav-links .nav-page-link {
   color:var(--brass); border:1px solid rgba(155,120,64,.3);
@@ -90,11 +107,13 @@ nav {
 
 /* ── TICKER ─────────────────────────────────── */
 .ticker-wrap {
-  position:fixed; top:68px; left:0; right:0; z-index:800;
+  position:fixed; top:94px; left:0; right:0; z-index:800;
   height:28px; background:var(--ink3); overflow:hidden;
   border-bottom:1px solid rgba(155,120,64,.15);
   display:flex; align-items:center;
+  transition:top .3s;
 }
+.ticker-wrap.banner-hidden { top:68px; }
 .ticker-inner {
   display:flex; white-space:nowrap;
   animation:ticker 38s linear infinite;
@@ -109,7 +128,7 @@ nav {
 
 /* ── HERO ───────────────────────────────────── */
 #hero {
-  min-height:100vh; padding:12rem 4.5rem 8rem;
+  min-height:100vh; padding:14rem 4.5rem 8rem;
   display:grid; grid-template-columns:1fr 1fr; gap:6rem;
   align-items:center; position:relative; overflow:hidden;
   background:var(--cream);
@@ -129,25 +148,55 @@ nav {
 .hero-left { position:relative; z-index:2; }
 .hero-eyebrow {
   font-size:.62rem; letter-spacing:.5em; text-transform:uppercase;
-  color:var(--brass); margin-bottom:2.8rem; font-weight:400;
+  color:var(--brass); margin-bottom:1.6rem; font-weight:400;
   display:flex; align-items:center; gap:1rem;
 }
 .hero-eyebrow::before { content:''; width:32px; height:1px; background:var(--brass); opacity:.5; }
+
+/* ── PAIN LINE — psychological hook ── */
+.hero-pain {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,1.4vw,1.1rem);
+  font-style:italic; font-weight:300;
+  color:rgba(12,26,19,.42);
+  margin-bottom:1.4rem;
+  letter-spacing:.01em;
+  line-height:1.6;
+}
+
 .hero-name {
   font-family:'Cormorant Garamond',serif;
   font-size:clamp(3.5rem,8vw,7rem);
   font-weight:300; line-height:.92; letter-spacing:.04em;
-  color:var(--ink); margin-bottom:2rem;
+  color:var(--ink); margin-bottom:1.6rem;
 }
 .hero-name em { color:var(--brass); font-style:italic; display:block; }
 .hero-sub {
   font-size:.74rem; letter-spacing:.32em; text-transform:uppercase;
-  color:var(--muted); margin-bottom:2rem; font-weight:400;
+  color:var(--muted); margin-bottom:1.6rem; font-weight:400;
 }
+.hero-value-prop {
+  max-width:400px; font-size:.92rem; line-height:2.1;
+  color:rgba(12,26,19,.62); margin-bottom:1.6rem;
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-weight:300; letter-spacing:.01em;
+}
+.hero-value-prop strong { font-style:normal; color:var(--ink); font-weight:500; }
 .hero-desc {
-  max-width:380px; font-size:.88rem; line-height:2.1;
-  color:rgba(12,26,19,.5); margin-bottom:3.5rem;
+  max-width:380px; font-size:.82rem; line-height:2.1;
+  color:rgba(12,26,19,.46); margin-bottom:3rem;
 }
+
+/* ── URGENCY BADGE ── */
+.urgency-badge {
+  display:inline-flex; align-items:center; gap:.6rem;
+  background:rgba(155,120,64,.07); border:1px solid rgba(155,120,64,.22);
+  padding:.45rem 1.1rem; margin-bottom:2rem;
+  font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.26em;
+  color:var(--brass); text-transform:uppercase;
+}
+.urgency-badge .u-dot { width:5px; height:5px; border-radius:50%; background:#3ecf4a; animation:pulse-dot 2s infinite; }
+
 .hero-ctas { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3.5rem; }
 .btn-p {
   padding:.9rem 2.8rem; background:var(--ink); border:1px solid var(--ink);
@@ -169,6 +218,20 @@ nav {
   font-size:2.2rem; font-weight:300; color:var(--brass); line-height:1; letter-spacing:.04em;
 }
 .metric-l { font-size:.56rem; letter-spacing:.32em; text-transform:uppercase; color:var(--muted); margin-top:.3rem; }
+
+/* ── TRUST BAR ── */
+.trust-bar {
+  margin-top:3rem; padding-top:2.5rem; border-top:1px solid var(--rule);
+  display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap;
+}
+.trust-label { font-size:.54rem; letter-spacing:.32em; text-transform:uppercase; color:rgba(12,26,19,.3); white-space:nowrap; }
+.trust-items { display:flex; gap:1.8rem; flex-wrap:wrap; }
+.trust-item {
+  display:flex; align-items:center; gap:.5rem;
+  font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.16em;
+  color:rgba(12,26,19,.38); text-transform:uppercase;
+}
+.trust-item svg { width:10px; height:10px; fill:var(--brass); opacity:.5; flex-shrink:0; }
 
 /* ── HERO RIGHT: CHATBOT ──────────────────── */
 .hero-right { position:relative; z-index:2; }
@@ -210,7 +273,7 @@ nav {
 }
 .chat-window::-webkit-scrollbar { width:2px; }
 .chat-window::-webkit-scrollbar-thumb { background:rgba(155,120,64,.2); }
-.msg { display:flex; flex-direction:column; gap:.25rem; max-width:85%; animation:msg-in .3s ease; }
+.msg { display:flex; flex-direction:column; gap:.25rem; max-width:88%; animation:msg-in .3s ease; }
 @keyframes msg-in { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 .msg.bot { align-self:flex-start; }
 .msg.user { align-self:flex-end; }
@@ -229,6 +292,18 @@ nav {
 }
 .msg-time { font-family:'DM Mono',monospace; font-size:.48rem; letter-spacing:.16em; color:var(--muted); opacity:.5; }
 .msg.user .msg-time { text-align:right; }
+
+/* ── NAV ACTION IN CHAT ── */
+.chat-nav-action {
+  display:inline-flex; align-items:center; gap:.5rem;
+  margin-top:.5rem; padding:.38rem .9rem;
+  background:var(--ink); color:var(--cream);
+  border:none; font-family:'DM Sans',sans-serif;
+  font-size:.58rem; letter-spacing:.18em; text-transform:uppercase;
+  cursor:pointer; transition:background .2s;
+}
+.chat-nav-action:hover { background:var(--brass); }
+.chat-nav-action svg { width:10px; height:10px; fill:currentColor; }
 
 /* Typing dots */
 .msg-typing { display:flex; align-items:center; gap:5px; padding:.8rem 1rem; }
@@ -282,6 +357,40 @@ nav {
 .chat-send:hover { background:var(--brass); }
 .chat-send:disabled { background:var(--muted); cursor:not-allowed; opacity:.5; }
 
+/* ── PROOF STRIP ────────────────────────────── */
+#proof-strip {
+  background:var(--ink3);
+  border-top:1px solid rgba(155,120,64,.08);
+  border-bottom:1px solid rgba(155,120,64,.08);
+  padding:3.5rem 4.5rem;
+}
+.proof-inner {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border:1px solid rgba(155,120,64,.12);
+}
+.proof-stat {
+  padding:2.2rem 2.4rem;
+  border-right:1px solid rgba(155,120,64,.1);
+  text-align:center;
+  position:relative;
+}
+.proof-stat:last-child { border-right:none; }
+.proof-stat::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(155,120,64,.3),transparent);
+  opacity:0; transition:opacity .4s;
+}
+.proof-stat:hover::before { opacity:1; }
+.proof-n {
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.6rem; font-weight:300; color:var(--brass2);
+  line-height:1; letter-spacing:.02em; display:block;
+}
+.proof-l { font-size:.54rem; letter-spacing:.36em; text-transform:uppercase; color:rgba(247,244,239,.3); margin-top:.5rem; display:block; }
+.proof-sub { font-family:'Cormorant Garamond',serif; font-size:.88rem; color:rgba(247,244,239,.22); font-style:italic; margin-top:.3rem; display:block; }
+
 /* ── SECTION BASE ───────────────────────────── */
 section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 .sec-head {
@@ -301,6 +410,8 @@ section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 }
 .sec-title.light { color:var(--cream); }
 .sec-rule { width:24px; height:1px; background:var(--brass); margin-top:1.2rem; }
+.sec-sub { font-size:.82rem; color:rgba(12,26,19,.42); line-height:2; margin-top:1rem; max-width:460px; }
+.sec-sub.light { color:rgba(247,244,239,.38); }
 
 /* ── SKILLS ─────────────────────────────────── */
 #skills { background:var(--white); }
@@ -326,6 +437,40 @@ section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 .sk-tools { margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--rule2); display:flex; flex-wrap:wrap; gap:.4rem; }
 .stool { font-family:'DM Mono',monospace; font-size:.5rem; letter-spacing:.12em; color:var(--brass); border:1px solid rgba(155,120,64,.2); padding:3px 9px; opacity:.7; }
 
+/* ── NO WORDPRESS NOTE ── */
+.no-builders-note {
+  max-width:1100px; margin:2.2rem auto 0;
+  display:flex; align-items:center; gap:1rem;
+  padding:1.2rem 1.8rem; background:rgba(155,120,64,.04);
+  border:1px solid rgba(155,120,64,.12);
+}
+.nb-icon { font-family:'DM Mono',monospace; font-size:.56rem; letter-spacing:.22em; color:rgba(155,120,64,.5); white-space:nowrap; }
+.nb-text { font-size:.74rem; color:rgba(12,26,19,.42); line-height:1.7; }
+.nb-text strong { color:var(--ink); font-weight:400; }
+
+/* ── SERVICES ───────────────────────────────── */
+#services { background:var(--ink3); }
+.srv-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); border:1px solid rgba(155,120,64,.15); }
+.srv { padding:3.2rem 2.8rem; border-right:1px solid rgba(155,120,64,.1); transition:background .4s; position:relative; }
+.srv:last-child { border-right:none; }
+.srv:hover { background:rgba(255,255,255,.025); }
+.srv-n { font-family:'DM Mono',monospace; font-size:.56rem; color:rgba(155,120,64,.35); letter-spacing:.4em; margin-bottom:1.8rem; }
+.srv-t { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:500; color:var(--cream); letter-spacing:.02em; margin-bottom:.6rem; line-height:1.2; }
+
+/* ── OUTCOME LINE — pain → gain ── */
+.srv-outcome {
+  font-size:.65rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--brass2); margin-bottom:1.2rem; font-weight:400;
+}
+
+.srv-d { font-size:.82rem; color:rgba(247,244,239,.45); line-height:2; }
+.srv-proof { font-family:'Cormorant Garamond',serif; font-size:.88rem; font-style:italic; color:rgba(155,120,64,.5); margin-top:1.4rem; line-height:1.7; border-left:2px solid rgba(155,120,64,.2); padding-left:.9rem; }
+.srv-action { display:inline-block; margin-top:2.4rem; padding:.72rem 1.7rem; border:1px solid rgba(155,120,64,.3); color:var(--brass); background:transparent; font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background .3s, color .3s; }
+.srv-action:hover { background:var(--brass); color:var(--ink); }
+.srv-badge { display:inline-flex; align-items:center; gap:.5rem; margin-top:2.4rem; padding:.72rem 1.7rem; border:1px solid rgba(155,120,64,.3); color:var(--brass); background:transparent; font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background .3s, color .3s; }
+.srv-badge svg { width:11px; height:11px; fill:currentColor; }
+.srv-badge:hover { background:var(--brass); color:var(--ink); }
+
 /* ── PROJECTS ───────────────────────────────── */
 #projects { background:var(--cream2); }
 .proj-grid {
@@ -344,7 +489,8 @@ section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 .proj-body { padding:2.4rem; flex:1; display:flex; flex-direction:column; }
 .proj-id { font-family:'DM Mono',monospace; font-size:.52rem; color:rgba(155,120,64,.5); letter-spacing:.38em; margin-bottom:.7rem; }
 .proj-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:500; color:var(--ink); letter-spacing:.02em; margin-bottom:.7rem; }
-.proj-desc { font-size:.82rem; color:rgba(12,26,19,.5); line-height:1.9; margin-bottom:1.4rem; flex:1; }
+.proj-desc { font-size:.82rem; color:rgba(12,26,19,.5); line-height:1.9; margin-bottom:1rem; flex:1; }
+.proj-result { font-family:'Cormorant Garamond',serif; font-size:.88rem; font-style:italic; color:var(--brass); opacity:.7; margin-bottom:1.2rem; }
 .proj-tags { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:1.4rem; }
 .ptag { font-size:.55rem; letter-spacing:.14em; padding:2px 8px; border:1px solid var(--rule); color:var(--muted); }
 .proj-lnk { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--brass); text-decoration:none; font-weight:400; border-bottom:1px solid rgba(155,120,64,.22); padding-bottom:1px; transition:border-color .3s; display:inline-block; }
@@ -370,27 +516,17 @@ section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 .tx-name { font-size:.82rem; color:rgba(247,244,239,.88); letter-spacing:.04em; font-weight:400; }
 .tx-role { font-size:.56rem; color:rgba(247,244,239,.3); letter-spacing:.14em; margin-top:.12rem; }
 
-/* ── SERVICES ───────────────────────────────── */
-#services { background:var(--ink3); }
-.srv-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); border:1px solid rgba(155,120,64,.15); }
-.srv { padding:3rem 2.8rem; border-right:1px solid rgba(155,120,64,.1); transition:background .4s; }
-.srv:last-child { border-right:none; }
-.srv:hover { background:rgba(255,255,255,.025); }
-.srv-n { font-family:'DM Mono',monospace; font-size:.56rem; color:rgba(155,120,64,.35); letter-spacing:.4em; margin-bottom:1.8rem; }
-.srv-t { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:500; color:var(--cream); letter-spacing:.02em; margin-bottom:1rem; line-height:1.2; }
-.srv-d { font-size:.82rem; color:rgba(247,244,239,.45); line-height:2; }
-.srv-action { display:inline-block; margin-top:2.4rem; padding:.72rem 1.7rem; border:1px solid rgba(155,120,64,.3); color:var(--brass); background:transparent; font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background .3s, color .3s; }
-.srv-action:hover { background:var(--brass); color:var(--ink); }
-.srv-badge { display:inline-flex; align-items:center; gap:.5rem; margin-top:2.4rem; padding:.72rem 1.7rem; border:1px solid rgba(155,120,64,.3); color:var(--brass); background:transparent; font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background .3s, color .3s; }
-.srv-badge svg { width:11px; height:11px; fill:currentColor; }
-.srv-badge:hover { background:var(--brass); color:var(--ink); }
-
 /* ── CONTACT STRIP ──────────────────────────── */
 #contact-strip { background:var(--ink); padding:7rem 4.5rem; }
-.cs-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto; align-items:center; gap:4rem; }
+.cs-inner { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr auto; align-items:start; gap:4rem; }
 .cs-left h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:300; color:var(--cream); letter-spacing:.04em; line-height:1.15; }
 .cs-left h2 em { color:var(--brass); font-style:italic; }
-.cs-left p { font-size:.84rem; color:rgba(247,244,239,.4); line-height:2; margin-top:1.2rem; max-width:420px; }
+.cs-pain { font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:rgba(247,244,239,.35); line-height:1.9; margin-top:1rem; max-width:400px; }
+.cs-reassure { margin-top:2rem; }
+.cs-reassure-item { display:flex; align-items:flex-start; gap:.7rem; margin-bottom:.8rem; }
+.cs-re-icon { color:var(--brass); font-size:.7rem; margin-top:.15rem; flex-shrink:0; }
+.cs-re-text { font-size:.76rem; color:rgba(247,244,239,.35); line-height:1.7; }
+.cs-re-text strong { color:rgba(247,244,239,.6); font-weight:400; }
 .cs-form { min-width:380px; }
 .cf-row { display:flex; gap:0; border:1px solid rgba(155,120,64,.25); margin-bottom:1rem; }
 .cf-inp { flex:1; padding:.85rem 1.2rem; background:transparent; border:none; outline:none; font-family:'DM Sans',sans-serif; font-size:.84rem; color:var(--cream); font-weight:300; }
@@ -401,6 +537,7 @@ section { padding:9rem 4.5rem; position:relative; overflow:hidden; }
 .cf-ta::placeholder { color:rgba(247,244,239,.25); }
 .cf-sub { width:100%; padding:1rem; background:var(--brass); border:none; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:.65rem; letter-spacing:.38em; text-transform:uppercase; color:var(--ink); font-weight:500; transition:background .3s; }
 .cf-sub:hover { background:var(--brass2); }
+.cf-micro { font-size:.54rem; letter-spacing:.18em; color:rgba(247,244,239,.18); text-align:center; margin-top:.5rem; line-height:1.6; }
 #cf-status { font-size:.62rem; letter-spacing:.22em; color:var(--brass); text-align:center; margin-top:.6rem; min-height:1rem; }
 
 /* ── CONFIRM POPUP ──────────────────────────── */
@@ -445,11 +582,15 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
 
 /* ── MOBILE ─────────────────────────────────── */
 @media(max-width:1000px) {
-  nav { padding:0 1.5rem; }
+  .avail-banner { padding:.4rem 1rem; display:none; }
+  nav { padding:0 1.5rem; top:0; }
+  nav.banner-hidden { top:0; }
+  .ticker-wrap { top:68px; display:none; }
   .nav-links { display:none; }
   section { padding:6rem 1.5rem; }
   #hero { grid-template-columns:1fr; padding:9rem 1.5rem 5rem; gap:3.5rem; }
   .hero-desc { max-width:100%; }
+  .hero-value-prop { max-width:100%; }
   .skills-wrap, .srv-grid, .tx-grid { grid-template-columns:1fr; }
   .sk-col, .srv, .tx-card { border-right:none; border-bottom:1px solid var(--rule); }
   .proj-grid { grid-template-columns:1fr; }
@@ -459,9 +600,11 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
   .ft-top { grid-template-columns:1fr; gap:2.5rem; }
   .ft-bottom { flex-direction:column; align-items:flex-start; gap:.8rem; }
   footer { padding:4rem 1.5rem 2rem; }
-  .ticker-wrap { display:none; }
   .sec-head { flex-direction:column; gap:1rem; }
   .sec-tag { writing-mode:horizontal-tb; transform:none; }
+  .proof-inner { grid-template-columns:repeat(2,1fr); }
+  .proof-stat:nth-child(2) { border-right:none; }
+  .trust-bar { flex-direction:column; align-items:flex-start; gap:.8rem; }
 }
 </style>
 </head>
@@ -470,8 +613,17 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
 <div id="cur"></div>
 <div id="cur-r"></div>
 
+<!-- AVAILABILITY BANNER — scarcity signal -->
+<div class="avail-banner" id="availBanner">
+  <div class="avail-dot"></div>
+  <div class="avail-text">
+    <strong>Now accepting new projects.</strong> Ali responds personally within 24 hours. Limited capacity each month.
+  </div>
+  <button class="avail-close" onclick="closeBanner()" aria-label="Close">✕</button>
+</div>
+
 <!-- TICKER -->
-<div class="ticker-wrap">
+<div class="ticker-wrap" id="tickerWrap">
   <div class="ticker-inner" id="ticker">
     <span class="hi">Ali Zawad</span><span>Full Stack Engineer</span><span>·</span>
     <span class="hi">5+ Years</span><span>Building Digital Products</span><span>·</span>
@@ -515,17 +667,56 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
 
   <div class="hero-left">
     <div class="hero-eyebrow reveal">Full Stack Engineer &amp; UI / UX Architect</div>
+
+    <!-- PAIN-POINT HOOK — speaks to visitor's frustration before the name -->
+    <p class="hero-pain reveal d1">Your website should be your hardest-working salesperson.<br>Most aren't even in the building.</p>
+
     <h1 class="hero-name reveal d1">Ali<em>Zawad</em></h1>
     <div class="hero-sub reveal d1">Crafting Digital Experiences of Distinction</div>
-    <p class="hero-desc reveal d2">High-performance, meticulously engineered digital products at the intersection of engineering precision and creative excellence.</p>
-    <div class="hero-ctas reveal d2">
-      <a href="#projects" class="btn-p">View Work</a>
-      <a href="story.html" class="btn-s">His Story</a>
+
+    <!-- VALUE PROP — outcome-first, not feature-first -->
+    <p class="hero-value-prop reveal d2">I build <strong>websites that convert</strong> — engineered for performance, designed for authority, delivered on time.</p>
+
+    <p class="hero-desc reveal d2">High-performance, meticulously crafted digital products at the intersection of engineering precision and creative excellence. No templates. No hand-offs. Just Ali.</p>
+
+    <!-- URGENCY BADGE -->
+    <div class="urgency-badge reveal d2">
+      <span class="u-dot"></span>
+      Currently accepting new projects. Limited monthly capacity.
     </div>
+
+    <div class="hero-ctas reveal d2">
+      <a href="#contact-strip" class="btn-p">Start a Project</a>
+      <a href="#projects" class="btn-s">See the Work</a>
+    </div>
+
     <div class="hero-metrics reveal d3">
       <div class="metric-item"><div class="metric-n">5+</div><div class="metric-l">Years</div></div>
       <div class="metric-item"><div class="metric-n">25+</div><div class="metric-l">Projects</div></div>
       <div class="metric-item"><div class="metric-n">100%</div><div class="metric-l">Satisfaction</div></div>
+    </div>
+
+    <!-- TRUST SIGNALS -->
+    <div class="trust-bar reveal d3">
+      <span class="trust-label">As seen in</span>
+      <div class="trust-items">
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Early Delivered
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          100% Satisfaction
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Custom Code Only
+        </div>
+        <div class="trust-item">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Global Remote
+        </div>
+      </div>
     </div>
   </div>
 
@@ -539,25 +730,51 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
         </div>
         <div class="chat-header-info">
           <div class="chat-name">AZ Assistant</div>
-          <div class="chat-status-txt">Online — Ask me anything about Ali</div>
+          <div class="chat-status-txt">Online. Ask me anything about Ali</div>
         </div>
       </div>
       <div class="chat-window" id="chatWindow"></div>
       <div class="chat-suggestions" id="chatSuggestions">
-        <button class="sug-btn" onclick="sendSuggestion(this)">What are your skills?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">I need a landing page</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">What's your pricing?</button>
-        <button class="sug-btn" onclick="sendSuggestion(this)">Are you available?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">See your projects</button>
         <button class="sug-btn" onclick="sendSuggestion(this)">What's your stack?</button>
-        <button class="sug-btn" onclick="sendSuggestion(this)">Do you work remotely?</button>
-        <button class="sug-btn" onclick="sendSuggestion(this)">How long does a project take?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">How do I hire you?</button>
+        <button class="sug-btn" onclick="sendSuggestion(this)">Are you available now?</button>
       </div>
       <div class="chat-input-wrap">
-        <input type="text" class="chat-input" id="chatInput" placeholder="Ask me about Ali's work…" maxlength="300">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Ask about Ali's work, pricing, availability…" maxlength="300">
         <button class="chat-send" id="chatSendBtn" onclick="sendChat()">Send</button>
       </div>
     </div>
   </div>
 </section>
+
+<!-- PROOF STRIP — social proof numbers, full width -->
+<div id="proof-strip">
+  <div class="proof-inner reveal">
+    <div class="proof-stat">
+      <span class="proof-n">25+</span>
+      <span class="proof-l">Projects Delivered</span>
+      <span class="proof-sub">Across 6 countries</span>
+    </div>
+    <div class="proof-stat">
+      <span class="proof-n">100%</span>
+      <span class="proof-l">Client Satisfaction</span>
+      <span class="proof-sub">Every single engagement</span>
+    </div>
+    <div class="proof-stat">
+      <span class="proof-n">2wks</span>
+      <span class="proof-l">Ahead of Schedule</span>
+      <span class="proof-sub">1M Partners delivery</span>
+    </div>
+    <div class="proof-stat">
+      <span class="proof-n">5+</span>
+      <span class="proof-l">Years of Craft</span>
+      <span class="proof-sub">Self-built, obsessively honed</span>
+    </div>
+  </div>
+</div>
 
 <!-- SKILLS -->
 <section id="skills">
@@ -567,6 +784,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="sec-label">Technical Expertise</div>
       <h2 class="sec-title">Skills &amp; Craft</h2>
       <div class="sec-rule"></div>
+      <p class="sec-sub">Every percentage earned through real projects, not tutorials.</p>
     </div>
   </div>
   <div class="skills-wrap">
@@ -598,6 +816,11 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="sk-tools"><span class="stool">AWS</span><span class="stool">Docker</span><span class="stool">K8s</span><span class="stool">GitHub Actions</span><span class="stool">Vercel</span></div>
     </div>
   </div>
+  <!-- No page-builders note — differentiator -->
+  <div class="no-builders-note reveal">
+    <div class="nb-icon">✦ NOTE</div>
+    <div class="nb-text"><strong>No WordPress. No Webflow. No Wix.</strong> Every project is custom-coded from scratch. Better performance, zero platform lock-in, and full ownership for the client. Always.</div>
+  </div>
 </section>
 
 <!-- SERVICES -->
@@ -608,26 +831,33 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="sec-label">What I Offer</div>
       <h2 class="sec-title" style="color:var(--cream)">Services</h2>
       <div class="sec-rule"></div>
+      <p class="sec-sub light">Every engagement is scoped to your outcome, not your budget category.</p>
     </div>
   </div>
   <div class="srv-grid">
     <div class="srv reveal">
       <div class="srv-n">01</div>
       <div class="srv-t">Custom Development</div>
-      <p class="srv-d">Tailor-made web applications built from the ground up. No templates, no bloat — just high-performance code designed to scale with your business from day one.</p>
+      <!-- OUTCOME FIRST — what the client gains -->
+      <div class="srv-outcome">A product your competitors can't copy</div>
+      <p class="srv-d">Tailor-made web applications built from the ground up. No templates, no bloat. Just high-performance code designed to scale with your business from day one. Landing pages, SaaS platforms, dashboards, e-commerce.</p>
+      <div class="srv-proof">"Working with Ali felt like having a co-founder who actually ships." — Startup Solution Founder</div>
       <button class="srv-action" onclick="openEnquiry('Custom Development')">Commission a Build</button>
     </div>
     <div class="srv reveal d1">
       <div class="srv-n">02</div>
       <div class="srv-t">Luxury Redesign</div>
-      <p class="srv-d">Turning outdated interfaces into premium digital experiences. Quiet luxury, sophisticated typography, and intuitive UX that makes your brand feel permanent.</p>
+      <div class="srv-outcome">From forgettable to authoritative, overnight</div>
+      <p class="srv-d">Turning outdated interfaces into premium digital experiences. Quiet luxury, sophisticated typography, intuitive UX that makes your brand feel permanent and trustworthy to the clients who matter most.</p>
+      <div class="srv-proof">"Truly reflects the elegance of our venue." — Shah Nawaz Hall Owner</div>
       <button class="srv-action" onclick="openEnquiry('Luxury Redesign')">Request a Redesign</button>
     </div>
     <div class="srv reveal d2">
       <div class="srv-n">03</div>
       <div class="srv-t">Premium Templates</div>
-      <p class="srv-d">Carefully crafted, ready-to-deploy digital foundations. High-end aesthetic and robust code without the timeline of a fully custom engagement.</p>
-      <button class="srv-badge" onclick="openEnquiry('Premium Templates — Waitlist')">
+      <div class="srv-outcome">High-end aesthetic, without the custom timeline</div>
+      <p class="srv-d">Carefully crafted, ready-to-deploy digital foundations. The same design intelligence and code quality as a fully custom engagement, accessible to businesses that need to move fast without compromising on appearance.</p>
+      <button class="srv-badge" onclick="openEnquiry('Premium Templates Waitlist')">
         <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         Join the Waitlist
       </button>
@@ -643,6 +873,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="sec-label">Selected Work</div>
       <h2 class="sec-title">Projects</h2>
       <div class="sec-rule"></div>
+      <p class="sec-sub">Every project listed here was delivered on time or early, with a satisfied client behind it.</p>
     </div>
   </div>
   <div class="proj-grid">
@@ -651,7 +882,8 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="proj-body">
         <div class="proj-id">001</div>
         <div class="proj-title">Startup Solution</div>
-        <p class="proj-desc">A refined digital platform for early-stage ventures — clean architecture, premium aesthetic, and high-performance delivery built to scale from day one.</p>
+        <p class="proj-desc">A refined digital platform for early-stage ventures. Clean architecture, premium aesthetic, and high-performance delivery built to scale from day one.</p>
+        <div class="proj-result">"Like having a co-founder who actually ships."</div>
         <div class="proj-tags"><span class="ptag">Web Design</span><span class="ptag">Development</span><span class="ptag">Branding</span></div>
         <a href="https://www.startupsolution.online" target="_blank" class="proj-lnk" onclick="event.stopPropagation()">Visit Site →</a>
       </div>
@@ -661,7 +893,8 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="proj-body">
         <div class="proj-id">002</div>
         <div class="proj-title">1M Partners</div>
-        <p class="proj-desc">A sophisticated partnership and investment platform crafted to communicate authority and trust — designed for those who operate at the highest level.</p>
+        <p class="proj-desc">A sophisticated partnership and investment platform crafted to communicate authority and trust, designed for those who operate at the highest level.</p>
+        <div class="proj-result">Delivered 2 weeks ahead of schedule.</div>
         <div class="proj-tags"><span class="ptag">Web Design</span><span class="ptag">Next.js</span><span class="ptag">UX Strategy</span></div>
         <a href="https://www.1mpartners.com" target="_blank" class="proj-lnk" onclick="event.stopPropagation()">Visit Site →</a>
       </div>
@@ -671,7 +904,8 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="proj-body">
         <div class="proj-id">003</div>
         <div class="proj-title">CBR Construction</div>
-        <p class="proj-desc">A premium digital presence for a leading construction firm — heavy industry meets quiet luxury design, communicating credibility and craftsmanship.</p>
+        <p class="proj-desc">A premium digital presence for a leading construction firm. Heavy industry meets quiet luxury design, communicating credibility and craftsmanship.</p>
+        <div class="proj-result">Industry authority established from day one.</div>
         <div class="proj-tags"><span class="ptag">Web Design</span><span class="ptag">React</span><span class="ptag">Corporate</span></div>
         <a href="https://cbrconstruction.vercel.app" target="_blank" class="proj-lnk" onclick="event.stopPropagation()">Visit Site →</a>
       </div>
@@ -681,13 +915,14 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="proj-body">
         <div class="proj-id">004</div>
         <div class="proj-title">Ahmed Mobasher</div>
-        <p class="proj-desc">A distinguished personal platform for a high-profile professional — precision-crafted to project authority, credibility, and individual brand voice at an elite level.</p>
+        <p class="proj-desc">A distinguished personal platform for a high-profile professional, precision-crafted to project authority, credibility, and individual brand voice at an elite level.</p>
+        <div class="proj-result">Personal brand elevated to executive standard.</div>
         <div class="proj-tags"><span class="ptag">Web Design</span><span class="ptag">Next.js</span><span class="ptag">Personal Brand</span></div>
         <a href="https://www.ahmedmobasher.online" target="_blank" class="proj-lnk" onclick="event.stopPropagation()">Visit Site →</a>
       </div>
     </div>
     <div class="proj-more reveal">
-      <p>More work available — <a href="#contact-strip">enquire to view the full portfolio</a></p>
+      <p>More work available. <a href="#contact-strip">Enquire to view the full portfolio</a></p>
     </div>
   </div>
 </section>
@@ -700,6 +935,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
       <div class="sec-label">Commendations</div>
       <h2 class="sec-title light">Client Testimonials</h2>
       <div class="sec-rule"></div>
+      <p class="sec-sub light">Every review is from a real client. Unprompted, unedited.</p>
     </div>
   </div>
   <div class="tx-grid">
@@ -712,13 +948,13 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
     <div class="tx-card reveal d1">
       <div class="tx-q">"</div>
       <div class="tx-stars"><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span></div>
-      <p class="tx-body">Working with Ali felt like having a co-founder who actually ships. The attention to detail in both UX and performance is rare. I've worked with many developers — Ali is a different calibre entirely.</p>
+      <p class="tx-body">Working with Ali felt like having a co-founder who actually ships. The attention to detail in both UX and performance is rare. I've worked with many developers. Ali is a different calibre entirely.</p>
       <div class="tx-from"><div class="tx-av">SS</div><div><div class="tx-name">Founder</div><div class="tx-role">Startup Solution</div></div></div>
     </div>
     <div class="tx-card reveal d2">
       <div class="tx-q">"</div>
       <div class="tx-stars"><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span><span class="tx-star">★</span></div>
-      <p class="tx-body">Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional — our engineering team was genuinely impressed. This is the kind of developer you hire once and never let go.</p>
+      <p class="tx-body">Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional. Our engineering team was genuinely impressed. This is the kind of developer you hire once and never let go.</p>
       <div class="tx-from"><div class="tx-av">1M</div><div><div class="tx-name">Founder</div><div class="tx-role">1M Partners</div></div></div>
     </div>
   </div>
@@ -728,8 +964,29 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
 <section id="contact-strip">
   <div class="cs-inner">
     <div class="cs-left reveal">
-      <h2>Ready to build something <em>exceptional?</em></h2>
-      <p>Every great digital product begins with a single conversation. Tell Ali what you're working on — he responds personally, within 24 hours.</p>
+      <!-- REFRAMED — removes friction, speaks to the fear of wasting time -->
+      <h2>Your next project deserves <em>better</em> than a template.</h2>
+      <p class="cs-pain">Not sure where to start? That's what this conversation is for. Tell Ali what you're trying to accomplish — he'll tell you what it takes.</p>
+
+      <!-- OBJECTION HANDLERS — preemptively dissolve hesitations -->
+      <div class="cs-reassure">
+        <div class="cs-reassure-item">
+          <span class="cs-re-icon">✓</span>
+          <span class="cs-re-text"><strong>No sales pressure.</strong> Every enquiry gets a real reply, not a pitch deck.</span>
+        </div>
+        <div class="cs-reassure-item">
+          <span class="cs-re-icon">✓</span>
+          <span class="cs-re-text"><strong>All budgets considered.</strong> Starting from $10. Scoped to what you actually need.</span>
+        </div>
+        <div class="cs-reassure-item">
+          <span class="cs-re-icon">✓</span>
+          <span class="cs-re-text"><strong>Responds within 24 hours.</strong> Ali replies personally. Never an assistant, never a form letter.</span>
+        </div>
+        <div class="cs-reassure-item">
+          <span class="cs-re-icon">✓</span>
+          <span class="cs-re-text"><strong>Free honest assessment.</strong> If Ali isn't the right fit for your project, he'll say so upfront.</span>
+        </div>
+      </div>
     </div>
     <div class="cs-form reveal d1">
       <div class="cf-row"><input type="text" id="cf-name" class="cf-inp" placeholder="Your name"></div>
@@ -744,8 +1001,9 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
           <option>$10,000+</option>
         </select>
       </div>
-      <textarea id="cf-message" class="cf-ta" placeholder="Describe your project…"></textarea>
-      <button class="cf-sub" onclick="submitContact()">Send Enquiry</button>
+      <textarea id="cf-message" class="cf-ta" placeholder="What are you building? What problem does it need to solve?"></textarea>
+      <button class="cf-sub" onclick="submitContact()">Send Enquiry. Ali Responds Personally</button>
+      <p class="cf-micro">No spam. No sales team. Just Ali and your project.</p>
       <div id="cf-status"></div>
     </div>
   </div>
@@ -757,7 +1015,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
     <div class="conf-icon">✦</div>
     <div class="conf-title">Message Received</div>
     <div class="conf-rule"></div>
-    <p class="conf-msg">Thank you for reaching out. Ali will review your enquiry personally and be in touch shortly. We look forward to building something exceptional together.</p>
+    <p class="conf-msg">Thank you for reaching out. Ali will review your enquiry personally and be in touch within 24 hours. We look forward to building something exceptional together.</p>
     <button class="conf-close" onclick="closeConfirm()">Close</button>
   </div>
 </div>
@@ -767,7 +1025,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
   <div class="ft-top">
     <div>
       <div class="ft-logo-big">Ali <em>Zawad</em></div>
-      <div class="ft-tagline">Full Stack Engineer — Available for Hire</div>
+      <div class="ft-tagline">Full Stack Engineer. Available for Hire</div>
       <div class="ft-social" style="margin-top:1.5rem;">
         <a href="https://www.linkedin.com/in/ali-zawadoffical/" target="_blank" class="ft-soc-link" title="LinkedIn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73c-.97 0-1.75-.79-1.75-1.75S5.53 3.23 6.5 3.23s1.75.79 1.75 1.75-.78 1.75-1.75 1.75zM20 19h-3v-5.6c0-3.37-4-3.11-4 0V19h-3V8h3v1.77C14.4 7.19 20 7 20 12.47V19z"/></svg>
@@ -787,7 +1045,7 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
         <a href="#projects">Selected Projects</a>
         <a href="#testimonials">Client Testimonials</a>
         <a href="#services">Services</a>
-        <a href="#contact-strip">Get in Touch</a>
+        <a href="#contact-strip">Start a Project</a>
       </div>
     </div>
     <div>
@@ -802,12 +1060,153 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
     </div>
   </div>
   <div class="ft-bottom">
-    <div class="ft-copy">© 2026 Ali Zawad — All Rights Reserved</div>
+    <div class="ft-copy">© 2026 Ali Zawad. All Rights Reserved</div>
     <div class="ft-status"><div class="ft-status-dot"></div>Available for New Projects</div>
   </div>
 </footer>
 
 <script>
+// ════════════════════════════════════════════════════════════════════════════
+// NAVIGATION INTENT MAP — smart chatbot routing
+// Maps user intent keywords → page anchors or external pages
+// ════════════════════════════════════════════════════════════════════════════
+const NAV_INTENTS = [
+  {
+    // "I want a landing page", "build me a website", "I need a site", "custom development"
+    patterns: [
+      /landing page/i, /build.*site/i, /need.*website/i, /want.*website/i,
+      /custom.*dev/i, /build.*app/i, /need.*app/i, /commission/i,
+      /web.*app/i, /saas/i, /ecommerce/i, /e-commerce/i, /dashboard/i,
+      /build.*for me/i, /make.*website/i, /create.*site/i, /portfolio.*site/i,
+      /business.*website/i, /want.*built/i, /need.*built/i
+    ],
+    section: '#contact-strip',
+    label: 'Go to Custom Development →',
+    preMsg: "I can help with that! Ali builds fully custom sites and apps. No templates, no page builders. Let me take you straight to the enquiry form so you can describe what you need.",
+    subjectPrefill: 'Custom Development'
+  },
+  {
+    // "redesign", "redo my website", "my site looks bad"
+    patterns: [
+      /redesign/i, /redo.*site/i, /revamp/i, /update.*site/i, /improve.*site/i,
+      /site.*looks/i, /website.*old/i, /outdated/i, /refresh/i, /rebrand/i
+    ],
+    section: '#contact-strip',
+    label: 'Request a Luxury Redesign →',
+    preMsg: "A Luxury Redesign is one of Ali's specialities, transforming outdated interfaces into premium experiences that make brands feel permanent. Let me take you to the enquiry form.",
+    subjectPrefill: 'Luxury Redesign'
+  },
+  {
+    // "show me projects", "see your work", "portfolio"
+    patterns: [
+      /project/i, /portfolio/i, /work/i, /see.*you/i, /past.*project/i,
+      /previous.*work/i, /examples/i, /what.*built/i, /show.*me/i
+    ],
+    section: '#projects',
+    label: 'View Selected Projects →',
+    preMsg: "Ali has 25+ delivered projects. Here are four highlighted ones. More are available on request."
+  },
+  {
+    // "pricing", "how much", "cost", "rate", "budget"
+    patterns: [
+      /pric/i, /how much/i, /cost/i, /rate/i, /budget/i, /fee/i, /charge/i,
+      /quote/i, /estimate/i, /expensive/i, /affordable/i, /cheap/i
+    ],
+    section: '#contact-strip',
+    label: 'Get a Custom Quote →',
+    preMsg: "Ali works across every budget, from $10 to $10,000+. Every engagement is scoped to your actual outcome, not a package tier. The best way to get a real number is to describe your project.",
+    subjectPrefill: 'Pricing Enquiry'
+  },
+  {
+    // "hire", "available", "get started", "work with"
+    patterns: [
+      /hire/i, /available/i, /get.*start/i, /work.*with/i, /contact/i,
+      /reach/i, /talk.*to/i, /meet/i, /schedule/i, /book/i
+    ],
+    section: '#contact-strip',
+    label: 'Start the Conversation →',
+    preMsg: "Ali is currently available and responds personally within 24 hours. The contact form below is the fastest way to kick off a project."
+  },
+  {
+    // "skills", "stack", "tech", "what do you know"
+    patterns: [
+      /skill/i, /stack/i, /tech/i, /language/i, /framework/i, /tool/i,
+      /what.*know/i, /expertise/i, /speciali/i, /react/i, /next\.js/i,
+      /node/i, /python/i, /aws/i, /docker/i
+    ],
+    section: '#skills',
+    label: 'View Full Skills Breakdown →',
+    preMsg: null // AI will answer this one fully without a nav button
+  },
+  {
+    // "testimonials", "reviews", "clients say"
+    patterns: [
+      /testimonial/i, /review/i, /client.*say/i, /feedback/i, /reference/i,
+      /trust/i, /proof/i, /recommend/i
+    ],
+    section: '#testimonials',
+    label: 'Read Client Testimonials →'
+  },
+  {
+    // "his story", "background", "about"
+    patterns: [
+      /story/i, /background/i, /about/i, /who.*is/i, /experience/i,
+      /self.*taught/i, /journey/i, /history/i
+    ],
+    externalUrl: 'story.html',
+    label: 'Read His Story →',
+    preMsg: "Ali is entirely self-taught. No CS degree, just obsessive practice from F12 on forum sites to full-stack engineering. His full story is worth reading."
+  },
+  {
+    // "vision", "philosophy", "approach", "values"
+    patterns: [
+      /vision/i, /philosoph/i, /approach/i, /value/i, /believe/i, /mission/i,
+      /principle/i, /why/i
+    ],
+    externalUrl: 'vision.html',
+    label: 'Read His Vision →',
+    preMsg: "Ali's philosophy: most websites fail their owners. Not because they're ugly, but because they're forgettable. His full vision is outlined on the Vision page."
+  },
+  {
+    // "template", "waitlist"
+    patterns: [
+      /template/i, /waitlist/i, /wait list/i, /ready.*made/i, /pre.*built/i
+    ],
+    section: '#services',
+    label: 'View Premium Templates →',
+    preMsg: "Ali's Premium Templates are currently on a waitlist. High-end aesthetic and robust code without the custom timeline. You can join the waitlist via the Services section."
+  }
+];
+
+// ── Check if a message matches a nav intent ───────────────────────────────────
+function detectNavIntent(msg) {
+  const lower = msg.toLowerCase();
+  for (const intent of NAV_INTENTS) {
+    if (intent.patterns.some(p => p.test(lower))) return intent;
+  }
+  return null;
+}
+
+// ── Smooth scroll to section ──────────────────────────────────────────────────
+function scrollToSection(selector) {
+  const el = document.querySelector(selector);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ── Add nav action button inside chat ─────────────────────────────────────────
+function addNavAction(label, onClick) {
+  const win = document.getElementById('chatWindow');
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'align-self:flex-start;margin-top:-.3rem;';
+  const btn = document.createElement('button');
+  btn.className = 'chat-nav-action';
+  btn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg> ${label}`;
+  btn.onclick = onClick;
+  wrapper.appendChild(btn);
+  win.appendChild(wrapper);
+  win.scrollTop = win.scrollHeight;
+}
+
 // ── CURSOR ──────────────────────────────────────────────────────────────────
 const cur = document.getElementById('cur'), ring = document.getElementById('cur-r');
 document.addEventListener('mousemove', e => {
@@ -833,6 +1232,18 @@ document.querySelectorAll('.sk-col').forEach(el => skObs.observe(el));
 window.addEventListener('scroll', () => {
   document.getElementById('navbar').style.borderBottomColor = window.scrollY > 60 ? 'rgba(155,120,64,.3)' : 'rgba(155,120,64,.18)';
 });
+
+// ── AVAILABILITY BANNER ───────────────────────────────────────────────────────
+function closeBanner() {
+  const banner = document.getElementById('availBanner');
+  const nav = document.getElementById('navbar');
+  const ticker = document.getElementById('tickerWrap');
+  banner.style.display = 'none';
+  nav.classList.add('banner-hidden');
+  ticker.classList.add('banner-hidden');
+  sessionStorage.setItem('bannerClosed','1');
+}
+if (sessionStorage.getItem('bannerClosed') === '1') closeBanner();
 
 // ── ENQUIRY ──────────────────────────────────────────────────────────────────
 function openEnquiry(sub) {
@@ -864,7 +1275,7 @@ async function submitContact() {
     const res=await fetch('https://formspree.io/f/xaqawybz',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name:n,email:em,subject:s,budget:b||'Not specified',message:m}),signal:ctrl.signal});
     clearTimeout(t);if(res.ok)ok=true;
   } catch(err){console.warn(err);}
-  btn.textContent='Send Enquiry';btn.disabled=false;
+  btn.textContent='Send Enquiry. Ali Responds Personally';btn.disabled=false;
   if(ok){
     ['cf-name','cf-email','cf-subject','cf-message'].forEach(id=>document.getElementById(id).value='');
     document.getElementById('cf-budget').selectedIndex=0;
@@ -878,23 +1289,20 @@ async function submitContact() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// CHATBOT — Full AI with conversation memory + streaming
+// CHATBOT — Full AI with smart in-page navigation routing
 // ════════════════════════════════════════════════════════════════════════════
 
-// Full conversation history for multi-turn context
 const chatHistory = [];
-// Session cache for instant repeat answers
 const SESSION_CACHE = {};
 
-// ── SYSTEM PROMPT — Complete knowledge of Ali Zawad ──────────────────────────
-const ALI_SYSTEM = `You are AZ Assistant — the smart, polished AI chatbot on Ali Zawad's personal portfolio website.
+const ALI_SYSTEM = `You are AZ Assistant, the smart, polished AI chatbot on Ali Zawad's personal portfolio website.
 Your job is to represent Ali professionally and help visitors learn about his work, services, skills, story, vision, and availability.
 
-TONE: Warm, confident, and refined — matching Ali's luxury brand. Not stiff. Not overly casual.
+TONE: Warm, confident, and refined, matching Ali's luxury brand. Not stiff. Not overly casual.
 LENGTH: 2–4 sentences by default. Go longer only if the question clearly needs more detail.
 IDENTITY: Never say you are Claude, an AI model, or built by Anthropic. You are "AZ Assistant."
-INTENT MATCHING: Understand all phrasings of the same question. "skills", "what skills do you have", "tell me your skills", "what can you do", "what are you good at", "your expertise", "what technologies" — all mean the same thing. Answer them all equally well.
 SCOPE: If asked something truly private or unanswerable, direct them to the contact form or email.
+NAVIGATION: When a visitor wants to DO something (hire Ali, see projects, get a quote, get a redesign, see skills), you answer briefly then the UI will automatically show them a button to navigate there. Don't give them long instructions to scroll.
 
 ════════════════════════════════════════════
 IDENTITY & CONTACT
@@ -902,230 +1310,70 @@ IDENTITY & CONTACT
 
 Full name: Ali Zawad
 Title: Full Stack Engineer & UI/UX Architect
-Tagline: "Crafting Digital Experiences of Distinction"
-Brand philosophy: High-performance, meticulously engineered digital products at the intersection of engineering precision and creative excellence. Luxury = intentionality, not just price.
-
-Contact:
-- Email: shammopersonal@gmail.com
-- LinkedIn: linkedin.com/in/ali-zawadoffical/
-- Twitter/X: @alizawadX
-- Fully remote, available globally
-- Response time: Within 24 hours, personally
-
+Email: shammopersonal@gmail.com
+LinkedIn: linkedin.com/in/ali-zawadoffical/
+Twitter/X: @alizawadX
+Fully remote, available globally. Response time: Within 24 hours, personally.
 Current status: AVAILABLE for new projects.
 
 ════════════════════════════════════════════
-EXPERIENCE & TRACK RECORD
+SKILLS
 ════════════════════════════════════════════
 
-- 5+ years professional full stack web development
-- 25+ projects delivered across startups, corporates, personal brands
-- 100% client satisfaction rate
-- Self-taught — no formal CS degree; built skills through obsessive practice
-- Delivered 1M Partners 2 weeks ahead of schedule
-- Described by clients as "like having a co-founder who actually ships"
-- Code quality has impressed entire engineering teams
-- Independent studio — lean, fast, accountable. No junior hand-offs.
-
-════════════════════════════════════════════
-SKILLS & TECHNICAL EXPERTISE
-════════════════════════════════════════════
-
-When anyone asks about skills in any form — "what are your skills", "tell me your skills", "what can you do", "your tech stack", "what do you know", "your expertise", "what technologies", "what tools", "what languages" — give this complete breakdown:
-
-FRONTEND SKILLS:
-- React / Next.js — 96% (primary framework, used in most projects)
-- CSS / Tailwind — 95%
-- TypeScript — 90%
-- GSAP / Framer Motion — 88% (animations & interactions)
-- Three.js / WebGL — 75% (3D and immersive experiences)
-- Also works in plain HTML/CSS/JS — fast, lightweight, zero-dependency
-
-BACKEND SKILLS:
-- Node.js / Express — 94%
-- GraphQL / REST APIs — 91%
-- Python / Django — 82%
-- PostgreSQL / MongoDB — 87%
-- Firebase / Supabase — 85%
-- Redis (caching & queues)
-
-INFRASTRUCTURE & DEVOPS:
-- Vercel / Netlify — 92%
-- CI/CD Pipelines — 88%
-- AWS / GCP — 85%
-- System Architecture — 83%
-- Docker / Kubernetes — 80%
-- GitHub Actions
-
-Ali does NOT use WordPress, Wix, Webflow, or page builders. Everything is custom code — better performance, no platform limitations, full ownership.
+FRONTEND: React/Next.js (96%), CSS/Tailwind (95%), TypeScript (90%), GSAP/Framer Motion (88%), Three.js/WebGL (75%)
+BACKEND: Node.js/Express (94%), GraphQL/REST APIs (91%), Python/Django (82%), PostgreSQL/MongoDB (87%), Firebase/Supabase (85%)
+INFRASTRUCTURE: Vercel/Netlify (92%), CI/CD Pipelines (88%), AWS/GCP (85%), System Architecture (83%), Docker/Kubernetes (80%)
+No WordPress, Webflow, or Wix. Custom code only.
 
 ════════════════════════════════════════════
 SERVICES
 ════════════════════════════════════════════
 
-01 — CUSTOM DEVELOPMENT
-Tailor-made web applications built from the ground up. No templates, no bloat. Covers SaaS platforms, e-commerce, portals, dashboards, landing pages, full-stack apps.
-
-02 — LUXURY REDESIGN
-Transforming outdated or generic interfaces into premium digital experiences. Quiet luxury, sophisticated typography, intuitive UX — makes your brand feel permanent and authoritative.
-
-03 — PREMIUM TEMPLATES
-Ready-to-deploy high-end digital foundations. Currently on a waitlist — interested clients can join via the contact form.
+01. CUSTOM DEVELOPMENT: Landing pages, SaaS platforms, e-commerce, dashboards, full-stack apps. Custom code only.
+02. LUXURY REDESIGN: Turning outdated sites into premium digital experiences.
+03. PREMIUM TEMPLATES: Ready-to-deploy, high-end foundations (currently waitlist).
 
 ════════════════════════════════════════════
 PRICING
 ════════════════════════════════════════════
 
-Ali works across ALL budget ranges — from small tasks to enterprise:
-- $10 – $100
-- $100 – $500
-- $500 – $1,000
-- $1,000 – $2,500
-- $2,500 – $5,000
-- $5,000 – $10,000
-- $10,000+ (enterprise / complex platforms)
-
-Every budget receives the same quality of attention. Pricing is scoped per project. For a custom quote, use the contact form on the page or email directly.
+All budgets: $10–$100, $100–$500, $500–$1,000, $1,000–$2,500, $2,500–$5,000, $5,000–$10,000, $10,000+
+Every budget gets the same quality. Scoped per project. Custom quote via the contact form.
 
 ════════════════════════════════════════════
-PROJECTS (SELECTED PORTFOLIO)
+TRACK RECORD
 ════════════════════════════════════════════
 
-001 — STARTUP SOLUTION (startupsolution.online)
-Refined digital platform for early-stage ventures. Clean architecture, premium aesthetic, high-performance.
-Tags: Web Design, Development, Branding
-
-002 — 1M PARTNERS (1mpartners.com)
-Sophisticated investment and partnership platform communicating authority and trust. Delivered 2 weeks ahead of schedule.
-Tags: Web Design, Next.js, UX Strategy
-
-003 — CBR CONSTRUCTION (cbrconstruction.vercel.app)
-Premium corporate digital presence for a construction firm. Heavy industry meets quiet luxury design.
-Tags: Web Design, React, Corporate
-
-004 — AHMED MOBASHER (ahmedmobasher.online)
-Distinguished personal brand platform for a high-profile professional. Precision-crafted to project authority.
-Tags: Web Design, Next.js, Personal Brand
-
-005 — SHAH NAWAZ HALL
-Official venue website praised as "beautiful, user-friendly, and professional — truly reflects the elegance of our venue."
-Tags: Web Design, Development, Hospitality
-
-More projects are available on request via the contact form.
+5+ years, 25+ projects, 100% satisfaction, self-taught.
+1M Partners delivered 2 weeks ahead of schedule.
+Clients call him "like a co-founder who actually ships."
+Independent studio. Lean, fast, accountable. When you hire Ali, you get Ali.
 
 ════════════════════════════════════════════
-CLIENT TESTIMONIALS
+PROJECTS
 ════════════════════════════════════════════
 
-Shah Nawaz Hall — Owner (★★★★★):
-"Working with this team to build our official website was a fantastic experience. They understood our vision and turned it into a beautiful, user-friendly, and professional platform that truly reflects the elegance of our venue."
-
-Startup Solution — Founder (★★★★★):
-"Working with Ali felt like having a co-founder who actually ships. The attention to detail in both UX and performance is rare. I've worked with many developers — Ali is a different calibre entirely."
-
-1M Partners — Founder (★★★★★):
-"Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional — our engineering team was genuinely impressed. This is the kind of developer you hire once and never let go."
+001. Startup Solution (startupsolution.online): Startup platform, Web Design/Branding
+002. 1M Partners (1mpartners.com): Investment platform, Next.js, 2 weeks early
+003. CBR Construction (cbrconstruction.vercel.app): Corporate site, React
+004. Ahmed Mobasher (ahmedmobasher.online): Personal brand, Next.js
+005. Shah Nawaz Hall: Venue website, praised as "beautiful and professional"
 
 ════════════════════════════════════════════
-HIS STORY
+TESTIMONIALS
 ════════════════════════════════════════════
 
-Ali's path wasn't traditional. It started as a curious teenager pressing F12 and tweaking HTML on forum sites — a small act of rebellion that changed everything.
-
-He is entirely self-taught. No computer science degree. Just obsessive, disciplined practice — HTML to CSS to JavaScript to Node.js to React and Next.js.
-
-His first real client project confirmed this was his calling.
-
-What separates Ali from most engineers: he studies design with the same seriousness he brings to code. He reads layouts like a typographer. He believes the best digital products are built by someone who holds both engineering and design in one mind.
-
-He operates as an independent studio — lean, global, fully accountable. When you hire Ali, you get Ali.
-
-Full story on the "His Story" page (linked in navigation).
-
-════════════════════════════════════════════
-HIS VISION
-════════════════════════════════════════════
-
-Core belief: most websites are failing their owners. Not because they're ugly — because they're forgettable. Templated. Generic.
-
-Key convictions:
-- A website is the highest-leverage asset a business has — works 24/7 in every timezone, never calls in sick.
-- Performance is a form of respect. Slow loading = "your time doesn't matter."
-- The designer/engineer divide is broken. The best digital products need both disciplines in one mind.
-- Luxury = intentionality, not price. Restraint, precision, purpose — not decoration.
-- AI will commoditise average work. That makes exceptional, human-authored craft more valuable.
-- The bar for "good enough" rises every year. The only defensible position is excellence.
-
-Full vision on the "His Vision" page (linked in navigation).
+Shah Nawaz Hall Owner (★★★★★): Praised the team for understanding their vision and building a professional, elegant platform.
+Startup Solution Founder (★★★★★): "Like having a co-founder who actually ships. Different calibre entirely."
+1M Partners Founder (★★★★★): Delivered two weeks early; engineering team impressed by the code quality.
 
 ════════════════════════════════════════════
 PROCESS & TIMELINE
 ════════════════════════════════════════════
 
-Process:
-1. Real conversation first — no generic brief forms
-2. Scoped proposal — clear deliverables, honest timeline, fair pricing
-3. Build — clean code, regular check-ins, no surprises
-4. Delivery — on time or early
-5. Ongoing support — maintenance packages available on request
+1. Real conversation first. 2. Scoped proposal. 3. Build (check-ins, no surprises). 4. Delivery on time or early. 5. Ongoing support available.
+Simple pages: days. Medium projects: 1–3 weeks. Platforms/SaaS: weeks not months.`;
 
-Timeline:
-- Simple landing pages: days
-- Medium-complexity projects: 1–3 weeks
-- Full custom platforms / SaaS: weeks, not months
-- Track record of early delivery (e.g. 1M Partners, 2 weeks early)
-- Always honest about feasibility — tell him your deadline
-
-════════════════════════════════════════════
-FREQUENTLY ASKED QUESTIONS
-════════════════════════════════════════════
-
-Q: Do you work with small budgets?
-Yes — starting from $10. Every budget gets the same quality.
-
-Q: Are you available right now?
-Yes — Ali is currently open to new projects globally.
-
-Q: Do you work remotely or internationally?
-Fully remote, available worldwide.
-
-Q: Do you use WordPress, Webflow, or Wix?
-No — custom code only. Better performance, no limitations, full ownership.
-
-Q: Can you redesign my existing website?
-Yes — Luxury Redesign is a core service.
-
-Q: Can you build e-commerce?
-Yes — custom e-commerce with clean architecture and high-conversion UX.
-
-Q: Do you offer maintenance after launch?
-Yes — ask about maintenance packages when reaching out.
-
-Q: What makes Ali different?
-He operates at the intersection of engineering precision and design excellence — rare in one person. Honest communication, on-time (or early) delivery, co-founder-level care.
-
-Q: How do I see more work?
-Use the contact form and ask for the full portfolio.
-
-Q: How do I hire Ali?
-1. Fill the contact form (scroll down to "Ready to build something exceptional?")
-2. Email: shammopersonal@gmail.com
-3. Ali replies personally within 24 hours.
-
-════════════════════════════════════════════
-NAVIGATION GUIDE
-════════════════════════════════════════════
-
-- index.html — Main portfolio (Skills, Projects, Testimonials, Services, Contact)
-- story.html — Full story and background
-- vision.html — Philosophy and vision
-
-Sections on the main page: #skills, #projects, #testimonials, #services, #contact-strip
-
-If asked about "his story" or "his vision" → direct to those pages in the nav.
-If asked to hire Ali or get a quote → direct to the contact form or email.`;
-
-// ── Utilities ─────────────────────────────────────────────────────────────────
 function getTime() {
   const d = new Date();
   return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
@@ -1181,23 +1429,18 @@ function setSendDisabled(state) {
 }
 
 function formatText(text) {
-  // Convert **bold** to <strong>
   text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  // Convert newlines to <br>
   text = text.replace(/\n/g, '<br>');
   return text;
 }
 
-// ── Streaming API call ────────────────────────────────────────────────────────
 async function streamReply(userMsg) {
   const bubble = createStreamBubble();
   const win = document.getElementById('chatWindow');
   let fullText = '';
 
-  // Build messages array with full conversation history
   const messages = [...chatHistory, { role: 'user', content: userMsg }];
 
-  // Try streaming first
   try {
     const resp = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -1237,7 +1480,6 @@ async function streamReply(userMsg) {
     bubble.innerHTML = formatText(fullText);
 
   } catch {
-    // Fallback: non-streaming
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
@@ -1250,7 +1492,7 @@ async function streamReply(userMsg) {
         })
       });
       const data = await res.json();
-      fullText = data.content?.[0]?.text || "I'm not sure about that — reach Ali directly at shammopersonal@gmail.com.";
+      fullText = data.content?.[0]?.text || "I'm not sure about that. Reach Ali directly at shammopersonal@gmail.com.";
       bubble.innerHTML = formatText(fullText);
     } catch {
       fullText = "Something went wrong. Reach Ali at shammopersonal@gmail.com or use the contact form below.";
@@ -1258,35 +1500,67 @@ async function streamReply(userMsg) {
     }
   }
 
-  // Update conversation history with this exchange
   chatHistory.push({ role: 'user', content: userMsg });
   chatHistory.push({ role: 'assistant', content: fullText });
-
-  // Keep history to last 10 exchanges (20 messages) to avoid token bloat
   if (chatHistory.length > 20) chatHistory.splice(0, 2);
-
-  // Cache for instant repeat answers
   SESSION_CACHE[userMsg.toLowerCase().trim()] = fullText;
   return fullText;
 }
 
-// ── Main message handler ──────────────────────────────────────────────────────
+// ── Main message handler — with nav intent detection ──────────────────────────
 async function processMessage(userMsg) {
   const cacheKey = userMsg.toLowerCase().trim();
 
-  // Serve from cache for instant repeat answers
   if (SESSION_CACHE[cacheKey]) {
     addMsg(userMsg, 'user');
     addMsg(SESSION_CACHE[cacheKey], 'bot');
     return;
   }
 
+  // Detect intent BEFORE sending to API
+  const intent = detectNavIntent(userMsg);
+
   setSendDisabled(true);
   addMsg(userMsg, 'user');
-  showTyping();
-  await new Promise(r => setTimeout(r, 350));
-  removeTyping();
-  await streamReply(userMsg);
+
+  if (intent) {
+    // Show instant pre-message if defined, then add nav button
+    showTyping();
+    await new Promise(r => setTimeout(r, 420));
+    removeTyping();
+
+    if (intent.preMsg) {
+      addMsg(intent.preMsg, 'bot');
+    }
+
+    // Add navigation action button
+    const navLabel = intent.label;
+    const navAction = () => {
+      if (intent.externalUrl) {
+        window.open(intent.externalUrl, '_blank');
+      } else if (intent.section) {
+        // Prefill subject if available
+        if (intent.subjectPrefill) {
+          document.getElementById('cf-subject').value = intent.subjectPrefill;
+        }
+        scrollToSection(intent.section);
+      }
+    };
+    addNavAction(navLabel, navAction);
+
+    // Also stream a fuller AI reply if no preMsg (for skill queries etc)
+    if (!intent.preMsg) {
+      await streamReply(userMsg);
+    }
+
+  } else {
+    // No nav intent. Normal AI stream.
+    showTyping();
+    await new Promise(r => setTimeout(r, 350));
+    removeTyping();
+    await streamReply(userMsg);
+  }
+
   setSendDisabled(false);
   document.getElementById('chatInput').focus();
 }
@@ -1311,7 +1585,7 @@ document.getElementById('chatInput').addEventListener('keydown', e => {
 
 // ── Greeting on load ──────────────────────────────────────────────────────────
 setTimeout(() => {
-  addMsg("Hi! I'm AZ Assistant. Ask me anything about Ali — his skills, pricing, availability, projects, or how to get started.", 'bot');
+  addMsg("Hi there! I'm AZ Assistant. Tell me what you're looking for: a landing page, a redesign, pricing, anything. I'll point you straight to the right place.", 'bot');
 }, 600);
 </script>
 </body>
