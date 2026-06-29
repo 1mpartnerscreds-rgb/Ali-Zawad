@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Portal — Ali Zawad Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C1A13; --ink2:#192B1E; --ink3:#0A1410;
+  --cream:#F6F3EE; --cream2:#ECE9E1; --white:#FDFCFA;
+  --brass:#9B7840; --brass2:#C4A263; --brass-lt:rgba(155,120,64,.13); --brass-vlt:rgba(155,120,64,.05);
+  --muted:#6A6155; --rule:rgba(155,120,64,.18); --rule2:rgba(155,120,64,.10);
+  --shadow:0 2px 8px rgba(12,26,19,.08),0 8px 32px rgba(12,26,19,.06);
+  --shadow-lg:0 4px 24px rgba(12,26,19,.14),0 16px 64px rgba(12,26,19,.10);
+  --success:#1A6B38; --danger:#8B1A1A;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.65;min-height:100vh}
+a{color:inherit}
+
+#gate{position:fixed;inset:0;background:var(--ink3);display:flex;align-items:center;justify-content:center;z-index:999;}
+.gate-card{background:var(--cream);padding:3rem 2.8rem;width:380px;text-align:center;box-shadow:var(--shadow-lg)}
+.gate-card .g-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:.08em;margin-bottom:.3rem}
+.gate-card .g-logo em{color:var(--brass);font-style:italic}
+.gate-sub{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+.gate-inp{width:100%;padding:.8rem 1rem;border:1px solid var(--rule);background:var(--white);margin-bottom:.8rem;font-family:inherit;font-size:.82rem;outline:none}
+.gate-inp:focus{border-color:var(--brass)}
+.gate-btn{width:100%;padding:.85rem;background:var(--ink);color:var(--cream);border:none;font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.25s;margin-top:.4rem}
+.gate-btn:hover{background:var(--brass)}
+.gate-hint{margin-top:1.4rem;font-size:.66rem;color:var(--muted)}
+
+#portal{display:none;min-height:100vh}
+header.topnav{
+  position:sticky;top:0;z-index:50;background:rgba(246,243,238,.97);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule);padding:1.1rem 3rem;display:flex;justify-content:space-between;align-items:center;
+}
+.tn-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:.08em}
+.tn-logo em{color:var(--brass);font-style:italic}
+.tn-right{display:flex;align-items:center;gap:1.4rem}
+.tn-user{font-size:.72rem;color:var(--muted)}
+.tn-logout{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);padding:.4rem .9rem;cursor:pointer;background:none;transition:.2s}
+.tn-logout:hover{color:var(--brass);border-color:var(--brass)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:2.6rem 2rem 5rem}
+.hello{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:400;margin-bottom:.3rem}
+.hello em{color:var(--brass);font-style:italic}
+.subline{font-size:.82rem;color:var(--muted);margin-bottom:2.4rem}
+
+.status-card{background:var(--ink3);color:var(--cream);padding:2rem 2.2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;box-shadow:var(--shadow-lg)}
+.status-card .sc-label{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(196,162,99,.6);margin-bottom:.5rem}
+.status-card .sc-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:.5rem}
+.stage-track{display:flex;gap:.4rem;margin-top:1rem}
+.stage-pip{flex:1;height:4px;background:rgba(196,162,99,.2);border-radius:2px;overflow:hidden;position:relative}
+.stage-pip.done{background:var(--brass2)}
+.stage-pip.active{background:rgba(196,162,99,.2)}
+.stage-pip.active::after{content:'';position:absolute;inset:0;background:var(--brass2);animation:fillpulse 2s infinite}
+@keyframes fillpulse{0%,100%{opacity:.5}50%{opacity:1}}
+.stage-names{display:flex;justify-content:space-between;font-size:.55rem;letter-spacing:.08em;color:rgba(246,243,238,.45);text-transform:uppercase;margin-top:.5rem}
+.sc-right{display:flex;flex-direction:column;justify-content:center;gap:.6rem}
+.sc-stat{display:flex;justify-content:space-between;font-size:.74rem;border-bottom:1px solid rgba(196,162,99,.12);padding-bottom:.5rem}
+.sc-stat span:first-child{color:rgba(246,243,238,.5)}
+
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:1.3rem;margin-bottom:1.3rem}
+.panel{background:var(--white);border:1px solid var(--rule);box-shadow:var(--shadow)}
+.panel-head{padding:1.1rem 1.4rem;border-bottom:1px solid var(--rule2);display:flex;justify-content:space-between;align-items:center}
+.panel-head h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500}
+.panel-body{padding:1.2rem 1.4rem}
+
+.milestone{display:flex;gap:.9rem;padding:.8rem 0;border-bottom:1px solid var(--rule2)}
+.milestone:last-child{border-bottom:none}
+.m-check{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--rule);flex-shrink:0;margin-top:.15rem;display:flex;align-items:center;justify-content:center;font-size:.6rem}
+.m-check.done{background:var(--brass);border-color:var(--brass);color:var(--white)}
+.m-title{font-size:.8rem;color:var(--ink)}
+.m-date{font-size:.65rem;color:var(--muted);margin-top:.1rem}
+
+.msg-row{display:flex;gap:.7rem;margin-bottom:.9rem}
+.msg-av{width:28px;height:28px;border-radius:50%;background:var(--brass-lt);color:var(--brass);display:flex;align-items:center;justify-content:center;font-size:.62rem;flex-shrink:0;font-family:'DM Mono',monospace}
+.msg-bubble{background:var(--cream2);padding:.6rem .9rem;font-size:.76rem;border-radius:2px;max-width:90%}
+.msg-row.me{flex-direction:row-reverse}
+.msg-row.me .msg-bubble{background:var(--ink);color:var(--cream)}
+.msg-input-row{display:flex;gap:.5rem;margin-top:1rem}
+.msg-input-row input{flex:1;padding:.6rem .8rem;border:1px solid var(--rule);font-family:inherit;font-size:.76rem;outline:none}
+.msg-input-row input:focus{border-color:var(--brass)}
+.msg-send{padding:.6rem 1.2rem;background:var(--ink);color:var(--cream);border:none;font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.msg-send:hover{background:var(--brass)}
+
+.inv-row{display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--rule2);font-size:.78rem}
+.inv-row:last-child{border-bottom:none}
+.inv-amt{font-family:'DM Mono',monospace}
+.badge{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .55rem}
+.badge.paid{background:rgba(26,107,56,.1);color:var(--success)}
+.badge.due{background:rgba(155,120,64,.12);color:var(--brass)}
+.pay-btn{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--brass);color:var(--brass);background:none;padding:.3rem .7rem;cursor:pointer;transition:.2s}
+.pay-btn:hover{background:var(--brass);color:var(--white)}
+
+.file-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--rule2);font-size:.76rem}
+.file-row:last-child{border-bottom:none}
+.file-name{display:flex;align-items:center;gap:.6rem}
+.file-dl{font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--brass);cursor:pointer}
+
+@media(max-width:880px){.status-card{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-card">
+    <div class="g-logo">Ali Zawad <em>/ Studio</em></div>
+    <div class="gate-sub">Client Portal</div>
+    <input class="gate-inp" id="gateEmail" placeholder="Email address" value="sarah.w@nimbusco.com">
+    <input class="gate-inp" id="gatePass" type="password" placeholder="Access code" value="demo">
+    <button class="gate-btn" onclick="login()">Enter Portal</button>
+    <div class="gate-hint">Demo mode — any email / code signs you in as a sample client.</div>
+  </div>
+</div>
+
+<div id="portal">
+  <header class="topnav">
+    <div class="tn-logo">Ali Zawad <em>/ Studio</em></div>
+    <div class="tn-right">
+      <div class="tn-user" id="userLabel">Sarah Whitmore — Nimbus Co.</div>
+      <button class="tn-logout" onclick="logout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hello">Welcome back, <em>Sarah</em>.</div>
+    <div class="subline">Here's where your project stands today.</div>
+
+    <div class="status-card">
+      <div>
+        <div class="sc-label">Project</div>
+        <div class="sc-title">Nimbus Co. — Dashboard Redesign</div>
+        <div class="stage-track">
+          <div class="stage-pip done"></div>
+          <div class="stage-pip done"></div>
+          <div class="stage-pip active"></div>
+          <div class="stage-pip"></div>
+        </div>
+        <div class="stage-names"><span>Discovery</span><span>Design</span><span>Build</span><span>Delivery</span></div>
+      </div>
+      <div class="sc-right">
+        <div class="sc-stat"><span>Current phase</span><span>Build — 70%</span></div>
+        <div class="sc-stat"><span>Target delivery</span><span>July 28, 2026</span></div>
+        <div class="sc-stat"><span>Next milestone</span><span>Component QA</span></div>
+        <div class="sc-stat"><span>Account manager</span><span>Ali Zawad</span></div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel-head"><h3>Milestones</h3></div>
+        <div class="panel-body" id="milestoneList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Messages</h3></div>
+        <div class="panel-body">
+          <div id="msgList"></div>
+          <div class="msg-input-row">
+            <input id="msgInput" placeholder="Message Ali…">
+            <button class="msg-send" onclick="sendMsg()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="panel-head"><h3>Invoices</h3></div>
+        <div class="panel-body" id="invoiceList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Shared Files</h3></div>
+        <div class="panel-body" id="fileList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS = 'az_client_data_v1';
+function loadData(){
+  let d = localStorage.getItem(LS);
+  if(d) return JSON.parse(d);
+  d = {
+    milestones:[
+      {title:'Discovery call & scope sign-off', date:'May 12', done:true},
+      {title:'Wireframes & design system approved', date:'May 29', done:true},
+      {title:'Core dashboard build', date:'Jun 24', done:true},
+      {title:'Component QA & polish', date:'Jul 8', done:false},
+      {title:'Client review & handoff', date:'Jul 22', done:false},
+      {title:'Final delivery', date:'Jul 28', done:false},
+    ],
+    messages:[
+      {from:'ali', text:'Hi Sarah — pushed the new sidebar nav, would love your eyes on it.'},
+      {from:'me', text:'Looks great! Can we bump the brass accent a touch warmer?'},
+      {from:'ali', text:'Done — updated in the latest build. QA starts Monday.'},
+    ],
+    invoices:[
+      {label:'Deposit — 30%', amount:'$4,500', status:'paid'},
+      {label:'Milestone 2 — Design Approval', amount:'$4,500', status:'paid'},
+      {label:'Milestone 3 — Build Complete', amount:'$4,500', status:'due'},
+      {label:'Final — Delivery', amount:'$1,500', status:'due'},
+    ],
+    files:[
+      {name:'Design_System_v2.fig', size:'4.1 MB'},
+      {name:'Dashboard_Wireframes.pdf', size:'2.3 MB'},
+      {name:'Brand_Guidelines.pdf', size:'1.1 MB'},
+    ]
+  };
+  localStorage.setItem(LS, JSON.stringify(d));
+  return d;
+}
+function saveData(d){ localStorage.setItem(LS, JSON.stringify(d)); }
+let DATA = loadData();
+
+function login(){
+  document.getElementById('gate').style.display='none';
+  document.getElementById('portal').style.display='block';
+  renderAll();
+}
+function logout(){
+  document.getElementById('gate').style.display='flex';
+  document.getElementById('portal').style.display='none';
+}
+
+function renderMilestones(){
+  document.getElementById('milestoneList').innerHTML = DATA.milestones.map(m=>`
+    <div class="milestone">
+      <div class="m-check ${m.done?'done':''}">${m.done?'✓':''}</div>
+      <div><div class="m-title">${m.title}</div><div class="m-date">${m.date}</div></div>
+    </div>`).join('');
+}
+
+function renderMsgs(){
+  document.getElementById('msgList').innerHTML = DATA.messages.map(m=>`
+    <div class="msg-row ${m.from==='me'?'me':''}">
+      <div class="msg-av">${m.from==='me'?'SW':'AZ'}</div>
+      <div class="msg-bubble">${m.text}</div>
+    </div>`).join('');
+}
+function sendMsg(){
+  const inp = document.getElementById('msgInput');
+  const val = inp.value.trim();
+  if(!val) return;
+  DATA.messages.push({from:'me', text:val});
+  inp.value='';
+  saveData(DATA);
+  renderMsgs();
+  setTimeout(()=>{
+    DATA.messages.push({from:'ali', text:"Got it — I'll take a look and reply shortly."});
+    saveData(DATA);
+    renderMsgs();
+  }, 900);
+}
+document.getElementById('msgInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendMsg(); });
+
+function renderInvoices(){
+  document.getElementById('invoiceList').innerHTML = DATA.invoices.map(i=>`
+    <div class="inv-row">
+      <span>${i.label}</span>
+      <span style="display:flex;align-items:center;gap:.7rem">
+        <span class="inv-amt">${i.amount}</span>
+        <span class="badge ${i.status}">${i.status}</span>
+        ${i.status==='due'?`<button class="pay-btn" onclick="alert('Demo only — payment link would open here.')">Pay</button>`:''}
+      </span>
+    </div>`).join('');
+}
+
+function renderFiles(){
+  document.getElementById('fileList').innerHTML = DATA.files.map(f=>`
+    <div class="file-row">
+      <div class="file-name">📄 ${f.name} <span style="color:var(--muted);font-size:.65rem">(${f.size})</span></div>
+      <div class="file-dl" onclick="alert('Demo only — download would start here.')">Download</div>
+    </div>`).join('');
+}
+
+function renderAll(){
+  renderMilestones();
+  renderMsgs();
+  renderInvoices();
+  renderFiles();
+}
+</script>
+</body>
+</html>

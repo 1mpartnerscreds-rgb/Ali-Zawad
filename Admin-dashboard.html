@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studio — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C1A13; --ink2:#192B1E; --ink3:#0A1410;
+  --cream:#F6F3EE; --cream2:#ECE9E1; --white:#FDFCFA;
+  --brass:#9B7840; --brass2:#C4A263; --brass-lt:rgba(155,120,64,.13); --brass-vlt:rgba(155,120,64,.05);
+  --muted:#6A6155; --rule:rgba(155,120,64,.18); --rule2:rgba(155,120,64,.10);
+  --shadow:0 2px 8px rgba(12,26,19,.08),0 8px 32px rgba(12,26,19,.06);
+  --shadow-lg:0 4px 24px rgba(12,26,19,.14),0 16px 64px rgba(12,26,19,.10);
+  --danger:#8B1A1A; --success:#1A6B38; --warn:#9B7840;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;line-height:1.6;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* layout */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+.side{background:var(--ink3);color:var(--cream);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2.2rem;position:sticky;top:0;height:100vh}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;letter-spacing:.1em;color:var(--cream)}
+.brand em{color:var(--brass2);font-style:italic}
+.brand-sub{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.24em;color:rgba(196,162,99,.55);text-transform:uppercase;margin-top:.3rem}
+.nav-grp{display:flex;flex-direction:column;gap:.2rem;margin-top:.5rem}
+.nav-lbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(196,162,99,.4);margin:1.2rem 0 .5rem}
+.nlink{display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;border-radius:3px;font-size:.74rem;letter-spacing:.04em;color:rgba(246,243,238,.6);cursor:pointer;transition:.2s;border:1px solid transparent}
+.nlink:hover{color:var(--cream);background:rgba(196,162,99,.06)}
+.nlink.active{color:var(--brass2);background:rgba(196,162,99,.1);border-color:rgba(196,162,99,.2)}
+.nlink .dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.6;flex-shrink:0}
+.side-foot{margin-top:auto;padding-top:1.5rem;border-top:1px solid rgba(196,162,99,.15)}
+.avail-toggle{display:flex;align-items:center;justify-content:space-between;font-size:.62rem;letter-spacing:.1em;color:rgba(246,243,238,.55);text-transform:uppercase}
+.switch{width:34px;height:18px;border-radius:10px;background:rgba(196,162,99,.25);position:relative;cursor:pointer;transition:.2s;flex-shrink:0}
+.switch.on{background:#3ecf4a}
+.switch::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:2px;left:2px;transition:.2s}
+.switch.on::after{left:18px}
+
+.main{padding:2.4rem 3rem 4rem;max-width:1320px}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2.4rem;gap:2rem;flex-wrap:wrap}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:400;color:var(--ink)}
+.page-sub{font-size:.78rem;color:var(--muted);margin-top:.3rem}
+.search-box{display:flex;align-items:center;gap:.6rem;background:var(--white);border:1px solid var(--rule);padding:.55rem 1rem;font-size:.75rem;color:var(--muted);min-width:240px}
+.search-box input{border:none;background:none;outline:none;font-family:inherit;font-size:.75rem;width:100%;color:var(--ink)}
+
+/* stat cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-bottom:2.2rem}
+.stat-card{background:var(--white);border:1px solid var(--rule);padding:1.4rem 1.5rem;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--brass)}
+.stat-lbl{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.stat-n{font-family:'Cormorant Garamond',serif;font-size:2.1rem;color:var(--ink);margin:.35rem 0 .2rem}
+.stat-delta{font-size:.68rem}
+.stat-delta.up{color:var(--success)}
+.stat-delta.down{color:var(--danger)}
+
+/* panels */
+.grid2{display:grid;grid-template-columns:1.6fr 1fr;gap:1.4rem;margin-bottom:1.4rem}
+.panel{background:var(--white);border:1px solid var(--rule);box-shadow:var(--shadow)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;padding:1.1rem 1.4rem;border-bottom:1px solid var(--rule2)}
+.panel-head h3{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:500}
+.panel-head .tag{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.18em;color:var(--brass);text-transform:uppercase;background:var(--brass-vlt);padding:.25rem .6rem;border:1px solid var(--rule)}
+.panel-body{padding:1.2rem 1.4rem}
+
+/* leads table */
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+td{padding:.7rem .6rem;font-size:.78rem;border-bottom:1px solid var(--rule2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.lead-name{font-weight:500;color:var(--ink)}
+.lead-email{font-size:.68rem;color:var(--muted)}
+.badge{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .55rem;border-radius:2px;display:inline-block}
+.badge.new{background:rgba(155,120,64,.12);color:var(--brass)}
+.badge.contacted{background:rgba(26,107,56,.1);color:var(--success)}
+.badge.closed{background:rgba(106,97,85,.1);color:var(--muted)}
+.row-actions{display:flex;gap:.4rem}
+.mini-btn{font-size:.62rem;letter-spacing:.05em;border:1px solid var(--rule);background:none;padding:.3rem .6rem;cursor:pointer;color:var(--muted);transition:.2s}
+.mini-btn:hover{border-color:var(--brass);color:var(--brass)}
+
+/* activity feed */
+.feed-item{display:flex;gap:.8rem;padding:.7rem 0;border-bottom:1px solid var(--rule2)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:7px;height:7px;border-radius:50%;background:var(--brass);margin-top:.4rem;flex-shrink:0}
+.feed-text{font-size:.76rem;color:var(--ink)}
+.feed-time{font-family:'DM Mono',monospace;font-size:.58rem;color:var(--muted);margin-top:.2rem}
+
+/* projects board */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.kcol-head{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;display:flex;justify-content:space-between}
+.kcard{background:var(--cream2);border:1px solid var(--rule);padding:.8rem .9rem;margin-bottom:.7rem}
+.kcard-title{font-size:.78rem;font-weight:500;color:var(--ink);margin-bottom:.3rem}
+.kcard-meta{font-size:.65rem;color:var(--muted);display:flex;justify-content:space-between}
+.prog{height:3px;background:var(--rule);margin-top:.5rem;border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;background:var(--brass)}
+
+/* testimonials manager */
+.test-row{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;border-bottom:1px solid var(--rule2);gap:1rem}
+.test-row:last-child{border-bottom:none}
+.test-name{font-weight:500;font-size:.78rem}
+.test-quote{font-size:.7rem;color:var(--muted);font-family:'Cormorant Garamond',serif;font-style:italic;max-width:420px}
+.star{color:var(--brass2)}
+
+.btn-p{padding:.55rem 1.3rem;background:var(--ink);border:1px solid var(--ink);color:var(--cream);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:.25s}
+.btn-p:hover{background:var(--brass);border-color:var(--brass)}
+
+.section-hidden{display:none}
+@media(max-width:980px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.kanban{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <aside class="side">
+    <div>
+      <div class="brand">Ali Zawad <em>/ Studio</em></div>
+      <div class="brand-sub">Admin Console</div>
+    </div>
+
+    <nav class="nav-grp">
+      <div class="nav-lbl">Overview</div>
+      <div class="nlink active" data-view="overview"><span class="dot"></span>Dashboard</div>
+      <div class="nlink" data-view="leads"><span class="dot"></span>Enquiries</div>
+      <div class="nlink" data-view="projects"><span class="dot"></span>Projects</div>
+      <div class="nlink" data-view="testimonials"><span class="dot"></span>Testimonials</div>
+    </nav>
+
+    <div class="side-foot">
+      <div class="avail-toggle">
+        Open for projects
+        <div class="switch on" id="availSwitch" onclick="toggleAvail()"></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section id="view-overview">
+      <div class="topbar">
+        <div>
+          <div class="page-title">Studio Overview</div>
+          <div class="page-sub">Last updated just now · all figures are demo data</div>
+        </div>
+        <div class="search-box">🔍<input placeholder="Search enquiries, projects…"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card"><div class="stat-lbl">New Enquiries</div><div class="stat-n" id="statLeads">7</div><div class="stat-delta up">+3 this week</div></div>
+        <div class="stat-card"><div class="stat-lbl">Active Projects</div><div class="stat-n">4</div><div class="stat-delta up">on schedule</div></div>
+        <div class="stat-card"><div class="stat-lbl">Pipeline Value</div><div class="stat-n">$28.4k</div><div class="stat-delta up">+12% vs last mo.</div></div>
+        <div class="stat-card"><div class="stat-lbl">Avg. Response Time</div><div class="stat-n">2.1h</div><div class="stat-delta down">−40min faster</div></div>
+      </div>
+
+      <div class="grid2">
+        <div class="panel">
+          <div class="panel-head"><h3>Recent Enquiries</h3><span class="tag">Live</span></div>
+          <div class="panel-body" style="padding:0">
+            <table id="leadsPreview"></table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Activity</h3></div>
+          <div class="panel-body" id="activityFeed"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>Projects in Motion</h3><span class="tag">Kanban</span></div>
+        <div class="panel-body">
+          <div class="kanban" id="kanbanPreview"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section id="view-leads" class="section-hidden">
+      <div class="topbar">
+        <div><div class="page-title">Enquiries</div><div class="page-sub">Contact form submissions &amp; chatbot-routed leads</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-body" style="padding:0">
+          <table id="leadsFull"></table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="view-projects" class="section-hidden">
+      <div class="topbar">
+        <div><div class="page-title">Projects</div><div class="page-sub">Drag mentally — click status to advance</div></div>
+      </div>
+      <div class="kanban" id="kanbanFull"></div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="view-testimonials" class="section-hidden">
+      <div class="topbar">
+        <div><div class="page-title">Testimonials</div><div class="page-sub">Approve client quotes before they go live on the site</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-body" id="testimonialsList"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+const LS = 'az_admin_data_v1';
+
+function loadData(){
+  let d = localStorage.getItem(LS);
+  if(d) return JSON.parse(d);
+  d = {
+    leads:[
+      {name:'Sarah Whitmore', email:'sarah.w@nimbusco.com', subject:'SaaS Dashboard Redesign', budget:'$15k–25k', status:'new', time:'2h ago'},
+      {name:'Marco Delgado', email:'marco@delgadoventures.io', subject:'Pricing Enquiry', budget:'$5k–10k', status:'new', time:'5h ago'},
+      {name:'Priya Nair', email:'priya.nair@helixlabs.ai', subject:'Full Platform Build', budget:'$25k+', status:'contacted', time:'1d ago'},
+      {name:'Tom Becker', email:'tbecker@outline.studio', subject:'Landing Page', budget:'$5k–10k', status:'contacted', time:'2d ago'},
+      {name:'Elena Castillo', email:'elena@castillodesign.co', subject:'Premium Template Waitlist', budget:'—', status:'new', time:'3d ago'},
+      {name:'Jonas Reyes', email:'jonas@reyesfintech.com', subject:'UI/UX Architecture Review', budget:'$10k–15k', status:'closed', time:'5d ago'},
+      {name:'Hannah Kim', email:'hannah.kim@brightloop.dev', subject:'Custom Development', budget:'$15k–25k', status:'new', time:'6d ago'}
+    ],
+    projects:[
+      {title:'Nimbus Co. — Dashboard Redesign', client:'Sarah Whitmore', stage:'discovery', progress:15},
+      {title:'Helix Labs — Platform Build', client:'Priya Nair', stage:'design', progress:40},
+      {title:'Outline Studio — Landing Page', client:'Tom Becker', stage:'build', progress:70},
+      {title:'BrightLoop — Custom Dev', client:'Hannah Kim', stage:'build', progress:55},
+      {title:'Reyes Fintech — UX Review', client:'Jonas Reyes', stage:'delivered', progress:100}
+    ],
+    testimonials:[
+      {name:'Sarah Whitmore', co:'Nimbus Co.', quote:'Ali rebuilt our entire dashboard in three weeks and it finally feels like a premium product.', stars:5, approved:true},
+      {name:'Marco Delgado', co:'Delgado Ventures', quote:'Sharp, fast, and genuinely cares about the craft. Rare combination.', stars:5, approved:true},
+      {name:'Priya Nair', co:'Helix Labs', quote:'The architecture decisions he made saved us months down the line.', stars:4, approved:false}
+    ],
+    available:true
+  };
+  localStorage.setItem(LS, JSON.stringify(d));
+  return d;
+}
+function saveData(d){ localStorage.setItem(LS, JSON.stringify(d)); }
+let DATA = loadData();
+
+function badge(status){
+  return `<span class="badge ${status}">${status}</span>`;
+}
+
+function renderLeadsTable(target, list, full){
+  const rows = list.map((l,i)=>`
+    <tr>
+      <td><div class="lead-name">${l.name}</div><div class="lead-email">${l.email}</div></td>
+      <td>${l.subject}</td>
+      ${full?`<td>${l.budget}</td>`:''}
+      <td>${badge(l.status)}</td>
+      <td style="color:var(--muted);font-size:.68rem">${l.time}</td>
+      ${full?`<td><div class="row-actions">
+        <button class="mini-btn" onclick="advanceLead(${i})">Advance</button>
+        <button class="mini-btn" onclick="mailLead('${l.email}')">Email</button>
+      </div></td>`:''}
+    </tr>`).join('');
+  const head = full
+    ? `<tr><th>Lead</th><th>Subject</th><th>Budget</th><th>Status</th><th>Received</th><th>Actions</th></tr>`
+    : `<tr><th>Lead</th><th>Subject</th><th>Status</th><th>Received</th></tr>`;
+  document.getElementById(target).innerHTML = `<thead>${head}</thead><tbody>${rows}</tbody>`;
+}
+
+function advanceLead(i){
+  const order = ['new','contacted','closed'];
+  const cur = DATA.leads[i].status;
+  const next = order[(order.indexOf(cur)+1)%order.length];
+  DATA.leads[i].status = next;
+  saveData(DATA);
+  renderAll();
+}
+function mailLead(email){ window.open('mailto:'+email,'_blank'); }
+
+function renderActivity(){
+  const items = [
+    {t:'New enquiry from Sarah Whitmore', time:'2h ago'},
+    {t:'Project "Outline Studio" moved to Build', time:'6h ago'},
+    {t:'Testimonial submitted by Priya Nair — pending approval', time:'1d ago'},
+    {t:'Chatbot routed a visitor to Pricing', time:'1d ago'},
+    {t:'Marco Delgado replied to your email', time:'2d ago'},
+  ];
+  document.getElementById('activityFeed').innerHTML = items.map(i=>`
+    <div class="feed-item"><div class="feed-dot"></div>
+      <div><div class="feed-text">${i.t}</div><div class="feed-time">${i.time}</div></div>
+    </div>`).join('');
+}
+
+const stageLabels = {discovery:'Discovery', design:'Design', build:'Build', delivered:'Delivered'};
+function renderKanban(target, clickable){
+  const stages = ['discovery','design','build','delivered'];
+  const cols = stages.map(stage=>{
+    const items = DATA.projects.filter(p=>p.stage===stage);
+    const cards = items.map((p)=>{
+      const gi = DATA.projects.indexOf(p);
+      return `<div class="kcard">
+        <div class="kcard-title">${p.title}</div>
+        <div class="kcard-meta"><span>${p.client}</span><span>${p.progress}%</span></div>
+        <div class="prog"><div class="prog-fill" style="width:${p.progress}%"></div></div>
+        ${clickable?`<div style="margin-top:.5rem;text-align:right"><button class="mini-btn" onclick="advanceProject(${gi})">Advance →</button></div>`:''}
+      </div>`;
+    }).join('') || `<div style="font-size:.68rem;color:var(--muted)">No projects</div>`;
+    return `<div><div class="kcol-head"><span>${stageLabels[stage]}</span><span>${items.length}</span></div>${cards}</div>`;
+  }).join('');
+  document.getElementById(target).innerHTML = cols;
+}
+function advanceProject(i){
+  const stages = ['discovery','design','build','delivered'];
+  const cur = DATA.projects[i].stage;
+  const idx = stages.indexOf(cur);
+  if(idx < stages.length-1){
+    DATA.projects[i].stage = stages[idx+1];
+    DATA.projects[i].progress = Math.min(100, DATA.projects[i].progress + 30);
+  }
+  saveData(DATA);
+  renderAll();
+}
+
+function renderTestimonials(){
+  document.getElementById('testimonialsList').innerHTML = DATA.testimonials.map((t,i)=>`
+    <div class="test-row">
+      <div style="flex:1">
+        <div class="test-name">${t.name} <span style="color:var(--muted);font-weight:300">— ${t.co}</span></div>
+        <div class="test-quote">"${t.quote}"</div>
+        <div>${'★'.repeat(t.stars)}<span style="color:var(--rule)">${'★'.repeat(5-t.stars)}</span></div>
+      </div>
+      <div class="row-actions">
+        ${t.approved
+          ? `<span class="badge contacted">live</span>`
+          : `<button class="mini-btn" onclick="approveTestimonial(${i})">Approve</button>`}
+      </div>
+    </div>`).join('');
+}
+function approveTestimonial(i){ DATA.testimonials[i].approved = true; saveData(DATA); renderAll(); }
+
+function toggleAvail(){
+  DATA.available = !DATA.available;
+  saveData(DATA);
+  document.getElementById('availSwitch').classList.toggle('on', DATA.available);
+}
+
+function renderAll(){
+  document.getElementById('statLeads').textContent = DATA.leads.filter(l=>l.status==='new').length;
+  renderLeadsTable('leadsPreview', DATA.leads.slice(0,4), false);
+  renderLeadsTable('leadsFull', DATA.leads, true);
+  renderActivity();
+  renderKanban('kanbanPreview', false);
+  renderKanban('kanbanFull', true);
+  renderTestimonials();
+  document.getElementById('availSwitch').classList.toggle('on', DATA.available);
+}
+renderAll();
+
+// nav switching
+document.querySelectorAll('.nlink').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.nlink').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('main > section').forEach(s=>s.classList.add('section-hidden'));
+    document.getElementById('view-'+el.dataset.view).classList.remove('section-hidden');
+  });
+});
+</script>
+</body>
+</html>
