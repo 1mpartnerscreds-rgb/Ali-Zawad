@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Client Portal — Ali Zawad Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <style>
 :root{
   --ink:#0C1A13; --ink2:#192B1E; --ink3:#0A1410;
@@ -23,18 +25,19 @@ a{color:inherit}
 .gate-card{background:var(--cream);padding:3rem 2.8rem;width:380px;text-align:center;box-shadow:var(--shadow-lg)}
 .gate-card .g-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;letter-spacing:.08em;margin-bottom:.3rem}
 .gate-card .g-logo em{color:var(--brass);font-style:italic}
-.gate-sub{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:2rem}
+.gate-sub{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:1.6rem}
 .gate-inp{width:100%;padding:.8rem 1rem;border:1px solid var(--rule);background:var(--white);margin-bottom:.8rem;font-family:inherit;font-size:.82rem;outline:none}
 .gate-inp:focus{border-color:var(--brass)}
 .gate-btn{width:100%;padding:.85rem;background:var(--ink);color:var(--cream);border:none;font-size:.65rem;letter-spacing:.24em;text-transform:uppercase;cursor:pointer;transition:.25s;margin-top:.4rem}
 .gate-btn:hover{background:var(--brass)}
-.gate-hint{margin-top:1.4rem;font-size:.66rem;color:var(--muted)}
+.gate-btn:disabled{opacity:.5;cursor:default}
+.gate-toggle{margin-top:1.4rem;font-size:.68rem;color:var(--muted)}
+.gate-toggle span{color:var(--brass);cursor:pointer;text-decoration:underline}
+.gate-err{font-size:.68rem;color:var(--danger);margin-top:.6rem;min-height:1em}
+.gate-hint{margin-top:1rem;font-size:.64rem;color:var(--muted)}
 
 #portal{display:none;min-height:100vh}
-header.topnav{
-  position:sticky;top:0;z-index:50;background:rgba(246,243,238,.97);backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--rule);padding:1.1rem 3rem;display:flex;justify-content:space-between;align-items:center;
-}
+header.topnav{position:sticky;top:0;z-index:50;background:rgba(246,243,238,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);padding:1.1rem 3rem;display:flex;justify-content:space-between;align-items:center}
 .tn-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:.08em}
 .tn-logo em{color:var(--brass);font-style:italic}
 .tn-right{display:flex;align-items:center;gap:1.4rem}
@@ -46,6 +49,8 @@ header.topnav{
 .hello{font-family:'Cormorant Garamond',serif;font-size:2.3rem;font-weight:400;margin-bottom:.3rem}
 .hello em{color:var(--brass);font-style:italic}
 .subline{font-size:.82rem;color:var(--muted);margin-bottom:2.4rem}
+
+.empty-state{background:var(--white);border:1px solid var(--rule);padding:2.4rem;text-align:center;color:var(--muted);font-size:.82rem}
 
 .status-card{background:var(--ink3);color:var(--cream);padding:2rem 2.2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;box-shadow:var(--shadow-lg)}
 .status-card .sc-label{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(196,162,99,.6);margin-bottom:.5rem}
@@ -91,8 +96,6 @@ header.topnav{
 .badge{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .55rem}
 .badge.paid{background:rgba(26,107,56,.1);color:var(--success)}
 .badge.due{background:rgba(155,120,64,.12);color:var(--brass)}
-.pay-btn{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--brass);color:var(--brass);background:none;padding:.3rem .7rem;cursor:pointer;transition:.2s}
-.pay-btn:hover{background:var(--brass);color:var(--white)}
 
 .file-row{display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--rule2);font-size:.76rem}
 .file-row:last-child{border-bottom:none}
@@ -107,11 +110,16 @@ header.topnav{
 <div id="gate">
   <div class="gate-card">
     <div class="g-logo">Ali Zawad <em>/ Studio</em></div>
-    <div class="gate-sub">Client Portal</div>
-    <input class="gate-inp" id="gateEmail" placeholder="Email address" value="sarah.w@nimbusco.com">
-    <input class="gate-inp" id="gatePass" type="password" placeholder="Access code" value="demo">
-    <button class="gate-btn" onclick="login()">Enter Portal</button>
-    <div class="gate-hint">Demo mode — any email / code signs you in as a sample client.</div>
+    <div class="gate-sub" id="gateMode">Client Login</div>
+    <input class="gate-inp" id="gateName" placeholder="Full name" style="display:none">
+    <input class="gate-inp" id="gateEmail" placeholder="Email address">
+    <input class="gate-inp" id="gatePass" type="password" placeholder="Password">
+    <button class="gate-btn" id="gateBtn" onclick="handleAuth()">Sign In</button>
+    <div class="gate-err" id="gateErr"></div>
+    <div class="gate-toggle">
+      <span id="toggleLine">Don't have an account? <span onclick="toggleMode()">Sign up</span></span>
+    </div>
+    <div class="gate-hint">Connect your Supabase project in supabase-config.js to enable real accounts.</div>
   </div>
 </div>
 
@@ -119,44 +127,134 @@ header.topnav{
   <header class="topnav">
     <div class="tn-logo">Ali Zawad <em>/ Studio</em></div>
     <div class="tn-right">
-      <div class="tn-user" id="userLabel">Sarah Whitmore — Nimbus Co.</div>
+      <div class="tn-user" id="userLabel"></div>
       <button class="tn-logout" onclick="logout()">Sign out</button>
     </div>
   </header>
 
   <div class="wrap">
-    <div class="hello">Welcome back, <em>Sarah</em>.</div>
+    <div class="hello">Welcome, <em id="helloName"></em>.</div>
     <div class="subline">Here's where your project stands today.</div>
+    <div id="content"></div>
+  </div>
+</div>
 
+<script>
+let sb, currentUser, currentProfile, currentProject;
+let isSignup = false;
+
+function initSupabase(){
+  if (!SUPABASE_URL.includes('YOUR-PROJECT')) {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  } else {
+    document.getElementById('gateErr').textContent = 'Supabase not configured yet — edit supabase-config.js';
+  }
+}
+initSupabase();
+
+function toggleMode(){
+  isSignup = !isSignup;
+  document.getElementById('gateMode').textContent = isSignup ? 'Create Account' : 'Client Login';
+  document.getElementById('gateName').style.display = isSignup ? 'block' : 'none';
+  document.getElementById('gateBtn').textContent = isSignup ? 'Sign Up' : 'Sign In';
+  document.getElementById('toggleLine').innerHTML = isSignup
+    ? `Already have an account? <span onclick="toggleMode()">Sign in</span>`
+    : `Don't have an account? <span onclick="toggleMode()">Sign up</span>`;
+  document.getElementById('gateErr').textContent = '';
+}
+
+async function handleAuth(){
+  if (!sb) return;
+  const email = document.getElementById('gateEmail').value.trim();
+  const password = document.getElementById('gatePass').value;
+  const fullName = document.getElementById('gateName').value.trim();
+  const errEl = document.getElementById('gateErr');
+  const btn = document.getElementById('gateBtn');
+  errEl.textContent = '';
+  if(!email || !password){ errEl.textContent = 'Email and password required.'; return; }
+
+  btn.disabled = true; btn.textContent = '…';
+  try {
+    if (isSignup) {
+      const { data, error } = await sb.auth.signUp({
+        email, password,
+        options: { data: { full_name: fullName } }
+      });
+      if (error) throw error;
+      errEl.style.color = 'var(--success)';
+      errEl.textContent = 'Account created — check your email to confirm, then sign in.';
+      toggleMode();
+    } else {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      await enterPortal(data.user);
+    }
+  } catch (e) {
+    errEl.style.color = 'var(--danger)';
+    errEl.textContent = e.message || 'Something went wrong.';
+  }
+  btn.disabled = false;
+  btn.textContent = isSignup ? 'Sign Up' : 'Sign In';
+}
+
+async function enterPortal(user){
+  currentUser = user;
+  const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  currentProfile = profile;
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('portal').style.display = 'block';
+  document.getElementById('userLabel').textContent = `${profile?.full_name || user.email}${profile?.company ? ' — '+profile.company : ''}`;
+  document.getElementById('helloName').textContent = (profile?.full_name || user.email).split(' ')[0];
+  await loadProject();
+}
+
+async function loadProject(){
+  const content = document.getElementById('content');
+  const { data: projects } = await sb.from('projects').select('*').eq('client_id', currentUser.id).order('created_at', { ascending: false });
+  if (!projects || projects.length === 0) {
+    content.innerHTML = `<div class="empty-state">No active project linked to your account yet. Once Ali sets one up, it will appear here.</div>`;
+    return;
+  }
+  currentProject = projects[0];
+  const stages = ['discovery','design','build','delivered'];
+  const stageIdx = stages.indexOf(currentProject.stage);
+
+  const [{ data: milestones }, { data: messages }, { data: invoices }, { data: files }] = await Promise.all([
+    sb.from('milestones').select('*').eq('project_id', currentProject.id).order('sort_order'),
+    sb.from('messages').select('*').eq('project_id', currentProject.id).order('created_at'),
+    sb.from('invoices').select('*').eq('project_id', currentProject.id),
+    sb.from('project_files').select('*').eq('project_id', currentProject.id)
+  ]);
+
+  content.innerHTML = `
     <div class="status-card">
       <div>
         <div class="sc-label">Project</div>
-        <div class="sc-title">Nimbus Co. — Dashboard Redesign</div>
+        <div class="sc-title">${currentProject.title}</div>
         <div class="stage-track">
-          <div class="stage-pip done"></div>
-          <div class="stage-pip done"></div>
-          <div class="stage-pip active"></div>
-          <div class="stage-pip"></div>
+          ${stages.map((s,i)=>`<div class="stage-pip ${i<stageIdx?'done':i===stageIdx?'active':''}"></div>`).join('')}
         </div>
         <div class="stage-names"><span>Discovery</span><span>Design</span><span>Build</span><span>Delivery</span></div>
       </div>
       <div class="sc-right">
-        <div class="sc-stat"><span>Current phase</span><span>Build — 70%</span></div>
-        <div class="sc-stat"><span>Target delivery</span><span>July 28, 2026</span></div>
-        <div class="sc-stat"><span>Next milestone</span><span>Component QA</span></div>
+        <div class="sc-stat"><span>Current phase</span><span>${currentProject.stage} — ${currentProject.progress}%</span></div>
+        <div class="sc-stat"><span>Target delivery</span><span>${currentProject.target_delivery || 'TBD'}</span></div>
         <div class="sc-stat"><span>Account manager</span><span>Ali Zawad</span></div>
       </div>
     </div>
-
     <div class="grid2">
       <div class="panel">
         <div class="panel-head"><h3>Milestones</h3></div>
-        <div class="panel-body" id="milestoneList"></div>
+        <div class="panel-body">${(milestones||[]).map(m=>`
+          <div class="milestone">
+            <div class="m-check ${m.done?'done':''}">${m.done?'✓':''}</div>
+            <div><div class="m-title">${m.title}</div><div class="m-date">${m.due_date||''}</div></div>
+          </div>`).join('') || '<div style="font-size:.74rem;color:var(--muted)">No milestones yet.</div>'}</div>
       </div>
       <div class="panel">
         <div class="panel-head"><h3>Messages</h3></div>
         <div class="panel-body">
-          <div id="msgList"></div>
+          <div id="msgList">${renderMsgs(messages||[])}</div>
           <div class="msg-input-row">
             <input id="msgInput" placeholder="Message Ali…">
             <button class="msg-send" onclick="sendMsg()">Send</button>
@@ -164,124 +262,60 @@ header.topnav{
         </div>
       </div>
     </div>
-
     <div class="grid2">
       <div class="panel">
         <div class="panel-head"><h3>Invoices</h3></div>
-        <div class="panel-body" id="invoiceList"></div>
+        <div class="panel-body">${(invoices||[]).map(i=>`
+          <div class="inv-row"><span>${i.label}</span>
+            <span style="display:flex;align-items:center;gap:.7rem">
+              <span class="inv-amt">$${(i.amount_cents/100).toLocaleString()}</span>
+              <span class="badge ${i.status}">${i.status}</span>
+            </span></div>`).join('') || '<div style="font-size:.74rem;color:var(--muted)">No invoices yet.</div>'}</div>
       </div>
       <div class="panel">
         <div class="panel-head"><h3>Shared Files</h3></div>
-        <div class="panel-body" id="fileList"></div>
+        <div class="panel-body">${(files||[]).map(f=>`
+          <div class="file-row"><div class="file-name">📄 ${f.file_name}</div>
+            <div class="file-dl" onclick="downloadFile('${f.storage_path}')">Download</div></div>`).join('') || '<div style="font-size:.74rem;color:var(--muted)">No files shared yet.</div>'}</div>
       </div>
-    </div>
-  </div>
-</div>
-
-<script>
-const LS = 'az_client_data_v1';
-function loadData(){
-  let d = localStorage.getItem(LS);
-  if(d) return JSON.parse(d);
-  d = {
-    milestones:[
-      {title:'Discovery call & scope sign-off', date:'May 12', done:true},
-      {title:'Wireframes & design system approved', date:'May 29', done:true},
-      {title:'Core dashboard build', date:'Jun 24', done:true},
-      {title:'Component QA & polish', date:'Jul 8', done:false},
-      {title:'Client review & handoff', date:'Jul 22', done:false},
-      {title:'Final delivery', date:'Jul 28', done:false},
-    ],
-    messages:[
-      {from:'ali', text:'Hi Sarah — pushed the new sidebar nav, would love your eyes on it.'},
-      {from:'me', text:'Looks great! Can we bump the brass accent a touch warmer?'},
-      {from:'ali', text:'Done — updated in the latest build. QA starts Monday.'},
-    ],
-    invoices:[
-      {label:'Deposit — 30%', amount:'$4,500', status:'paid'},
-      {label:'Milestone 2 — Design Approval', amount:'$4,500', status:'paid'},
-      {label:'Milestone 3 — Build Complete', amount:'$4,500', status:'due'},
-      {label:'Final — Delivery', amount:'$1,500', status:'due'},
-    ],
-    files:[
-      {name:'Design_System_v2.fig', size:'4.1 MB'},
-      {name:'Dashboard_Wireframes.pdf', size:'2.3 MB'},
-      {name:'Brand_Guidelines.pdf', size:'1.1 MB'},
-    ]
-  };
-  localStorage.setItem(LS, JSON.stringify(d));
-  return d;
-}
-function saveData(d){ localStorage.setItem(LS, JSON.stringify(d)); }
-let DATA = loadData();
-
-function login(){
-  document.getElementById('gate').style.display='none';
-  document.getElementById('portal').style.display='block';
-  renderAll();
-}
-function logout(){
-  document.getElementById('gate').style.display='flex';
-  document.getElementById('portal').style.display='none';
+    </div>`;
 }
 
-function renderMilestones(){
-  document.getElementById('milestoneList').innerHTML = DATA.milestones.map(m=>`
-    <div class="milestone">
-      <div class="m-check ${m.done?'done':''}">${m.done?'✓':''}</div>
-      <div><div class="m-title">${m.title}</div><div class="m-date">${m.date}</div></div>
+function renderMsgs(messages){
+  return messages.map(m=>`
+    <div class="msg-row ${m.sender_id===currentUser.id?'me':''}">
+      <div class="msg-av">${m.sender_id===currentUser.id ? (currentProfile?.full_name||'Y').slice(0,2).toUpperCase() : 'AZ'}</div>
+      <div class="msg-bubble">${m.body}</div>
     </div>`).join('');
 }
 
-function renderMsgs(){
-  document.getElementById('msgList').innerHTML = DATA.messages.map(m=>`
-    <div class="msg-row ${m.from==='me'?'me':''}">
-      <div class="msg-av">${m.from==='me'?'SW':'AZ'}</div>
-      <div class="msg-bubble">${m.text}</div>
-    </div>`).join('');
-}
-function sendMsg(){
+async function sendMsg(){
   const inp = document.getElementById('msgInput');
   const val = inp.value.trim();
-  if(!val) return;
-  DATA.messages.push({from:'me', text:val});
-  inp.value='';
-  saveData(DATA);
-  renderMsgs();
-  setTimeout(()=>{
-    DATA.messages.push({from:'ali', text:"Got it — I'll take a look and reply shortly."});
-    saveData(DATA);
-    renderMsgs();
-  }, 900);
-}
-document.getElementById('msgInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendMsg(); });
-
-function renderInvoices(){
-  document.getElementById('invoiceList').innerHTML = DATA.invoices.map(i=>`
-    <div class="inv-row">
-      <span>${i.label}</span>
-      <span style="display:flex;align-items:center;gap:.7rem">
-        <span class="inv-amt">${i.amount}</span>
-        <span class="badge ${i.status}">${i.status}</span>
-        ${i.status==='due'?`<button class="pay-btn" onclick="alert('Demo only — payment link would open here.')">Pay</button>`:''}
-      </span>
-    </div>`).join('');
+  if(!val || !currentProject) return;
+  inp.value = '';
+  await sb.from('messages').insert({ project_id: currentProject.id, sender_id: currentUser.id, body: val });
+  const { data: messages } = await sb.from('messages').select('*').eq('project_id', currentProject.id).order('created_at');
+  document.getElementById('msgList').innerHTML = renderMsgs(messages||[]);
 }
 
-function renderFiles(){
-  document.getElementById('fileList').innerHTML = DATA.files.map(f=>`
-    <div class="file-row">
-      <div class="file-name">📄 ${f.name} <span style="color:var(--muted);font-size:.65rem">(${f.size})</span></div>
-      <div class="file-dl" onclick="alert('Demo only — download would start here.')">Download</div>
-    </div>`).join('');
+async function downloadFile(path){
+  const { data } = await sb.storage.from('project-files').createSignedUrl(path, 60);
+  if (data?.signedUrl) window.open(data.signedUrl, '_blank');
 }
 
-function renderAll(){
-  renderMilestones();
-  renderMsgs();
-  renderInvoices();
-  renderFiles();
+async function logout(){
+  await sb.auth.signOut();
+  document.getElementById('portal').style.display = 'none';
+  document.getElementById('gate').style.display = 'flex';
 }
+
+// Restore session on page load
+(async () => {
+  if (!sb) return;
+  const { data } = await sb.auth.getSession();
+  if (data?.session?.user) await enterPortal(data.session.user);
+})();
 </script>
 </body>
 </html>
