@@ -38,8 +38,11 @@ a{color:inherit}
 
 #portal{display:none;min-height:100vh}
 header.topnav{position:sticky;top:0;z-index:50;background:rgba(246,243,238,.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule);padding:1.1rem 3rem;display:flex;justify-content:space-between;align-items:center}
-.tn-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:.08em}
+.tn-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:.08em;text-decoration:none;color:var(--ink);transition:opacity .2s}
+.tn-logo:hover{opacity:.7}
 .tn-logo em{color:var(--brass);font-style:italic}
+.tn-back{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:.2s}
+.tn-back:hover{color:var(--brass)}
 .tn-right{display:flex;align-items:center;gap:1.4rem}
 .tn-user{font-size:.72rem;color:var(--muted)}
 .tn-logout{font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);border:1px solid var(--rule);padding:.4rem .9rem;cursor:pointer;background:none;transition:.2s}
@@ -125,8 +128,9 @@ header.topnav{position:sticky;top:0;z-index:50;background:rgba(246,243,238,.97);
 
 <div id="portal">
   <header class="topnav">
-    <div class="tn-logo">Ali Zawad <em>/ Studio</em></div>
+    <a href="index.html" class="tn-logo">Ali Zawad <em>/ Studio</em></a>
     <div class="tn-right">
+      <a href="index.html" class="tn-back">← Back to site</a>
       <div class="tn-user" id="userLabel"></div>
       <button class="tn-logout" onclick="logout()">Sign out</button>
     </div>

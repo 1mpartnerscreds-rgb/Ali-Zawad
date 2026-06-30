@@ -35,7 +35,8 @@ a{color:inherit;text-decoration:none}
 
 .app{display:none;grid-template-columns:248px 1fr;min-height:100vh}
 .side{background:var(--ink3);color:var(--cream);padding:2rem 1.5rem;display:flex;flex-direction:column;gap:2.2rem;position:sticky;top:0;height:100vh}
-.brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;letter-spacing:.1em;color:var(--cream)}
+.brand{font-family:'Cormorant Garamond',serif;font-size:1.15rem;letter-spacing:.1em;color:var(--cream);text-decoration:none;display:block;transition:opacity .2s}
+.brand:hover{opacity:.75}
 .brand em{color:var(--brass2);font-style:italic}
 .brand-sub{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.24em;color:rgba(196,162,99,.55);text-transform:uppercase;margin-top:.3rem}
 .nav-grp{display:flex;flex-direction:column;gap:.2rem;margin-top:.5rem}
@@ -111,7 +112,7 @@ tr:last-child td{border-bottom:none}
 <div class="app" id="app">
   <aside class="side">
     <div>
-      <div class="brand">Ali Zawad <em>/ Studio</em></div>
+      <a href="index.html" class="brand">Ali Zawad <em>/ Studio</em></a>
       <div class="brand-sub">Admin Console</div>
     </div>
     <nav class="nav-grp">
@@ -121,6 +122,7 @@ tr:last-child td{border-bottom:none}
       <div class="nlink" data-view="testimonials"><span class="dot"></span>Testimonials</div>
     </nav>
     <div class="side-foot">
+      <a href="index.html" style="display:block;text-align:center;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(246,243,238,.5);text-decoration:none;margin-bottom:.6rem;transition:.2s" onmouseover="this.style.color='var(--brass2)'" onmouseout="this.style.color='rgba(246,243,238,.5)'">← Back to site</a>
       <button class="tn-logout" onclick="logout()">Sign out</button>
     </div>
   </aside>
