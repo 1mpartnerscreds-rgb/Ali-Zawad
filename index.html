@@ -102,6 +102,25 @@ nav.banner-hidden { top:0; }
   transition:background .3s; cursor:pointer; border:1px solid var(--ink);
 }
 .nav-cta:hover { background:var(--brass); border-color:var(--brass); }
+.nav-client-btn {
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.45rem 1.1rem; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase;
+  font-family:'DM Sans',sans-serif; font-weight:500;
+  color:var(--brass); background:var(--brass-lt); border:1px solid rgba(155,120,64,.35);
+  text-decoration:none; transition:background .25s, color .25s, border-color .25s;
+  border-radius:2px;
+}
+.nav-client-btn::before { content:'●'; font-size:.5rem; color:var(--brass); }
+.nav-client-btn:hover { background:var(--brass); color:var(--cream); border-color:var(--brass); }
+.nav-client-btn:hover::before { color:var(--cream); }
+.nav-client-mobile {
+  display:none;
+}
+@media(max-width:1000px){
+  .nav-client-mobile{
+    display:inline-flex; position:fixed; top:14px; right:1.2rem; z-index:1100;
+  }
+}
 .nav-pulse { width:5px; height:5px; border-radius:50%; background:var(--brass); animation:pulse-dot 2.8s infinite; }
 @keyframes pulse-dot { 0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.3)} }
 
@@ -655,10 +674,10 @@ footer { background:var(--ink3); padding:5.5rem 4.5rem 3rem; border-top:1px soli
     <li><a href="story.html" class="nav-page-link">His Story</a></li>
     <li><a href="vision.html" class="nav-page-link">His Vision</a></li>
     <li><div class="nav-sep"></div></li>
-    <li><a href="client-portal.html" class="nav-page-link">Client Login</a></li>
+    <li><a href="client-portal.html" class="nav-client-btn">Client Login</a></li>
     <li><a href="#contact-strip" class="nav-cta">Hire Me</a></li>
   </ul>
-  <li><a href="client-portal.html" class="nav-page-link">Client Login</a></li>
+  <a href="client-portal.html" class="nav-client-btn nav-client-mobile">Login</a>
   <div class="nav-pulse"></div>
 </nav>
 
