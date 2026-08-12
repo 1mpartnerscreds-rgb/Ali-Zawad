@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zawad Studio — Digital design of consequence</title>
 <meta name="description" content="Zawad Studio is a design and engineering practice for brands that intend to be around in twenty years. Brand identity, web design, motion, and design systems. A concern of Ali Zawad Group.">
-<link rel="canonical" href="https://zawad.studio/">
+<link rel="canonical" href="https://www.alizawad.online/home">
 <meta name="theme-color" content="#0A0A0A">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://zawad.studio/">
+<meta property="og:url" content="https://www.alizawad.online/home">
 <meta property="og:site_name" content="Zawad Studio">
 <meta property="og:title" content="Zawad Studio — Digital design of consequence">
 <meta property="og:description" content="A design and engineering practice for brands that intend to be around in twenty years.">
@@ -38,6 +38,7 @@
   --accent-hi: #93343B; /* hover/legible variant, AA on dark for large text */
   --serif: "Playfair Display", Georgia, serif;
   --sans:  "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --mono:  ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --ease:  cubic-bezier(0.22, 1, 0.36, 1);
   --gutter: clamp(1.25rem, 5vw, 6rem);
 }
@@ -176,6 +177,15 @@ body::after{
   transition:transform .5s var(--ease);
 }
 .header__nav a:hover::after{ transform:scaleX(1); transform-origin:left; }
+/* Pricing reads as an action, not a destination — a border says "this does something" */
+.header__nav .nav-pill{
+  margin-left:0.75rem; padding:0.5rem 1rem;
+  border:1px solid currentColor;
+  transition:background .45s var(--ease), color .45s var(--ease);
+}
+.header__nav .nav-pill::after{ display:none; }
+.header__nav .nav-pill:hover{ background:var(--ink); color:var(--bg); }
+@media (max-width:1024px){ .header__nav{ gap:1.5rem; } .header__nav .nav-pill{ margin-left:0.25rem; } }
 @media (max-width:767px){ .header__nav{ display:none; } }
 
 /* ================================================================
@@ -445,6 +455,189 @@ body::after{
 .stat__value sup{ font-size:0.4em; color:var(--accent-hi); vertical-align:super; }
 .stat__label{ margin-top:1rem; font-size:0.6875rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ink-dim); }
 @media (max-width:900px){ .stats__grid{ grid-template-columns:repeat(2,1fr); } }
+
+/* ================================================================
+   Pricing
+================================================================ */
+.pricing__intro{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(2rem,6vw,6rem);
+  align-items:end; margin-top:3rem;
+}
+.pricing__intro h2{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(2.25rem,5.5vw,4.5rem); letter-spacing:-0.02em; line-height:1.06;
+}
+.pricing__intro h2 em{ font-style:italic; color:var(--accent-hi); }
+.pricing__lead{ color:var(--ink-dim); font-size:0.9375rem; max-width:46ch; }
+@media (max-width:900px){ .pricing__intro{ grid-template-columns:1fr; align-items:start; gap:1.75rem; } }
+
+/* ---- Teaser band (in the scroll; the numbers live in the overlay) ---- */
+.price-band{ padding-top:clamp(3rem,7vw,6rem); padding-bottom:clamp(3rem,7vw,6rem); }
+.price-band__inner{
+  display:grid; grid-template-columns:1fr auto; align-items:center;
+  gap:clamp(2rem,5vw,4rem);
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  padding:clamp(2.25rem,4vw,3.25rem) 0;
+}
+.price-band__copy h2{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(1.75rem,3.4vw,2.75rem); letter-spacing:-0.02em; line-height:1.1;
+  margin-top:0.75rem;
+}
+.price-band__copy h2 em{ font-style:italic; color:var(--accent-hi); }
+.price-band__copy p{ margin-top:1rem; color:var(--ink-dim); font-size:0.9375rem; max-width:52ch; }
+.price-band__act{ display:flex; align-items:center; gap:clamp(1.5rem,3vw,2.5rem); }
+.price-band__from{ text-align:right; line-height:1; }
+.price-band__from i{
+  display:block; font-style:normal; margin-bottom:0.6rem;
+  font-size:0.625rem; font-weight:500; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink-faint);
+}
+.price-band__from b{
+  font-family:var(--serif); font-weight:400; letter-spacing:-0.02em;
+  font-size:clamp(2rem,3.4vw,2.75rem); font-variant-numeric:tabular-nums;
+}
+.price-band__from b sup{ font-size:0.4em; vertical-align:super; color:var(--ink-dim); }
+.price-band__btn{
+  display:inline-flex; align-items:center; gap:0.7rem;
+  padding:1.15rem 1.9rem; white-space:nowrap;
+  border:1px solid var(--ink-faint); position:relative; overflow:hidden; z-index:0;
+  font-size:0.6875rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+  transition:color .5s var(--ease), border-color .5s var(--ease);
+}
+.price-band__btn::before{
+  content:""; position:absolute; inset:0; background:var(--ink);
+  transform:scaleY(0); transform-origin:bottom;
+  transition:transform .5s var(--ease); z-index:-1;
+}
+.price-band__btn:hover{ color:var(--bg); border-color:var(--ink); }
+.price-band__btn:hover::before{ transform:scaleY(1); }
+@media (max-width:900px){
+  .price-band__inner{ grid-template-columns:1fr; gap:2.25rem; }
+  .price-band__act{ justify-content:space-between; }
+  .price-band__from{ text-align:left; }
+  .price-band__btn{ flex:0 0 auto; }
+}
+
+.tiers{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--line);
+  margin-top:clamp(3rem,6vw,5rem);
+}
+.tier{
+  display:flex; flex-direction:column;
+  padding:clamp(2rem,3vw,2.75rem) clamp(1.5rem,2.5vw,2.5rem) clamp(2rem,3vw,2.75rem);
+  border-left:1px solid var(--line);
+  position:relative;
+  transition:background .5s var(--ease);
+}
+.tier:last-child{ border-right:1px solid var(--line); }
+.tier:hover{ background:var(--bg-raise); }
+.tier--featured{ background:var(--bg-raise); }
+.tier--featured::before{
+  content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:2px;
+  background:var(--accent-hi);
+}
+.tier__head{
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  min-height:1.75rem;                    /* keeps all three heads on one line */
+}
+.tier__num{ font-size:0.625rem; letter-spacing:0.22em; color:var(--ink-faint); font-weight:500; }
+.tier__flag{
+  font-family:var(--mono); font-size:0.5625rem; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--accent-hi); border:1px solid var(--accent-hi); padding:0.3rem 0.6rem; white-space:nowrap;
+}
+.tier__name{
+  font-size:0.6875rem; font-weight:500; letter-spacing:0.24em; text-transform:uppercase;
+  margin-top:1.75rem;
+}
+.tier__price{
+  font-family:var(--serif); font-weight:400;
+  font-size:clamp(2.75rem,4.5vw,3.75rem); line-height:1; letter-spacing:-0.02em;
+  margin-top:1rem; font-variant-numeric:tabular-nums;
+}
+.tier__price sup{ font-size:0.38em; vertical-align:super; color:var(--ink-dim); }
+.tier__price--word{ font-size:clamp(2.25rem,3.4vw,2.9rem); padding:0.35rem 0; }
+.tier__meta{
+  margin-top:0.9rem; font-size:0.6875rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.tier__list{ margin-top:2.25rem; border-top:1px solid var(--line); flex:1; }
+.tier__list li{
+  padding:0.95rem 0 0.95rem 1.5rem; border-bottom:1px solid var(--line);
+  font-size:0.875rem; color:var(--ink-dim); position:relative; line-height:1.55;
+}
+.tier__list li::before{
+  content:"—"; position:absolute; left:0; top:0.95rem; color:var(--accent-hi);
+}
+.tier__cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  margin-top:2.25rem; width:100%; padding:1.15rem 1.25rem;
+  border:1px solid var(--ink-faint); position:relative; overflow:hidden; z-index:0;
+  font-size:0.6875rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+  transition:color .5s var(--ease), border-color .5s var(--ease);
+}
+.tier__cta::before{
+  content:""; position:absolute; inset:0; background:var(--ink);
+  transform:scaleY(0); transform-origin:bottom;
+  transition:transform .5s var(--ease); z-index:-1;
+}
+.tier__cta:hover{ color:var(--bg); border-color:var(--ink); }
+.tier__cta:hover::before{ transform:scaleY(1); }
+.tier--featured .tier__cta{ border-color:var(--accent-hi); color:var(--ink); }
+.tier--featured .tier__cta::before{ background:var(--accent-hi); }
+.tier--featured .tier__cta:hover{ color:var(--ink); border-color:var(--accent-hi); }
+
+.pricing__trust{
+  display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+  gap:0 clamp(1.25rem,3vw,2.5rem);
+  margin-top:clamp(2.5rem,5vw,4rem);
+  font-family:var(--mono); font-size:0.625rem; letter-spacing:0.16em; text-transform:uppercase;
+  color:var(--ink-dim); text-align:center;
+}
+.pricing__trust li{ position:relative; padding:0.4rem 0; }
+.pricing__trust li + li::before{
+  content:""; position:absolute; left:calc(clamp(1.25rem,3vw,2.5rem) / -2);
+  top:50%; transform:translateY(-50%);
+  width:1px; height:0.85rem; background:var(--line);
+}
+@media (max-width:900px){
+  .tiers{ grid-template-columns:1fr; border-top:0; }
+  .tier{ border-left:0; border-top:1px solid var(--line); }
+  .tier:last-child{ border-right:0; border-bottom:1px solid var(--line); }
+  .tier--featured::before{ left:0; right:0; }
+  .pricing__trust{ flex-direction:column; gap:0; }
+  .pricing__trust li + li::before{ display:none; }
+}
+
+/* ---- Pricing overlay (shares the case-study overlay's language) ---- */
+.pr{
+  position:fixed; inset:0; z-index:58;
+  background:var(--bg);
+  overflow-y:auto; overscroll-behavior:contain;
+  opacity:0; visibility:hidden;
+  transition:opacity .5s var(--ease), visibility 0s linear .5s;
+}
+.pr.is-open{ opacity:1; visibility:visible; transition:opacity .5s var(--ease), visibility 0s linear 0s; }
+.pr__close{
+  position:fixed; top:1.4rem; right:var(--gutter); z-index:2;
+  display:flex; align-items:center; gap:0.7rem;
+  font-size:0.625rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase;
+  color:var(--ink-dim);
+  transition:color .4s var(--ease);
+}
+.pr__close b{ font-weight:400; font-size:1rem; line-height:1; transition:transform .5s var(--ease); }
+.pr__close:hover{ color:var(--ink); }
+.pr__close:hover b{ transform:rotate(90deg); }
+.pr__inner{
+  padding:clamp(4.5rem,9vw,7rem) var(--gutter) clamp(4rem,8vw,6rem);
+  max-width:1240px; margin:0 auto;
+}
+/* the panel rises as the scrim clears — same gesture as the enquiry dialog */
+.pr__inner > *{ transform:translateY(18px); transition:transform .6s var(--ease); }
+.pr.is-open .pr__inner > *{ transform:none; }
+@media (prefers-reduced-motion:reduce){
+  .pr__inner > *{ transform:none; transition:none; }
+}
 
 /* ================================================================
    7 — Testimonial
@@ -778,6 +971,7 @@ body::after{
     <a href="#studio" data-cursor="link">Studio</a>
     <a href="#process" data-cursor="link">Process</a>
     <a href="#contact" data-cursor="link">Contact</a>
+    <a href="/pricing" class="nav-pill" data-pricing data-cursor="link" aria-haspopup="dialog">Pricing</a>
   </nav>
   <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
     <span></span><span></span>
@@ -792,7 +986,8 @@ body::after{
       <li><a href="#capabilities">Capabilities <i>02</i></a></li>
       <li><a href="#studio">Studio <i>03</i></a></li>
       <li><a href="#process">Process <i>04</i></a></li>
-      <li><a href="#contact">Contact <i>05</i></a></li>
+      <li><a href="/pricing" data-pricing aria-haspopup="dialog">Pricing <i>05</i></a></li>
+      <li><a href="#contact">Contact <i>06</i></a></li>
     </ul>
   </nav>
   <div class="mobile-nav__foot">
@@ -1000,7 +1195,7 @@ body::after{
         <p class="studio__sign fade-up">Ali Zawad — Founder &amp; Creative Director</p>
       </div>
       <dl class="studio__facts fade-up">
-        <div><dt>Founded</dt><dd>2013</dd></div>
+        <div><dt>Founded</dt><dd>2026</dd></div>
         <div><dt>Based in</dt><dd>Dhaka, Bangladesh</dd></div>
         <div><dt>Team</dt><dd>Nine, deliberately</dd></div>
         <div><dt>Engagements</dt><dd>Six to eight a year</dd></div>
@@ -1041,13 +1236,28 @@ body::after{
     </div>
   </section>
 
-  <!-- 8 — TESTIMONIAL -->
+  <!-- 8 — PRICING TEASER (the numbers themselves live in the overlay) -->
+  <section class="section price-band" id="pricing">
+    <div class="price-band__inner fade-up">
+      <div class="price-band__copy">
+        <p class="eyebrow">Pricing</p>
+        <h2>Priced before we <em>start</em>.</h2>
+        <p>Every engagement is quoted as a fixed price against a written scope — no hourly billing, no invoices you did not see coming. We take six to eight engagements a year, so the calendar, not the price, is usually the constraint.</p>
+      </div>
+      <div class="price-band__act">
+        <span class="price-band__from"><i>From</i><b><sup>&#36;</sup>499</b></span>
+        <button class="price-band__btn" type="button" data-pricing data-cursor="link" aria-haspopup="dialog">See rates</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 — TESTIMONIAL -->
   <section class="section testimonial">
     <blockquote class="fade-up">Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional. Our engineering team was genuinely impressed.</blockquote>
     <cite class="fade-up"><strong>Founder</strong>1M Partners</cite>
   </section>
 
-  <!-- 9 — CTA -->
+  <!-- 10 — CTA -->
   <section class="cta" id="contact">
     <svg class="cta__lines" id="ctaLines" aria-hidden="true"></svg>
     <p class="eyebrow fade-up">New Business</p>
@@ -1059,7 +1269,7 @@ body::after{
 
 </main>
 
-<!-- 10 — FOOTER -->
+<!-- 11 — FOOTER -->
 <footer class="footer">
   <div class="footer__brand">
     <div class="footer__logo">Zawad <em>Studio</em></div>
@@ -1072,6 +1282,7 @@ body::after{
       <li><a href="#capabilities" data-cursor="link">Capabilities</a></li>
       <li><a href="#studio" data-cursor="link">Studio</a></li>
       <li><a href="#process" data-cursor="link">Process</a></li>
+      <li><a href="/pricing" data-pricing data-cursor="link" aria-haspopup="dialog">Pricing</a></li>
       <li><a href="#contact" data-cursor="link">Contact</a></li>
     </ul>
   </div>
@@ -1170,6 +1381,71 @@ body::after{
       <span>Next project</span>
       <button id="csNext" data-cursor="link"></button>
     </div>
+  </div>
+</div>
+
+<!-- Pricing overlay -->
+<div class="pr" id="pricingOverlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="prTitle" data-lenis-prevent>
+  <button class="pr__close" id="prClose" data-cursor="link" aria-label="Close pricing">Close <b aria-hidden="true">&#10005;</b></button>
+  <div class="pr__inner">
+    <p class="eyebrow">Pricing</p>
+    <div class="pricing__intro">
+      <h2 id="prTitle">Priced before we <em>start</em>.</h2>
+      <p class="pricing__lead">Three ways to work with us. Every engagement is quoted as a fixed price against a written scope — no hourly billing, no invoices you did not see coming. We take six to eight engagements a year, so the calendar, not the price, is usually the constraint.</p>
+    </div>
+
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier__head"><span class="tier__num">Tier 01</span></div>
+        <h3 class="tier__name">Launch</h3>
+        <div class="tier__price"><sup>&#36;</sup>499</div>
+        <p class="tier__meta">Fixed price — from</p>
+        <ul class="tier__list">
+          <li>Responsive five-page website</li>
+          <li>Contact form wired to your inbox</li>
+          <li>On-page SEO and metadata</li>
+          <li>Mobile-first, cross-browser tested</li>
+          <li>14 days of post-launch fixes</li>
+        </ul>
+        <button class="tier__cta" type="button" data-enquire data-plan="Launch — $499" data-budget="Less than $500" data-cursor="link" aria-haspopup="dialog">Get a quote</button>
+      </article>
+
+      <article class="tier tier--featured">
+        <div class="tier__head"><span class="tier__num">Tier 02</span><span class="tier__flag">Recommended</span></div>
+        <h3 class="tier__name">Build</h3>
+        <div class="tier__price"><sup>&#36;</sup>999</div>
+        <p class="tier__meta">Fixed price — from</p>
+        <ul class="tier__list">
+          <li>Everything in Launch</li>
+          <li>Custom admin dashboard</li>
+          <li>Payment gateway integration</li>
+          <li>User accounts and login</li>
+          <li>Priority support, 30 days of fixes</li>
+        </ul>
+        <button class="tier__cta" type="button" data-enquire data-plan="Build — $999" data-budget="$500 – $1,000" data-cursor="link" aria-haspopup="dialog">Start my build</button>
+      </article>
+
+      <article class="tier">
+        <div class="tier__head"><span class="tier__num">Tier 03</span></div>
+        <h3 class="tier__name">Scale</h3>
+        <div class="tier__price tier__price--word">Custom</div>
+        <p class="tier__meta">Quoted on scope</p>
+        <ul class="tier__list">
+          <li>Multi-role dashboards and permissions</li>
+          <li>Custom API and third-party integrations</li>
+          <li>A dedicated project manager</li>
+          <li>Maintenance retainer</li>
+          <li>SLA-backed turnaround</li>
+        </ul>
+        <button class="tier__cta" type="button" data-enquire data-plan="Scale — custom" data-budget="Not yet decided" data-cursor="link" aria-haspopup="dialog">Talk to us</button>
+      </article>
+    </div>
+
+    <ul class="pricing__trust">
+      <li>Fixed-price quotes</li>
+      <li>Free 15-min consult</li>
+      <li>Source code, yours to keep</li>
+    </ul>
   </div>
 </div>
 
@@ -1314,8 +1590,109 @@ body::after{
     if(typeof resetEnquiry === "function") resetEnquiry();
   }
   dlgOpenBtn.addEventListener("click",function(){ openDialog(this); });
+
+  /* pricing tiers open the same dialog, pre-filled with the chosen plan */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-enquire]"),function(btn){
+    btn.addEventListener("click",function(){
+      var budget  = document.getElementById("f-budget");
+      var message = document.getElementById("f-message");
+      var plan    = this.getAttribute("data-plan");
+      var range   = this.getAttribute("data-budget");
+      if(budget && range){
+        Array.prototype.forEach.call(budget.options,function(o){
+          if(o.text === range) budget.value = o.value || o.text;
+        });
+      }
+      if(message && !message.value.trim() && plan){
+        message.value = "I'm interested in the " + plan + " package. ";
+      }
+      // handing off from the pricing overlay: close it first, and hand the
+      // dialog whatever opened pricing — this button is about to be hidden
+      var handoff = null;
+      if(prIsOpen()){ handoff = prTrigger; closePricing(); }
+      openDialog(handoff || this);
+    });
+  });
   dlgClose.addEventListener("click", closeDialog);
   dlg.addEventListener("mousedown",function(e){ if(e.target === dlg) closeDialog(); });
+
+  /* ---------- Pricing overlay ----------
+     Price is a consideration-stage question, so the numbers sit behind an
+     intent click rather than in the scroll. Closing returns the visitor to
+     exactly where they were reading. */
+  var pr        = document.getElementById("pricingOverlay");
+  var prClose   = document.getElementById("prClose");
+  var prTrigger = null;
+  var prPushed  = false;                  // did this opening add a history entry?
+
+  /* The sheet has a real address — /pricing — never a #fragment. Opening it from
+     file:// has no server to rewrite that path, so fall back to a hash locally. */
+  var cleanURLs   = location.protocol === "http:" || location.protocol === "https:";
+  var PRICING_URL = cleanURLs ? "/pricing" : "#pricing";
+  var HOME_URL    = cleanURLs ? "/home"    : location.pathname + location.search;
+  function atPricingURL(){
+    return cleanURLs ? /^\/pricing\/?$/.test(location.pathname)
+                     : location.hash === "#pricing";
+  }
+
+  function prIsOpen(){ return pr.classList.contains("is-open"); }
+
+  function openPricing(trigger, push){
+    if(prIsOpen()) return;
+    prTrigger = trigger || null;
+    pr.scrollTop = 0;
+    pr.classList.add("is-open");
+    pr.setAttribute("aria-hidden","false");
+    setLock(true);
+    prClose.focus({preventScroll:true});
+    // back gesture closes the sheet instead of leaving the page
+    if(push !== false && window.history && history.pushState){
+      history.pushState({pr:1},"",PRICING_URL);
+      prPushed = true;
+    }
+  }
+  function closePricing(pop){
+    if(!prIsOpen()) return;
+    pr.classList.remove("is-open");
+    pr.setAttribute("aria-hidden","true");
+    setLock(false);
+    if(prTrigger) prTrigger.focus({preventScroll:true});
+    prTrigger = null;
+    var pushed = prPushed;
+    prPushed = false;
+    if(pop !== false && pushed){
+      history.back();                             // drop the /pricing entry we added
+    } else if(pop !== false && atPricingURL() && history.replaceState){
+      // arrived directly on /pricing: put the address back to the homepage so the
+      // URL matches what is on screen, and a later back/forward cannot re-open it
+      history.replaceState(null,"",HOME_URL);
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-pricing]"),function(el){
+    el.addEventListener("click",function(e){
+      e.preventDefault();
+      openPricing(this);
+    });
+  });
+  prClose.addEventListener("click",function(){ closePricing(); });
+
+  window.addEventListener("popstate",function(){
+    if(prIsOpen()){ closePricing(false); return; }
+    // only re-open when stepping *forward* into the entry we pushed. Keying off the
+    // hash instead would re-open the sheet the moment closing popped back to an
+    // entry that already carried #pricing.
+    if(history.state && history.state.pr) openPricing(null,false);
+  });
+
+  // a shared /pricing link should land on the sheet — but only once the preloader
+  // has actually gone, since it sits above the overlay
+  if(atPricingURL()){
+    (function afterIntro(){
+      if(document.querySelector(".preloader")) return setTimeout(afterIntro,120);
+      openPricing(null,false);
+    })();
+  }
 
   /* ---------- Overlay keyboard handling (Esc + focus trap) ---------- */
   function trapTab(e, box){
@@ -1332,15 +1709,18 @@ body::after{
   document.addEventListener("keydown",function(e){
     var csOpen   = cs.classList.contains("is-open");
     var dlgOpen  = dlg.classList.contains("is-open");
+    var prOpen   = prIsOpen();
     var menuOpen = mnav.classList.contains("is-open");
     if(e.key === "Escape"){
-      if(csOpen) closeCase();
-      else if(dlgOpen) closeDialog();
+      if(dlgOpen) closeDialog();          // topmost layer first
+      else if(csOpen) closeCase();
+      else if(prOpen) closePricing();
       else if(menuOpen) setMenu(false);
       return;
     }
-    if(csOpen) trapTab(e, cs);
-    else if(dlgOpen) trapTab(e, dlg);
+    if(dlgOpen) trapTab(e, dlg);
+    else if(csOpen) trapTab(e, cs);
+    else if(prOpen) trapTab(e, pr);
     else if(menuOpen) trapTab(e, mnav);
   });
 
@@ -1615,7 +1995,8 @@ body::after{
   });
 
   /* ---------- Anchor links via Lenis ---------- */
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  // [data-pricing] opens the pricing overlay instead of scrolling to the band
+  document.querySelectorAll('a[href^="#"]:not([data-pricing])').forEach(function(a){
     a.addEventListener("click",function(e){
       var t = document.querySelector(a.getAttribute("href"));
       if(!t) return;
