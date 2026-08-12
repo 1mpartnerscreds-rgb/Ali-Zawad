@@ -7,7 +7,6 @@
     { "source": "/", "destination": "/home", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/home", "destination": "/index.html" },
-    { "source": "/pricing", "destination": "/index.html" }
+    { "source": "/pricing", "destination": "/home" }
   ]
 }
