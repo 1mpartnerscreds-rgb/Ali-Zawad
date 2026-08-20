@@ -1,3 +1,4 @@
+import type { Check } from './checks';
 import type { Band, Pillar } from './weights';
 
 export type Tier = 'launch' | 'build' | 'scale';
@@ -34,6 +35,12 @@ export interface PillarScore {
 }
 
 export interface Measurements {
+  /**
+   * Real-visitor data from Google's Chrome UX Report, when the site has enough
+   * traffic. Null means we only have the simulated lab test to go on, and every
+   * sentence we write has to say so.
+   */
+  field: { lcpMs: number | null; cls: number | null; inpMs: number | null; scope: 'page' | 'origin' } | null;
   lcpMs: number | null;
   tbtMs: number | null;
   cls: number | null;
@@ -44,6 +51,7 @@ export interface Measurements {
   psiBestPractices: number | null;
   psiSeo: number | null;
   hasViewport: boolean;
+  viewport: { present: boolean; deviceWidth: boolean; fixedWidth: number | null; zoomDisabled: boolean };
   contentWidthOk: boolean | null;
   https: boolean;
   contact: { found: boolean; kinds: string[] };
@@ -55,6 +63,8 @@ export interface Measurements {
   appSignals: string[];
   /** Signals that transactions are wanted but absent (booking, buy, pay copy). */
   transactionalIntent: string[];
+  /** Hosts this site sends customers to for things it cannot do itself. */
+  outsourcedTo: string[];
 }
 
 export interface AuditComplete {
@@ -68,6 +78,7 @@ export interface AuditComplete {
   tier: Tier;
   tierReason: string;
   measurements: Measurements;
+  checks: Check[];
   ranAt: string;
 }
 
@@ -84,6 +95,7 @@ export interface AuditPartial {
   tier: Tier;
   tierReason: string;
   measurements: Measurements;
+  checks: Check[];
   ranAt: string;
 }
 

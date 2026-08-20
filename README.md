@@ -77,6 +77,45 @@ Metric thresholds are anchored to Google's own good / needs-improvement / poor
 boundaries, so any number quoted to a client can be checked against PageSpeed
 Insights directly.
 
+### Real visits beat the lab
+
+Lighthouse's lab run simulates a mid-range phone on throttled 4G. It is a stress
+test. On a large site it can read 28 seconds where real visitors wait three.
+
+So when Google has Chrome UX Report data for a site — real measurements from real
+visits — that is what we score and what we quote, and the finding says so. When
+it doesn't, we fall back to the lab run and **every sentence built on it says
+plainly that it was a simulation**. Quoting a lab number as "what your visitors
+experience" is the fastest possible way to have the whole audit dismissed: the
+owner opens their own site, watches it load, and stops believing the rest.
+
+### Checking the phone layout ourselves
+
+Lighthouse 13 deleted `content-width`, `font-size`, `tap-targets` and `viewport`.
+Anything still asking for them silently receives `null` — which is how "does this
+get cut off on a phone?" quietly stopped being checked at all.
+
+The `phone` pillar is now read directly from the page's own markup, so it cannot
+depend on which Lighthouse version PageSpeed happens to run:
+
+- a viewport pinned to a fixed pixel width (`width=1024`) is a **guarantee** the
+  page is cropped on a phone, and scores worse than having no viewport tag at all
+- `user-scalable=no` or a low `maximum-scale` means nobody can rescue a cramped
+  layout by zooming
+
+Everywhere else, audit ids are looked up through a candidate list (newest first)
+in `REPORTED_CHECKS`, so both old and new Lighthouse versions are understood.
+
+### Everything we checked
+
+Findings stay short — three to five things worth acting on. Underneath them is
+the full list of every test run, grouped and marked passed / needs work /
+couldn't check.
+
+That third state matters. A check we could not run is never counted as a pass.
+A report that pads its own pass rate is worthless, and the first time an owner
+notices one they stop trusting the rest of the page.
+
 ### Tier routing
 
 Order matters here, and it was corrected against real measurements:
@@ -84,6 +123,14 @@ Order matters here, and it was corrected against real measurements:
 - **A site that is already an application never routes to Launch**, however badly
   it scores. Telling the owner of a working storefront that the answer is "up to
   5 pages, $499" is a diagnosis nobody would believe.
+- **"Already an application" is decided on evidence, not vocabulary.** A password
+  field, a payment or booking provider, a shop platform, a cart, or an account
+  area *on this domain*. An account link pointing at another company — a lawn
+  care firm's billing portal, say — is the opposite of app evidence: the site
+  hands the customer to somebody else's software, which is a Build case. Getting
+  this wrong once routed a small local business to a custom retainer.
+- Subdomains are compared by registrable domain, so `accounts.nike.com` is Nike
+  and not a third party.
 - Broken foundations on a brochure site → **Launch**.
 - Nothing broken, but the site cannot transact and its own copy is about booking
   or selling → **Build**.

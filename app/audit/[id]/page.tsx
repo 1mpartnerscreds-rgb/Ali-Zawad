@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { ButtonLink } from '@/components/Button';
+import { Checklist } from '@/components/Checklist';
 import { Findings } from '@/components/Findings';
 import { Recommendation } from '@/components/Recommendation';
 import { Score } from '@/components/Score';
@@ -107,6 +108,10 @@ function Result({ result }: { result: AuditResult }) {
 
       <div className="mt-20">
         <Recommendation tier={result.tier} reason={result.tierReason} bookHref={bookHref} />
+      </div>
+
+      <div className="mt-20">
+        <Checklist checks={result.checks} />
       </div>
 
       <p className="mt-16 text-small text-muted">{AUDIT.rerunNote}</p>

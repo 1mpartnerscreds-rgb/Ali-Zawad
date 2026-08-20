@@ -5,17 +5,59 @@ import { PART_WEIGHTS, PILLAR_WEIGHTS, ROUTING, THRESHOLDS, bandFor, curve, type
 /** PSI category scores arrive 0..100; pillars work in 0..1. */
 const pct = (value: number | null, fallback = 0.5) => (value == null ? fallback : value / 100);
 
+/**
+ * Which speed numbers we are entitled to quote.
+ *
+ * Lighthouse's lab run simulates a mid-range phone on throttled 4G. It is a
+ * stress test, and on a big site it can read 28 seconds where real visitors wait
+ * three. Quoting that to a business owner as "what your visitors experience"
+ * is the fastest way to have the whole audit dismissed — they will open their
+ * own site, see it load, and stop believing everything else on the page.
+ *
+ * So: when Google has real-visit data for the site, that is what we score and
+ * what we quote. Otherwise we fall back to the lab run and every sentence built
+ * on it says plainly that it was a simulation.
+ */
+export interface SpeedReading {
+  lcpMs: number | null;
+  cls: number | null;
+  responseMs: number | null;
+  /** INP is measured from real taps; TBT is inferred in the lab. */
+  responseKind: 'inp' | 'tbt';
+  source: 'field' | 'lab';
+  scope: 'page' | 'origin' | null;
+}
+
+export function readSpeed(m: Measurements): SpeedReading {
+  const f = m.field;
+  if (f && f.lcpMs != null) {
+    return {
+      lcpMs: f.lcpMs,
+      cls: f.cls ?? m.cls,
+      responseMs: f.inpMs,
+      responseKind: 'inp',
+      source: 'field',
+      scope: f.scope,
+    };
+  }
+  return { lcpMs: m.lcpMs, cls: m.cls, responseMs: m.tbtMs, responseKind: 'tbt', source: 'lab', scope: null };
+}
+
 export function scorePillars(m: Measurements): PillarScore[] {
   const p = PART_WEIGHTS;
 
+  const speed = readSpeed(m);
+  const responseThreshold = speed.responseKind === 'inp' ? THRESHOLDS.inpMs : THRESHOLDS.tbtMs;
   const loads =
-    curve(m.lcpMs ?? Infinity, THRESHOLDS.lcpMs) * p.loads.lcp +
-    curve(m.tbtMs ?? Infinity, THRESHOLDS.tbtMs) * p.loads.tbt +
-    curve(m.cls ?? Infinity, THRESHOLDS.cls) * p.loads.cls;
+    curve(speed.lcpMs ?? Infinity, THRESHOLDS.lcpMs) * p.loads.lcp +
+    curve(speed.responseMs ?? Infinity, responseThreshold) * p.loads.tbt +
+    curve(speed.cls ?? Infinity, THRESHOLDS.cls) * p.loads.cls;
 
-  // An unknown content-width result is treated as passing: we only penalise what
-  // we actually observed failing.
-  const phone = (m.hasViewport ? 1 : 0) * p.phone.viewport + (m.contentWidthOk === false ? 0 : 1) * p.phone.contentWidth;
+  // A viewport pinned to a fixed pixel width is worse than none at all: the page
+  // is explicitly told to lay out at desktop size, so it is certainly cut off on
+  // a phone. Scored from the markup, so there is no "unknown" to paper over.
+  const viewportQuality = m.viewport.deviceWidth ? 1 : m.viewport.fixedWidth != null ? 0 : m.viewport.present ? 0.4 : 0;
+  const phone = viewportQuality * p.phone.viewport + (m.viewport.zoomDisabled ? 0 : 1) * p.phone.zoom;
 
   const reach = (m.contact.found ? 1 : 0) * p.reach.contactMethod;
 
@@ -50,6 +92,7 @@ export function compositeScore(pillars: PillarScore[]): number {
 export function buildFindings(m: Measurements, hasPsi: boolean): Finding[] {
   const problems: Finding[] = [];
   const good: Finding[] = [];
+  const speed = readSpeed(m);
 
   const push = (
     list: Finding[],
@@ -60,21 +103,54 @@ export function buildFindings(m: Measurements, hasPsi: boolean): Finding[] {
   ) => list.push({ id, pillar, severity, ...copy });
 
   if (!m.https) push(problems, 'https', 'trust', 'high', FINDING_COPY.noHttps());
-  if (!m.hasViewport) push(problems, 'viewport', 'phone', 'high', FINDING_COPY.noViewport());
+  // Three distinct ways to be broken on a phone, and they need different fixes,
+  // so they are never collapsed into one vague "not mobile friendly" line.
+  if (!m.viewport.present) {
+    push(problems, 'viewport', 'phone', 'high', FINDING_COPY.noViewport());
+  } else if (m.viewport.fixedWidth != null) {
+    push(problems, 'viewport-width', 'phone', 'high', FINDING_COPY.viewportFixedWidth(m.viewport.fixedWidth));
+  } else if (!m.viewport.deviceWidth) {
+    push(problems, 'viewport', 'phone', 'high', FINDING_COPY.noViewport());
+  }
+  if (m.viewport.zoomDisabled) push(problems, 'zoom', 'phone', 'medium', FINDING_COPY.zoomDisabled());
   if (!m.contact.found) push(problems, 'contact', 'reach', 'high', FINDING_COPY.noContact());
 
-  if (hasPsi && m.lcpMs != null && m.lcpMs > THRESHOLDS.lcpMs[0]) {
-    push(problems, 'lcp', 'loads', m.lcpMs > THRESHOLDS.lcpMs[1] ? 'high' : 'medium', FINDING_COPY.lcpSlow(m.lcpMs));
+  if (hasPsi && speed.lcpMs != null && speed.lcpMs > THRESHOLDS.lcpMs[0]) {
+    push(
+      problems,
+      'lcp',
+      'loads',
+      speed.lcpMs > THRESHOLDS.lcpMs[1] ? 'high' : 'medium',
+      FINDING_COPY.lcpSlow(speed.lcpMs, speed.source, speed.scope),
+    );
   }
   if (m.contentWidthOk === false) push(problems, 'content-width', 'phone', 'high', FINDING_COPY.contentTooWide());
   if (m.title.text == null || m.title.generic) {
     push(problems, 'title', 'found', 'medium', FINDING_COPY.genericTitle(m.title.text));
   }
-  if (hasPsi && m.tbtMs != null && m.tbtMs > THRESHOLDS.tbtMs[0]) {
-    push(problems, 'tbt', 'loads', m.tbtMs > THRESHOLDS.tbtMs[1] ? 'high' : 'medium', FINDING_COPY.tbtHigh(m.tbtMs));
+  // Responsiveness has two possible sources and they are not interchangeable:
+  // INP is measured from real taps, TBT is inferred from a lab trace.
+  if (hasPsi && speed.responseMs != null) {
+    if (speed.responseKind === 'inp' && speed.responseMs > THRESHOLDS.inpMs[0]) {
+      push(
+        problems,
+        'inp',
+        'loads',
+        speed.responseMs > THRESHOLDS.inpMs[1] ? 'high' : 'medium',
+        FINDING_COPY.inpSlow(speed.responseMs, speed.scope),
+      );
+    } else if (speed.responseKind === 'tbt' && speed.responseMs > THRESHOLDS.tbtMs[0]) {
+      push(
+        problems,
+        'tbt',
+        'loads',
+        speed.responseMs > THRESHOLDS.tbtMs[1] ? 'high' : 'medium',
+        FINDING_COPY.tbtHigh(speed.responseMs),
+      );
+    }
   }
-  if (hasPsi && m.cls != null && m.cls > THRESHOLDS.cls[0]) {
-    push(problems, 'cls', 'loads', 'medium', FINDING_COPY.clsHigh(m.cls));
+  if (hasPsi && speed.cls != null && speed.cls > THRESHOLDS.cls[0]) {
+    push(problems, 'cls', 'loads', 'medium', FINDING_COPY.clsHigh(speed.cls, speed.source, speed.scope));
   }
   if (!m.description.text) push(problems, 'description', 'found', 'medium', FINDING_COPY.noDescription());
   if (hasPsi && m.totalBytes != null && m.totalBytes > THRESHOLDS.heavyPageBytes) {
@@ -84,15 +160,20 @@ export function buildFindings(m: Measurements, hasPsi: boolean): Finding[] {
   if (hasPsi && m.psiAccessibility != null && m.psiAccessibility < 80) {
     push(problems, 'a11y', 'usable', 'low', FINDING_COPY.accessibilityWeak(m.psiAccessibility));
   }
+  if (m.outsourcedTo.length > 0) {
+    push(problems, 'outsourced', 'reach', 'medium', FINDING_COPY.outsourcedPortal(m.outsourcedTo));
+  }
   if (!m.favicon) push(problems, 'favicon', 'trust', 'low', FINDING_COPY.noFavicon());
 
   // Things worth saying out loud when they are right. Used to reach three
   // findings on a healthy site — never to soften a bad one.
-  if (hasPsi && m.lcpMs != null && m.lcpMs <= THRESHOLDS.lcpMs[0]) {
-    push(good, 'lcp-ok', 'loads', 'good', FINDING_COPY.lcpFast(m.lcpMs));
+  if (hasPsi && speed.lcpMs != null && speed.lcpMs <= THRESHOLDS.lcpMs[0]) {
+    push(good, 'lcp-ok', 'loads', 'good', FINDING_COPY.lcpFast(speed.lcpMs, speed.source, speed.scope));
   }
   if (m.contact.found) push(good, 'contact-ok', 'reach', 'good', FINDING_COPY.contactOk(m.contact.kinds));
-  if (m.hasViewport && m.contentWidthOk !== false) push(good, 'phone-ok', 'phone', 'good', FINDING_COPY.mobileOk());
+  if (m.hasViewport && !m.viewport.zoomDisabled && m.contentWidthOk !== false) {
+    push(good, 'phone-ok', 'phone', 'good', FINDING_COPY.mobileOk());
+  }
   if (m.https && (m.psiBestPractices == null || m.psiBestPractices >= 90)) {
     push(good, 'trust-ok', 'trust', 'good', FINDING_COPY.secureOk());
   }

@@ -1,4 +1,5 @@
 import { unstable_cache } from 'next/cache';
+import { buildChecks } from './checks';
 import { checkPage } from './page-checks';
 import { runPageSpeed } from './psi';
 import { buildFindings, compositeScore, decideTier, scorePillars } from './score';
@@ -80,6 +81,7 @@ export async function runAuditUncached(domain: string): Promise<AuditResult> {
     emit({ type: 'progress', step: 'mobile', label: 'Checking mobile rendering' });
 
     const measurements: Measurements = {
+      field: psi.ok ? psi.field : null,
       lcpMs: psi.ok ? psi.metrics.lcpMs : null,
       tbtMs: psi.ok ? psi.metrics.tbtMs : null,
       cls: psi.ok ? psi.metrics.cls : null,
@@ -89,7 +91,8 @@ export async function runAuditUncached(domain: string): Promise<AuditResult> {
       psiAccessibility: psi.ok ? psi.categories.accessibility : null,
       psiBestPractices: psi.ok ? psi.categories.bestPractices : null,
       psiSeo: psi.ok ? psi.categories.seo : null,
-      hasViewport: page.hasViewport || (psi.ok && psi.hasViewport === true),
+      hasViewport: page.hasViewport,
+      viewport: page.viewport,
       contentWidthOk: psi.ok ? psi.contentWidthOk : null,
       https: page.https,
       contact: page.contact,
@@ -99,9 +102,11 @@ export async function runAuditUncached(domain: string): Promise<AuditResult> {
       htmlBytes: page.htmlBytes,
       appSignals: page.appSignals,
       transactionalIntent: page.transactionalIntent,
+      outsourcedTo: page.outsourcedTo,
     };
 
     const findings = buildFindings(measurements, psi.ok);
+    const checks = buildChecks(measurements, psi.ok ? psi.checks : {}, psi.ok ? psi.details : {});
     const ranAt = new Date().toISOString();
     const finalUrl = page.finalUrl;
 
@@ -113,7 +118,7 @@ export async function runAuditUncached(domain: string): Promise<AuditResult> {
       // must never read as a failed one.
       const measured = scorePillars(measurements).filter((p) => p.pillar !== 'loads');
       const { tier, reason } = decideTier(null, measured, measurements);
-      return { status: 'partial', domain, finalUrl, findings, tier, tierReason: reason, measurements, ranAt };
+      return { status: 'partial', domain, finalUrl, findings, tier, tierReason: reason, measurements, checks, ranAt };
     }
 
     emit({ type: 'progress', step: 'score', label: 'Scoring' });
@@ -132,6 +137,7 @@ export async function runAuditUncached(domain: string): Promise<AuditResult> {
       tier,
       tierReason: reason,
       measurements,
+      checks,
       ranAt,
     };
   } finally {

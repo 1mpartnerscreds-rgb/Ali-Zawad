@@ -29,7 +29,9 @@ export type Pillar = keyof typeof PILLAR_WEIGHTS;
 
 export const PART_WEIGHTS = {
   loads: { lcp: 0.55, tbt: 0.25, cls: 0.2 },
-  phone: { viewport: 0.6, contentWidth: 0.4 },
+  // Both parts are read straight from the page's own markup, so this pillar
+  // never depends on an audit that a given Lighthouse version may not ship.
+  phone: { viewport: 0.75, zoom: 0.25 },
   reach: { contactMethod: 1 },
   found: { seoScore: 0.5, title: 0.25, description: 0.25 },
   trust: { https: 0.6, bestPractices: 0.3, favicon: 0.1 },
@@ -44,6 +46,8 @@ export const PART_WEIGHTS = {
 export const THRESHOLDS = {
   lcpMs: [2500, 4000, 6500],
   tbtMs: [200, 600, 1500],
+  /** Interaction to Next Paint, from real visits. Google's own boundaries. */
+  inpMs: [200, 500, 1000],
   cls: [0.1, 0.25, 0.6],
   /** Above this, page weight gets called out as a finding. ~2.5MB. */
   heavyPageBytes: 2_500_000,
