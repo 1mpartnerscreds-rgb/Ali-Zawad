@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { BookForm } from '@/components/BookForm';
+import { Testimonial } from '@/components/Testimonial';
 import { BOOK, TIERS, type TierSlug } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -41,6 +42,18 @@ export default async function BookPage({ searchParams }: { searchParams: Search 
       ) : null}
 
       <BookForm domain={d} score={s} tier={tier} />
+
+      {/* After the form, not before it. Someone who arrived ready to book should
+          reach the fields first; this is here for the one who hesitated. */}
+      <section aria-labelledby="proof-heading" className="mt-20 border-t border-line pt-14">
+        <h2 id="proof-heading" className="text-small font-medium text-muted">
+          {BOOK.testimonialsTitle}
+        </h2>
+        <div className="mt-6 space-y-10">
+          <Testimonial name="partners" />
+          <Testimonial name="cybertech" />
+        </div>
+      </section>
     </div>
   );
 }

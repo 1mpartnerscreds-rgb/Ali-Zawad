@@ -1,4 +1,5 @@
 import { ButtonLink } from '@/components/Button';
+import { Testimonial } from '@/components/Testimonial';
 import { SERVICE_PAGE, TIERS, type TierSlug } from '@/content/site';
 
 /**
@@ -62,6 +63,15 @@ export function ServicePage({ slug }: { slug: TierSlug }) {
           ) : null}
         </p>
       </section>
+
+      {tier.testimonial ? (
+        <section className="mt-14">
+          <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.testimonialTitle}</h2>
+          <div className="mt-4">
+            <Testimonial name={tier.testimonial} />
+          </div>
+        </section>
+      ) : null}
 
       <div className="mt-16">
         <ButtonLink href={`/book?t=${tier.slug}`}>{SERVICE_PAGE.cta}</ButtonLink>

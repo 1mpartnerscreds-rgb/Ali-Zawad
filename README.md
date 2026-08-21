@@ -200,6 +200,20 @@ in that number is Next.js and React themselves: a page with zero client
 components measures the same. The stated 60 KB budget is not reachable on the
 App Router — see the note in the handover.
 
+## Testimonials
+
+Two real client quotes, in `content/site.ts`, verbatim apart from a closing full
+stop. They appear on `/book` — after the form, so somebody who arrived ready to
+book reaches the fields first — and the Cybertech one on `/services/build`,
+whose work it describes.
+
+They are deliberately **not** on the homepage. That page has one job: get one URL
+into one box. A testimonial there competes with the input for attention, which
+is the failure this site exists to fix, and §5.1 rules it out for that reason.
+
+`href` is null where a company's own site no longer resolves. We do not link a
+prospect to a dead domain to prove we are reliable.
+
 ## Motion
 
 Two deliberate exceptions to the "no animation" rule, both requested and both

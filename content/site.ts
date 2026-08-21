@@ -95,6 +95,37 @@ export const PROJECTS = [
   },
 ] as const;
 
+/**
+ * Client testimonials. Quoted verbatim — the only edit is a closing full stop.
+ *
+ * Deliberately NOT on the homepage. That page has one job: get one URL into one
+ * box. A testimonial there competes with the input for attention, which is the
+ * failure this whole site exists to fix. They live where somebody is actually
+ * deciding whether to talk to us — the booking page, and the service page whose
+ * work they describe.
+ *
+ * `href` is null where a company's site is no longer reachable. We do not link
+ * a prospect to a dead domain to prove we are reliable.
+ */
+export const TESTIMONIALS = {
+  partners: {
+    quote:
+      'Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional. Our engineering team was genuinely impressed.',
+    role: 'Founder',
+    company: '1M Partners',
+    href: null,
+  },
+  cybertech: {
+    quote:
+      'When we kicked off this project, we expected a solid outcome, but the final result far exceeded our expectations. The sophistication of the design and the sheer quality of execution set a new standard for our brand. Working with them was an absolute game-changer for CyberTech.',
+    role: 'Managing Director',
+    company: 'Cybertech',
+    href: 'https://cybertech-web-btzy.vercel.app',
+  },
+} as const;
+
+export type TestimonialKey = keyof typeof TESTIMONIALS;
+
 export const AUDIT = {
   runningTitle: 'Running the audit',
   liveRegionLabel: 'Audit progress',
@@ -195,6 +226,7 @@ export const TIERS = {
       'Startup Solution and the lawn care build in the strip on the homepage are both this size of job. Open either one and see what you get.',
     caseHref: 'https://www.startupsolution.online',
     caseLabel: 'startupsolution.online',
+    testimonial: null,
   },
   build: {
     slug: 'build',
@@ -216,6 +248,7 @@ export const TIERS = {
       'The client portal and admin dashboard behind this site are the same shape of work: a login, a database, and one screen per person who needs one.',
     caseHref: '/client-portal',
     caseLabel: 'the client portal',
+    testimonial: 'cybertech' as const,
   },
   scale: {
     slug: 'scale',
@@ -236,6 +269,7 @@ export const TIERS = {
       'No case study here yet, and inventing one would be the wrong way to start. Scale work is quoted after a call, against what your operation actually does.',
     caseHref: null,
     caseLabel: null,
+    testimonial: null,
   },
 } as const;
 
@@ -243,6 +277,7 @@ export type TierSlug = keyof typeof TIERS;
 export const TIER_ORDER: TierSlug[] = ['launch', 'build', 'scale'];
 
 export const SERVICE_PAGE = {
+  testimonialTitle: 'What they said afterwards',
   whatTitle: 'What this is',
   includesTitle: "What's included",
   priceTitle: 'Price',
@@ -256,6 +291,7 @@ export const BOOK = {
   intro:
     'Twenty minutes, no pitch. Tell us what the site needs to do and we will tell you what it would take. If we are not the right fit we will say so on the call.',
   contextTitle: 'From your audit',
+  testimonialsTitle: 'People who have done this',
   fields: {
     name: 'Your name',
     email: 'Email',
