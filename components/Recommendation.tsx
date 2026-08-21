@@ -34,6 +34,7 @@ export function Recommendation({
 
       <div className="mt-10">
         <ButtonLink href={bookHref}>{AUDIT.bookCta}</ButtonLink>
+        <p className="mt-4 max-w-[42ch] text-small text-muted">{AUDIT.ctaReassurance}</p>
       </div>
 
       <p className="mt-6 text-small text-muted">

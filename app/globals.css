@@ -159,3 +159,126 @@ body {
   clip: auto;
   white-space: normal;
 }
+
+/* --- The typed headline ---------------------------------------------------
+   Characters are already in the DOM; CSS only decides when each becomes
+   visible. `visibility` rather than `opacity` so there is no cross-fade — a
+   typewriter snaps, it does not dissolve.
+--------------------------------------------------------------------------- */
+
+.az-type {
+  /* Each character is its own element, so single spaces must survive as their
+     own text nodes — but the headline still has to wrap. pre-wrap does both.
+     A non-breaking space here instead would stop the headline wrapping at all,
+     which is the exact "cut off on a phone" defect this site audits for. */
+  white-space: pre-wrap;
+}
+
+.az-type-char {
+  visibility: hidden;
+  /* steps(1, start) with a real duration, not steps(1, end) over 1ms.
+     A one-millisecond animation puts the only visible state inside a window
+     narrower than a frame, and the browser is free to never sample it — which
+     silently ate the "o" in "Most" and left a character-shaped hole in the
+     headline. Jumping at the start of a 200ms step leaves no such window. */
+  animation: az-type-in 200ms steps(1, start) forwards;
+}
+
+@keyframes az-type-in {
+  from,
+  to {
+    visibility: visible;
+  }
+}
+
+/* The cursor. Appears only once typing has finished, then blinks twice and
+   stops — a caret that blinks forever is a distraction sitting next to the one
+   thing on this page we want people to look at. */
+.az-caret {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.78em;
+  margin-left: 0.06em;
+  vertical-align: baseline;
+  background: var(--color-accent);
+  opacity: 0;
+  animation: az-caret-blink 620ms steps(1, end) 4 forwards;
+}
+
+@keyframes az-caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .az-type-char {
+    visibility: visible;
+    animation: none;
+  }
+
+  .az-caret {
+    display: none;
+  }
+}
+
+/* --- Web-strand buttons ---------------------------------------------------
+   On hover, fine threads draw across the button left to right and pull taut.
+   The easing is the point: fast out, hard stop, like a line going tight. It
+   stays inside the existing palette — no red, no blue — so it reads as a detail
+   somebody notices on second look rather than a costume.
+--------------------------------------------------------------------------- */
+
+.az-web {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.az-web::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Loose enough to read as a few strands rather than fishnet. At 9px spacing
+     this became a mesh that fought the label for attention, which is the
+     opposite of what a button wants. */
+  background:
+    repeating-linear-gradient(
+      115deg,
+      transparent 0 17px,
+      color-mix(in srgb, currentColor 15%, transparent) 17px 18px
+    ),
+    repeating-linear-gradient(
+      65deg,
+      transparent 0 17px,
+      color-mix(in srgb, currentColor 11%, transparent) 17px 18px
+    );
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* Overshoot then settle: the strand goes taut rather than easing to a stop. */
+  transition: transform 260ms cubic-bezier(0.16, 1.14, 0.3, 1);
+}
+
+.az-web:hover::before,
+.az-web:focus-visible::before {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .az-web::before {
+    transition: opacity 150ms ease;
+    transform: scaleX(1);
+    opacity: 0;
+  }
+
+  .az-web:hover::before,
+  .az-web:focus-visible::before {
+    opacity: 1;
+  }
+}

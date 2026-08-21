@@ -189,7 +189,7 @@ so cached work "feels authentic" would be a lie about our own product.
 
 | | Result |
 |---|---|
-| Lighthouse mobile, homepage | **98** / 100 / 100 / 100 |
+| Lighthouse mobile, homepage | **97** / 100 / 100 / 100 |
 | Lighthouse mobile, all other pages | 98–99 / 100 / 100 / 100 |
 | Same HTML with scripts stripped | **100 / 100 / 100 / 100** |
 | Homepage JS, modern browsers | ~137 KB gzipped |
@@ -199,6 +199,34 @@ The homepage ships **one** client component (`AuditForm`, ~3 KB). Everything els
 in that number is Next.js and React themselves: a page with zero client
 components measures the same. The stated 60 KB budget is not reachable on the
 App Router — see the note in the handover.
+
+## Motion
+
+Two deliberate exceptions to the "no animation" rule, both requested and both
+measured.
+
+**The typed headline** (`components/Typewriter.tsx`). CSS only — no JavaScript,
+so it costs nothing against the bundle and works with scripting off. The
+characters are server-rendered real text, so search engines read the sentence
+normally, and the `h1` carries the full sentence as its accessible name because
+per-character spans make some screen readers spell words out. Under
+`prefers-reduced-motion` the text is simply there.
+
+It animates the LCP element, which is the one thing on this site we cannot be
+careless with. Measured cost: **one Lighthouse point** (98 → 97) and about 150ms
+of LCP. Two implementation details mattered more than the type speed:
+
+- `steps(1, start)` over 200ms, not `steps(1, end)` over 1ms. A one-millisecond
+  animation puts the only visible state inside a sub-frame window the browser is
+  free never to sample — which silently ate the "o" in "Most" and left a
+  character-shaped hole in the headline.
+- Real spaces plus `white-space: pre-wrap`, never non-breaking spaces. NBSP
+  stops the headline wrapping at all, which produced 897px of horizontal
+  overflow on a 375px phone: the exact defect this site audits other people for.
+
+**Web-strand buttons** (`.az-web`). On hover, fine threads draw across the
+button left to right on a taut easing. Monochrome — it inherits `currentColor`,
+so the one-accent rule survives and there is no red or blue anywhere.
 
 ## The old site
 

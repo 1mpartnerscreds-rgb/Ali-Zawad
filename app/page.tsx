@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AuditForm } from '@/components/AuditForm';
+import { Typewriter } from '@/components/Typewriter';
 import { HOME, PROJECTS } from '@/content/site';
 
 /**
@@ -14,9 +15,11 @@ export default function HomePage() {
   return (
     <>
       <section className="mx-auto max-w-text px-6 pt-24 pb-28 sm:pt-32">
-        <h1 className="text-display font-regular text-balance">{HOME.headline}</h1>
+        <Typewriter text={HOME.headline} className="text-display font-regular text-balance" />
 
         <AuditForm />
+
+        <p className="mt-5 text-small text-muted">{HOME.reassurance}</p>
 
         <p className="mt-6">
           <Link href="/services/launch" className="t text-small text-muted underline underline-offset-4 hover:text-ink">

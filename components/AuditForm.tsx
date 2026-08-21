@@ -146,7 +146,7 @@ export function AuditForm() {
         />
         <button
           type="submit"
-          className="t shrink-0 rounded-sm bg-accent px-7 py-4 text-body font-medium text-white hover:bg-accent-ink active:translate-y-px"
+          className="az-web t shrink-0 rounded-sm bg-accent px-7 py-4 text-body font-medium text-white hover:bg-accent-ink active:translate-y-px"
         >
           {HOME.submit}
         </button>

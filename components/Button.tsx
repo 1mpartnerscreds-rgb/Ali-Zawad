@@ -10,7 +10,7 @@ import type { ComponentProps, ReactNode } from 'react';
  */
 
 const base =
-  't inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3.5 text-body font-medium no-underline';
+  'az-web t inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3.5 text-body font-medium no-underline';
 
 const variants = {
   primary: 'bg-accent text-white hover:bg-accent-ink active:translate-y-px',

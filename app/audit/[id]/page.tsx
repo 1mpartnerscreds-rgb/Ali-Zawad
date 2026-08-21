@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { ButtonLink } from '@/components/Button';
 import { Checklist } from '@/components/Checklist';
 import { Findings } from '@/components/Findings';
@@ -114,7 +115,25 @@ function Result({ result }: { result: AuditResult }) {
         <Checklist checks={result.checks} />
       </div>
 
-      <p className="mt-16 text-small text-muted">{AUDIT.rerunNote}</p>
+      {/* The page should not end on a list. Last thing read is the next step. */}
+      <section aria-labelledby="closing-heading" className="mt-20 border-t border-line pt-14">
+        <h2 id="closing-heading" className="text-small font-medium text-muted">
+          {AUDIT.closingTitle}
+        </h2>
+        <p className="mt-4 text-body">{AUDIT.closingBody}</p>
+
+        <div className="mt-10">
+          <ButtonLink href={bookHref}>{AUDIT.bookCta}</ButtonLink>
+        </div>
+
+        <p className="mt-8 text-small text-muted">{AUDIT.ownership}</p>
+        <p className="mt-2 text-small text-muted">
+          <Link href="/how-the-audit-works" className="t underline underline-offset-4 hover:text-ink">
+            {AUDIT.methodLink}
+          </Link>
+        </p>
+        <p className="mt-2 text-small text-muted">{AUDIT.rerunNote}</p>
+      </section>
     </article>
   );
 }

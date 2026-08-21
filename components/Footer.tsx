@@ -38,6 +38,11 @@ export function Footer() {
               <h2 className="text-small font-medium">{FOOTER.moreLabel}</h2>
               <ul className="mt-3 space-y-2">
                 <li>
+                  <Link href="/how-the-audit-works" className="t text-small text-muted no-underline hover:text-ink">
+                    {FOOTER.links.method}
+                  </Link>
+                </li>
+                <li>
                   <Link href="/book" className="t text-small text-muted no-underline hover:text-ink">
                     {FOOTER.links.book}
                   </Link>

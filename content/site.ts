@@ -41,6 +41,12 @@ export const HOME = {
   submit: 'Run the audit',
   submitting: 'Running',
   noSiteLink: "I don't have a website yet",
+  /**
+   * The three things somebody silently worries about before typing their domain
+   * into a stranger's box: will this cost me, will I get spammed, how long will
+   * it take. All three answers are true, which is the only reason they are here.
+   */
+  reassurance: 'Free. No email needed. Takes about 20 seconds.',
   errors: {
     empty: 'Enter your website address first.',
     shape: "That doesn't look like a web address. Try something like yourwebsite.com",
@@ -107,6 +113,22 @@ export const AUDIT = {
     "Google's testing service didn't return load measurements for your site, so there's no score here — a score built from half the checks would be a made-up number. Everything below was measured directly on your page, and it all still counts.",
   rerunNote: 'Results are kept for 24 hours. Run it again tomorrow to see whether a change worked.',
   metaPrefix: 'Website audit for',
+  /**
+   * Said next to the button, where the hesitation actually happens. "Book a
+   * call" is vague about what it costs you; this makes the commitment small and
+   * specific, and it is the same promise made on the booking page itself.
+   */
+  ctaReassurance: 'Twenty minutes, no pitch. If we are not the right fit for this, we will say so on the call.',
+  /**
+   * The result is a permanent URL, and most owners are not the person who
+   * maintains the site. Saying the link is theirs turns the audit into something
+   * they hold — and forwarding it to their developer is how this spreads.
+   */
+  ownership: 'This page stays at this address. Send it to whoever looks after your site.',
+  methodLink: 'How this audit works, and what it cannot tell you',
+  closingTitle: 'What happens next',
+  closingBody:
+    'Book a call and we will go through this together — what to fix first, what can wait, and what it would take. If the answer is that you do not need us yet, that is a fine outcome for a twenty minute call.',
 } as const;
 
 /** Failure copy. Every one of these ends with a way forward. */
@@ -272,6 +294,7 @@ export const FOOTER = {
   moreLabel: 'More',
   rights: (year: number) => `© ${year} AZ Studio`,
   links: {
+    method: 'How the audit works',
     book: 'Book a call',
     portal: 'Client portal',
     whatsapp: 'WhatsApp',
