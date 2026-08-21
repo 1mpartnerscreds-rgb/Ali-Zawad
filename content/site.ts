@@ -36,6 +36,14 @@ export const HOME = {
    *   C. "You can't see what your website does to visitors. This can."
    */
   headline: 'Most visitors leave before your homepage finishes loading. See what yours does.',
+  /**
+   * The same sentence, broken for display type. Seventy-nine characters set at
+   * hero scale pushes the input below the fold, and the input is the entire
+   * point of the page — so the argument opens with three words and finishes at
+   * a size you can actually read.
+   */
+  heroLine: 'Most visitors leave.',
+  heroRest: 'Before your homepage has finished loading. See what yours does.',
   inputLabel: 'Your website address',
   placeholder: 'yourwebsite.com',
   submit: 'Run the audit',
@@ -104,6 +112,10 @@ export const PROJECTS = [
  */
 export const ACTS = {
   scrollCue: 'Scroll',
+
+  hero: {
+    eyebrow: 'Free website audit',
+  },
 
   threshold: {
     eyebrow: 'The boundary',

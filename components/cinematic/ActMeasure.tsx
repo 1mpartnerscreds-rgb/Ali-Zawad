@@ -47,11 +47,11 @@ export function ActMeasure() {
   return (
     <section aria-labelledby="measure-heading">
       <div className="mx-auto max-w-wide px-6 pt-32 pb-16">
-        <p className="r-fade text-small font-medium tracking-[0.14em] text-muted uppercase">{measure.eyebrow}</p>
-        <h2 id="measure-heading" className="display-lg mt-6 max-w-[18ch] font-regular">
+        <p className="eyebrow r-fade">{measure.eyebrow}</p>
+        <h2 id="measure-heading" className="font-display mt-6 max-w-[16ch] text-display font-light">
           <Words text={measure.headline} />
         </h2>
-        <p className="r-up mt-8 max-w-[52ch] text-body text-muted">{measure.body}</p>
+        <p className="r-up mt-8 max-w-[54ch] text-lead text-muted">{measure.body}</p>
       </div>
 
       {/* Host height sets how long the rail takes to cross. */}
@@ -61,10 +61,10 @@ export function ActMeasure() {
             {pillars.map((pillar) => (
               <li
                 key={pillar}
-                className="d-panel flex h-[54vh] w-[78vw] shrink-0 flex-col justify-between border border-line bg-bg p-8 sm:w-[42vw] lg:w-[28vw]"
+                className="d-panel flex h-[54vh] w-[78vw] shrink-0 flex-col justify-between rounded-lg border border-line bg-surface p-8 sm:w-[42vw] lg:w-[28vw]"
               >
                 <div>
-                  <span className="display-lg block font-regular tabular-nums text-[color:var(--color-accent)]">
+                  <span className="font-display block text-display font-light text-ember">
                     {PILLAR_WEIGHTS[pillar]}
                     <span className="text-muted">%</span>
                   </span>
@@ -73,13 +73,13 @@ export function ActMeasure() {
                       becomes legible at a glance. */}
                   <div className="mt-6 h-px w-full bg-line">
                     <div
-                      className="h-px w-full bg-[color:var(--color-accent)] opacity-70"
+                      className="h-px w-full bg-[color:var(--color-ember)] opacity-70"
                       style={{ transform: `scaleX(${PILLAR_WEIGHTS[pillar] / 28})`, transformOrigin: 'left center' }}
                     />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-body font-medium text-balance">{QUESTIONS[pillar].question}</h3>
+                  <h3 className="text-title font-display text-balance text-ink">{QUESTIONS[pillar].question}</h3>
                   <p className="mt-4 text-small text-muted">{QUESTIONS[pillar].line}</p>
                 </div>
               </li>

@@ -13,13 +13,13 @@ export function ActClose() {
   const { close } = ACTS;
 
   return (
-    <section className="night grain relative isolate mt-32" aria-labelledby="close-heading">
-      <div className="mx-auto flex min-h-[86vh] max-w-text flex-col justify-center px-6 py-32">
-        <h2 id="close-heading" className="display-lg max-w-[14ch] font-regular">
+    <section className="grain scene relative isolate overflow-hidden" aria-labelledby="close-heading">
+      <div className="relative mx-auto flex min-h-[88vh] max-w-full flex-col justify-center px-6 py-32 lg:px-10">
+        <h2 id="close-heading" className="font-display max-w-[12ch] text-hero font-light">
           <Words text={close.headline} />
         </h2>
-        <p className="r-up mt-8 text-body text-muted">{close.body}</p>
-        <div className="r-up">
+        <p className="r-up mt-8 max-w-[48ch] text-lead text-muted">{close.body}</p>
+        <div className="r-up max-w-form">
           <AuditForm variant="night" />
         </div>
       </div>

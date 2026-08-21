@@ -10,44 +10,54 @@ import { ACTS, HOME } from '@/content/site';
 /**
  * The homepage as a scroll sequence.
  *
- * The rule the original brief set still holds even here: above the fold there
- * is a headline, an input, and one way out. Everything cinematic happens after
- * the visitor has had the chance to do the only thing this page is for. A
- * sequence that makes somebody scroll past the product to admire the product is
- * a showreel, not a funnel.
+ * Above the fold there is a headline, an input, and one way out — everything
+ * cinematic happens after the visitor has had the chance to do the only thing
+ * this page is for. A sequence that makes somebody scroll past the product to
+ * admire the product is a showreel, not a funnel.
  *
- * All choreography is native CSS scroll-driven animation — `view()` and named
- * view timelines — so it runs on the compositor and adds no JavaScript. On a
- * site that tells people their site is too slow, buying motion with a 70KB
- * animation library would have made the argument a bluff.
+ * All choreography is native CSS scroll-driven animation, so it runs on the
+ * compositor and adds no JavaScript. On a site that tells people their site is
+ * too slow, buying motion with an animation library would be a bluff.
  */
 export default function HomePage() {
   return (
     <>
-      <section className="scene relative mx-auto flex min-h-[92vh] max-w-text flex-col justify-center px-6 pt-20 pb-24">
-        <div className="d-recede">
-          <Typewriter text={HOME.headline} className="display-lg font-regular text-balance" />
+      <section className="scene relative overflow-hidden">
+        {/* A single ember bloom behind the headline. The only light source on
+            the page, placed where the eye lands first. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-40 left-1/2 h-[42rem] w-[42rem] -translate-x-1/2 rounded-full opacity-[0.13] blur-[120px]"
+          style={{ background: 'radial-gradient(circle, var(--color-ember) 0%, transparent 68%)' }}
+        />
 
-          <AuditForm />
+        <div className="relative mx-auto flex min-h-[90vh] max-w-full flex-col justify-center px-6 pt-16 pb-24 lg:px-10">
+          <div className="d-recede max-w-[24ch]">
+            <p className="eyebrow r-fade">{ACTS.hero.eyebrow}</p>
 
-          <p className="mt-5 text-small text-muted">{HOME.reassurance}</p>
+            <Typewriter text={HOME.heroLine} emphasis="leave" className="font-display mt-7 text-hero font-light" />
 
-          <p className="mt-6">
-            <Link
-              href="/services/launch"
-              className="t text-small text-muted underline underline-offset-4 hover:text-ink"
-            >
-              {HOME.noSiteLink}
-            </Link>
+            <p className="mt-7 max-w-[34ch] text-lead text-muted">{HOME.heroRest}</p>
+          </div>
+
+          <div className="d-recede mt-12 max-w-form">
+            <AuditForm />
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2">
+              <p className="font-data text-small text-muted">{HOME.reassurance}</p>
+              <Link
+                href="/services/launch"
+                className="t text-small text-muted underline decoration-line underline-offset-[5px] hover:text-ink hover:decoration-ember"
+              >
+                {HOME.noSiteLink}
+              </Link>
+            </div>
+          </div>
+
+          <p aria-hidden="true" className="d-recede eyebrow absolute bottom-8 left-6 lg:left-10">
+            {ACTS.scrollCue}
           </p>
         </div>
-
-        <p
-          aria-hidden="true"
-          className="d-recede absolute bottom-8 left-6 text-small tracking-[0.14em] text-muted uppercase"
-        >
-          {ACTS.scrollCue}
-        </p>
       </section>
 
       <ActThreshold />

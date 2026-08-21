@@ -29,7 +29,7 @@ export function Checklist({ checks }: { checks: Check[] }) {
 
   return (
     <section aria-labelledby="checklist-heading" className="border-t border-line pt-14">
-      <h2 id="checklist-heading" className="text-small font-medium text-muted">
+      <h2 id="checklist-heading" className="eyebrow">
         {CHECKLIST.title}
       </h2>
 
@@ -57,11 +57,11 @@ function Group({ group, items }: { group: CheckGroup; items: Check[] }) {
 
   return (
     <div className="mt-10">
-      <h3 className="text-small font-medium">{GROUP_LABELS[group]}</h3>
+      <h3 className="font-display text-title text-ink">{GROUP_LABELS[group]}</h3>
       <ul className="mt-3">
         {sorted.map((check) => (
           <li key={check.id} className="flex gap-3 py-2">
-            <span className={`${TONE[check.status]} shrink-0 select-none`} aria-hidden="true">
+            <span className={`${TONE[check.status]} font-data shrink-0 pt-[0.2em] text-small select-none`} aria-hidden="true">
               {MARK[check.status]}
             </span>
             <span className="min-w-0">
@@ -76,7 +76,7 @@ function Group({ group, items }: { group: CheckGroup; items: Check[] }) {
                       : CHECKLIST.unknownLabel}
                 </span>
               </span>
-              {check.detail ? <span className="text-small text-muted"> — {check.detail}</span> : null}
+              {check.detail ? <span className="font-data text-small text-dim"> — {check.detail}</span> : null}
               {check.status === 'fail' ? <span className="mt-1 block text-small text-muted">{check.failed}</span> : null}
             </span>
           </li>

@@ -29,15 +29,15 @@ export default function Page() {
   const { sections } = METHOD;
 
   return (
-    <article className="mx-auto max-w-text px-6 pt-20 pb-8">
-      <h1 className="text-display font-regular text-balance">{METHOD.title}</h1>
-      <p className="mt-8 text-body text-muted">{METHOD.intro}</p>
+    <article className="mx-auto max-w-text px-6 pt-24 pb-8 lg:px-10">
+      <h1 className="font-display text-hero font-light text-balance">{METHOD.title}</h1>
+      <p className="mt-8 max-w-[54ch] text-lead text-muted">{METHOD.intro}</p>
 
       <Section title={sections.sources.title} body={sections.sources.body} />
       <Section title={sections.ourChecks.title} body={sections.ourChecks.body} />
 
       <section className="mt-16">
-        <h2 className="text-small font-medium text-muted">{sections.score.title}</h2>
+        <h2 className="eyebrow">{sections.score.title}</h2>
         {sections.score.body.map((paragraph) => (
           <p key={paragraph} className="mt-4 text-body">
             {paragraph}
@@ -47,7 +47,7 @@ export default function Page() {
         <dl className="mt-8">
           {pillars.map((pillar) => (
             <div key={pillar} className="flex gap-6 border-b border-line py-3 last:border-b-0">
-              <dt className="w-16 shrink-0 text-body tabular-nums">{PILLAR_WEIGHTS[pillar]}%</dt>
+              <dt className="font-display w-20 shrink-0 text-title text-ember">{PILLAR_WEIGHTS[pillar]}%</dt>
               <dd className="text-body">{PILLAR_QUESTIONS[pillar]}</dd>
             </div>
           ))}
@@ -78,7 +78,7 @@ export default function Page() {
 function Section({ title, body }: { title: string; body: readonly string[] }) {
   return (
     <section className="mt-16">
-      <h2 className="text-small font-medium text-muted">{title}</h2>
+      <h2 className="eyebrow">{title}</h2>
       {body.map((paragraph) => (
         <p key={paragraph} className="mt-4 text-body">
           {paragraph}

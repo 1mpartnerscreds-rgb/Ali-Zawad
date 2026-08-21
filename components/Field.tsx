@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react';
 
 const control =
-  't w-full rounded-sm border border-line bg-white px-4 py-3 text-body text-ink placeholder:text-muted hover:border-muted focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2';
+  't w-full rounded-md border border-line bg-surface px-4 py-3.5 text-body text-ink placeholder:text-dim hover:border-muted focus:outline-none focus-visible:border-ember focus-visible:outline-none';
 
 export function Field({
   id,
@@ -22,7 +22,7 @@ export function Field({
 
   return (
     <div>
-      <label htmlFor={id} className="block text-small text-muted">
+      <label htmlFor={id} className="eyebrow block">
         {label}
       </label>
       {textarea ? (

@@ -102,7 +102,7 @@ export function AuditForm({ variant = 'day' }: { variant?: 'day' | 'night' } = {
   if (running) {
     return (
       <div className="mt-12">
-        <p className="text-small text-muted">{AUDIT.runningTitle}</p>
+        <p className="eyebrow">{AUDIT.runningTitle}</p>
         <ul
           className="mt-4 space-y-2"
           aria-live="polite"
@@ -110,11 +110,11 @@ export function AuditForm({ variant = 'day' }: { variant?: 'day' | 'night' } = {
           aria-label={AUDIT.liveRegionLabel}
         >
           {lines.map((line) => (
-            <li key={line} className="az-status-line text-body text-ink">
-              <span aria-hidden="true" className="mr-3 text-muted">
-                —
+            <li key={line} className="az-status-line flex items-baseline gap-4 text-body text-ink">
+              <span aria-hidden="true" className="font-data text-micro text-ember">
+                ●
               </span>
-              {line}
+              <span className="font-data text-small">{line}</span>
             </li>
           ))}
         </ul>
@@ -128,14 +128,22 @@ export function AuditForm({ variant = 'day' }: { variant?: 'day' | 'night' } = {
       action="/api/audit/run"
       onSubmit={onSubmit}
       noValidate
-      className="mt-12"
+      className="mt-10"
       aria-describedby={error ? 'audit-error' : undefined}
     >
       <label htmlFor="audit-url" className="sr-only">
         {HOME.inputLabel}
       </label>
 
-      <div className="flex flex-col gap-3 sm:flex-row">
+      {/* One object, not a field beside a button. The ember ring belongs to the
+          whole control so it reads as a single instrument you feed an address
+          into — and the glow only lights when it is focused, so the page is not
+          shouting until somebody engages with it. */}
+      <div className="group relative flex flex-col gap-2 rounded-2xl border border-line bg-surface p-2 transition-shadow duration-300 focus-within:border-ember focus-within:shadow-[0_0_70px_-18px_var(--color-ember)] sm:flex-row sm:items-center sm:rounded-full">
+        <span aria-hidden="true" className="pointer-events-none absolute left-6 hidden font-data text-small text-dim sm:block">
+          https://
+        </span>
+
         <input
           ref={inputRef}
           id="audit-url"
@@ -148,20 +156,19 @@ export function AuditForm({ variant = 'day' }: { variant?: 'day' | 'night' } = {
           placeholder={HOME.placeholder}
           aria-invalid={error ? true : undefined}
           onInput={() => error && setError(null)}
-          className={`t min-w-0 flex-1 rounded-sm border-2 border-accent px-5 py-4 text-body text-ink placeholder:text-muted focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
-            variant === 'night' ? 'bg-transparent' : 'bg-white'
-          }`}
+          className="min-w-0 flex-1 bg-transparent px-5 py-4 font-data text-body text-ink placeholder:text-dim focus:outline-none focus-visible:outline-none sm:pl-[6.5rem]"
         />
+
         <button
           type="submit"
-          className="az-web t shrink-0 rounded-sm bg-accent px-7 py-4 text-body font-medium text-white hover:bg-accent-ink active:translate-y-px"
+          className="az-web t shrink-0 rounded-xl bg-ember px-8 py-4 text-small font-medium text-canvas hover:bg-ember-soft active:translate-y-px sm:rounded-full"
         >
           {HOME.submit}
         </button>
       </div>
 
       {error ? (
-        <p id="audit-error" role="alert" className="mt-3 text-small text-band-poor">
+        <p id="audit-error" role="alert" className="mt-3 pl-2 text-small text-band-poor">
           {error}
         </p>
       ) : null}

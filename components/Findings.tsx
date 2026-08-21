@@ -16,14 +16,14 @@ const RULE: Record<Finding['severity'], string> = {
 export function Findings({ findings }: { findings: Finding[] }) {
   return (
     <section aria-labelledby="findings-heading">
-      <h2 id="findings-heading" className="text-small font-medium text-muted">
+      <h2 id="findings-heading" className="eyebrow">
         {AUDIT.findingsTitle}
       </h2>
       <ul className="mt-8 space-y-10">
         {findings.map((finding) => (
-          <li key={finding.id} className={`border-l-2 pl-6 ${RULE[finding.severity]}`}>
-            <p className="text-body">{finding.headline}</p>
-            <p className="mt-2 text-small text-muted">{finding.metric}</p>
+          <li key={finding.id} className={`border-l pl-6 ${RULE[finding.severity]}`}>
+            <p className="text-lead text-balance">{finding.headline}</p>
+            <p className="mt-3 font-data text-small text-muted">{finding.metric}</p>
           </li>
         ))}
       </ul>

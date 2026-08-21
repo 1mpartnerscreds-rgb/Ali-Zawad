@@ -84,11 +84,11 @@ function Result({ result }: { result: AuditResult }) {
       : `/book?d=${encodeURIComponent(name)}`;
 
   return (
-    <article className="mx-auto max-w-text px-6 pt-20 pb-8">
+    <article className="mx-auto max-w-text px-6 pt-24 pb-8 lg:px-10">
       {/* The h1 is this line, not the score. The score is the loudest thing on the
           page but the page is *about* their domain, and one h1 per page means it
           should be the one that names it. */}
-      <h1 className="text-small font-regular text-muted">
+      <h1 className="eyebrow">
         {AUDIT.metaPrefix} <span className="text-ink">{name}</span>
       </h1>
 
@@ -97,8 +97,8 @@ function Result({ result }: { result: AuditResult }) {
           <Score score={result.score} band={result.band} />
         ) : (
           <div>
-            <p className="text-display font-regular text-balance">{AUDIT.partialTitle}</p>
-            <p className="mt-6 text-body text-muted">{AUDIT.partialNote}</p>
+            <p className="font-display text-display font-light text-balance">{AUDIT.partialTitle}</p>
+            <p className="mt-6 text-lead text-muted">{AUDIT.partialNote}</p>
           </div>
         )}
       </div>
@@ -117,10 +117,10 @@ function Result({ result }: { result: AuditResult }) {
 
       {/* The page should not end on a list. Last thing read is the next step. */}
       <section aria-labelledby="closing-heading" className="mt-20 border-t border-line pt-14">
-        <h2 id="closing-heading" className="text-small font-medium text-muted">
+        <h2 id="closing-heading" className="eyebrow">
           {AUDIT.closingTitle}
         </h2>
-        <p className="mt-4 text-body">{AUDIT.closingBody}</p>
+        <p className="mt-5 max-w-[56ch] text-lead">{AUDIT.closingBody}</p>
 
         <div className="mt-10">
           <ButtonLink href={bookHref}>{AUDIT.bookCta}</ButtonLink>
@@ -149,13 +149,13 @@ function Failure({ domain, reason }: { domain: string | null; reason: FailureRea
   return (
     <div className="mx-auto max-w-text px-6 pt-20 pb-8">
       {name ? (
-        <p className="text-small text-muted">
+        <p className="eyebrow">
           {AUDIT.metaPrefix} <span className="text-ink">{name}</span>
         </p>
       ) : null}
 
-      <h1 className="mt-10 text-display font-regular text-balance">{copy.title}</h1>
-      <p className="mt-6 text-body text-muted">{copy.body}</p>
+      <h1 className="font-display mt-10 text-display font-light text-balance">{copy.title}</h1>
+      <p className="mt-6 max-w-[56ch] text-lead text-muted">{copy.body}</p>
 
       <div className="mt-12 flex flex-wrap gap-3">
         <ButtonLink href={name ? `/book?d=${encodeURIComponent(name)}` : '/book'}>{AUDIT.bookCta}</ButtonLink>

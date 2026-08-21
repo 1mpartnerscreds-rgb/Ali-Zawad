@@ -17,89 +17,197 @@
 @theme {
   --color-*: initial;
 
-  --color-bg: #faf9f7; /* warm off-white, never #fff */
-  --color-surface: #f3f1ec; /* the one recessed tone */
-  --color-ink: #1a1917; /* warm near-black, never #000 — 16.7:1 */
-  --color-muted: #5b5952; /* secondary text — 6.66:1 */
-  --color-line: #e3dfd8; /* hairlines only */
-  --color-white: #ffffff; /* text on accent/ink fills only */
+  /* ---------------------------------------------------------------------
+     A warm near-black, not a cold one. #000 is a void; this is ink on a
+     press, or the inside of a camera body. Everything sits on it.
+  --------------------------------------------------------------------- */
+  --color-canvas: #0a0908;
+  --color-surface: #141110;
+  --color-raised: #1e1a17;
+  --color-ink: #f6f2e9; /* warm white — 17.8:1 */
+  --color-muted: #968d7e; /* secondary text — 6.07:1 */
+  --color-dim: #8a8175; /* tertiary text — 5.19:1 on canvas, 4.90:1 on surface */
+  --color-line: #2a2622;
 
-  --color-accent: #c2410c; /* 4.92:1 on bg, 5.18:1 for white on it */
-  --color-accent-ink: #9a3412; /* darker, for accent-coloured *text* — 6.94:1 */
+  /* The signal. Luminous on black in a way #c2410c never was. */
+  --color-ember: #ff5d1f; /* 6.48:1 */
+  --color-ember-soft: #ff8a5b;
+  --color-ember-deep: #b53d10;
 
-  /* Score bands. Muted on purpose: this is a diagnosis, not a traffic light. */
-  --color-band-poor: #9f3d2f;
-  --color-band-fair: #7e6210;
-  --color-band-good: #3f6b45;
+  /* The counterpoint. Cool, used only for measurement — so a number that is
+     being reported reads differently from a number that is being asked for. */
+  --color-ice: #8fd6e8; /* 12.3:1 */
 
-  /* Three type sizes. Display, body, small. That is the whole scale. */
+  /* Inverted acts. The page turning to daylight mid-scroll is the single
+     biggest gesture available, so the cream is warm enough to feel like paper
+     rather than like the lights coming on. */
+  --color-paper: #f2ede2;
+  --color-paper-ink: #14110f;
+  --color-paper-muted: #5d564c;
+  --color-paper-line: #d9d2c4;
+
+  --color-band-poor: #ff6b4a;
+  --color-band-fair: #e8b44a;
+  --color-band-good: #6fd79a;
+
+  --color-white: #ffffff;
+
+  /* ---------------------------------------------------------------------
+     Three voices, each with one job.
+     Display  — Fraunces. High contrast, optical sizing, a little wonk. It
+                carries the personality so the interface does not have to.
+     Body     — Inter. Invisible on purpose.
+     Data     — JetBrains Mono. Every measured number is set in it, so a
+                figure that came from an instrument looks like one.
+  --------------------------------------------------------------------- */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+
   --text-*: initial;
-  --text-display: clamp(2.125rem, 1.35rem + 3.1vw, 3.5rem);
-  --text-display--line-height: 1.12;
-  --text-display--letter-spacing: -0.021em;
+  --text-hero: clamp(2.75rem, 1.4rem + 5.6vw, 6.75rem);
+  --text-hero--line-height: 0.92;
+  --text-hero--letter-spacing: -0.03em;
+  --text-display: clamp(2.25rem, 1.2rem + 4.2vw, 5.25rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.022em;
+  --text-title: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
+  --text-title--line-height: 1.25;
+  --text-title--letter-spacing: -0.014em;
   --text-body: 1.0625rem;
-  --text-body--line-height: 1.7;
+  --text-body--line-height: 1.72;
+  --text-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+  --text-lead--line-height: 1.6;
   --text-small: 0.875rem;
   --text-small--line-height: 1.6;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.16em;
 
-  /* Two weights. Never 700. */
   --font-weight-*: initial;
+  --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
-
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-weight-semibold: 600;
 
   --radius-*: initial;
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-full: 999px;
 
   --shadow-*: initial;
 
   --spacing: 0.25rem;
 
   --container-*: initial;
-  --container-text: 720px; /* the measure — all body copy lives inside this */
-  --container-wide: 1080px; /* proof strip only */
+  /* Names here become utilities: --container-wide creates max-w-wide. So they
+     must never collide with a built-in. A token called `full` silently
+     redefined `max-w-full` from "100%" to a fixed 96rem, which made every
+     full-width wrapper wider than the viewport. */
+  --container-form: 44rem;
+  --container-text: 46rem;
+  --container-wide: 82rem;
+  --container-page: 96rem;
 }
 
 /* --- base ---------------------------------------------------------------- */
 
 html {
   -webkit-text-size-adjust: 100%;
+  background-color: var(--color-canvas);
 }
 
 body {
-  background-color: var(--color-bg);
+  background-color: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--text-body);
-  line-height: 1.7;
+  line-height: 1.72;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
-/* One visible focus treatment, applied everywhere, never removed. */
+/* Display type. Optical sizing does the work a second font would otherwise
+   have to: at hero scale the contrast opens up and the serifs sharpen. */
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+.font-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The label style used throughout: small, monospaced, widely tracked. It reads
+   as an instrument marking rather than as a heading. */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Inverted acts. Scoped as a theme swap so every descendant follows without a
+   single component knowing which surface it is sitting on. */
+.day {
+  --color-canvas: var(--color-paper);
+  --color-surface: #e9e2d4;
+  --color-raised: #ffffff;
+  --color-ink: var(--color-paper-ink);
+  --color-muted: var(--color-paper-muted);
+  --color-dim: #9a9285;
+  --color-line: var(--color-paper-line);
+  --color-ember: #c2410c;
+  --color-ember-soft: #9a3412;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-ember);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-white);
+  background: var(--color-ember);
+  color: var(--color-canvas);
 }
 
-/* The only motion on the site outside the audit status lines. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-canvas);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dim);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .t {
     transition:
-      opacity 150ms ease,
-      transform 150ms ease,
-      background-color 150ms ease,
-      border-color 150ms ease,
-      color 150ms ease;
+      opacity 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      color 200ms ease;
   }
 }
 
@@ -114,8 +222,6 @@ body {
   }
 }
 
-/* Audit status lines. This is the one place motion carries meaning: the wait
-   has to feel like work happening, because work *is* happening. */
 @keyframes az-line-in {
   from {
     opacity: 0;
@@ -194,13 +300,18 @@ body {
 /* The cursor. Appears only once typing has finished, then blinks twice and
    stops — a caret that blinks forever is a distraction sitting next to the one
    thing on this page we want people to look at. */
+.az-lit {
+  font-style: italic;
+  color: var(--color-ember);
+}
+
 .az-caret {
   display: inline-block;
   width: 0.06em;
   height: 0.78em;
   margin-left: 0.06em;
   vertical-align: baseline;
-  background: var(--color-accent);
+  background: var(--color-ember);
   opacity: 0;
   animation: az-caret-blink 620ms steps(1, end) 4 forwards;
 }
@@ -513,9 +624,11 @@ body {
 }
 
 .r-rail-fallback .r-rail-frame {
+  display: block;
   position: static;
   height: auto;
   overflow: visible;
+  padding-inline: 1.5rem;
 }
 
 .r-rail-fallback .r-rail {
@@ -541,9 +654,14 @@ body {
   }
 
   .r-rail-host .r-rail-frame {
+    /* display matters as much as position here. The frame is a flex container;
+       leaving it as one makes the unwrapped grid a flex ITEM, which then sizes
+       to max-content and blows a kilometre of horizontal scroll into the page. */
+    display: block;
     position: static;
     height: auto;
     overflow: visible;
+    padding-inline: 1.5rem;
   }
 
   .r-rail-host .r-rail {
@@ -571,9 +689,14 @@ body {
   }
 
   .r-rail-host .r-rail-frame {
+    /* display matters as much as position here. The frame is a flex container;
+       leaving it as one makes the unwrapped grid a flex ITEM, which then sizes
+       to max-content and blows a kilometre of horizontal scroll into the page. */
+    display: block;
     position: static;
     height: auto;
     overflow: visible;
+    padding-inline: 1.5rem;
   }
 
   .r-rail-host .r-rail {
@@ -637,9 +760,9 @@ body {
 /* The one glow on the site: the accent behaving like a signal lamp. */
 .lamp {
   box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-accent) 40%, transparent),
-    0 0 40px -6px color-mix(in srgb, var(--color-accent) 55%, transparent),
-    0 0 120px -30px color-mix(in srgb, var(--color-accent) 70%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--color-ember) 40%, transparent),
+    0 0 40px -6px color-mix(in srgb, var(--color-ember) 55%, transparent),
+    0 0 120px -30px color-mix(in srgb, var(--color-ember) 70%, transparent);
 }
 
 .display-xl {
@@ -745,10 +868,10 @@ body {
     background-image:
       repeating-linear-gradient(
         to right,
-        color-mix(in srgb, var(--color-accent) 34%, transparent) 0 1px,
+        color-mix(in srgb, var(--color-ember) 34%, transparent) 0 1px,
         transparent 1px 8.5%
       ),
-      repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 24%, transparent) 0 1px, transparent 1px 88px);
+      repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-ember) 24%, transparent) 0 1px, transparent 1px 88px);
     mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 68%, transparent 100%);
     animation: d-floor linear both;
     animation-timeline: view();
@@ -823,4 +946,12 @@ body {
   .d-floor {
     display: none;
   }
+}
+
+/* The oversized footer wordmark. Drawn as an outline, not filled type: it is a
+   mark rather than something anyone is meant to read, and an unreadable fill is
+   a legitimate contrast failure rather than a false positive. */
+.az-ghostmark {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-line);
 }

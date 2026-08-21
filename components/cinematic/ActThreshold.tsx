@@ -16,7 +16,7 @@ export function ActThreshold() {
   const { threshold } = ACTS;
 
   return (
-    <section className="night grain relative isolate" aria-labelledby="threshold-heading">
+    <section className="grain relative isolate" aria-labelledby="threshold-heading">
       {/* Tall enough to hold the frame while the meter runs. */}
       <div className="relative h-[240vh]">
         <div className="scene sticky top-0 flex h-screen items-center overflow-hidden">
@@ -26,35 +26,35 @@ export function ActThreshold() {
           <div className="d-floor" aria-hidden="true" />
 
           <div className="mx-auto w-full max-w-wide px-6">
-            <p className="r-fade text-small font-medium tracking-[0.14em] text-muted uppercase">{threshold.eyebrow}</p>
+            <p className="eyebrow r-fade">{threshold.eyebrow}</p>
 
             <div className="mt-8 flex items-end gap-5">
-              <span className="display-xl r-hold block font-regular text-[color:var(--color-accent)] tabular-nums">
+              <span className="font-display r-hold block text-hero font-light text-ember">
                 {threshold.seconds}
               </span>
-              <span className="display-lg r-fade block pb-[0.18em] font-regular text-muted">{threshold.unit}</span>
+              <span className="font-display r-fade block pb-[0.22em] text-display font-light text-muted italic">{threshold.unit}</span>
             </div>
 
             {/* The scale runs 0–6s; the fill stops where 2.5s falls on it. */}
             <div className="mt-10 max-w-[46rem]">
               <div className="h-px w-full bg-line">
                 <div
-                  className="r-meter lamp h-px w-full bg-[color:var(--color-accent)]"
+                  className="r-meter lamp h-px w-full bg-[color:var(--color-ember)]"
                   style={{ '--fill': 2.5 / 6 } as React.CSSProperties}
                 />
               </div>
-              <div className="mt-3 flex justify-between text-small text-muted tabular-nums">
+              <div className="mt-3 flex justify-between font-data text-micro text-muted">
                 <span>0s</span>
                 <span>6s</span>
               </div>
             </div>
 
-            <h2 id="threshold-heading" className="display-lg mt-14 max-w-[20ch] font-regular">
+            <h2 id="threshold-heading" className="font-display mt-14 max-w-[16ch] text-display font-light">
               <Words text={threshold.headline} />
             </h2>
 
-            <p className="r-up mt-8 max-w-[52ch] text-body text-muted">{threshold.body}</p>
-            <p className="r-fade mt-6 max-w-[52ch] text-small text-muted">{threshold.footnote}</p>
+            <p className="r-up mt-8 max-w-[54ch] text-lead text-muted">{threshold.body}</p>
+            <p className="r-fade mt-6 max-w-[54ch] font-data text-small text-dim">{threshold.footnote}</p>
           </div>
         </div>
       </div>

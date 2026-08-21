@@ -15,14 +15,15 @@ export function ActWork() {
   const { work } = ACTS;
 
   return (
-    <section aria-labelledby="work-heading" className="mx-auto max-w-wide px-6 pt-32">
-      <p className="r-fade text-small font-medium tracking-[0.14em] text-muted uppercase">{work.eyebrow}</p>
-      <h2 id="work-heading" className="display-lg mt-6 max-w-[18ch] font-regular">
+    <section aria-labelledby="work-heading" className="day scene-near px-6 pt-32 pb-32 lg:px-10">
+      <div className="mx-auto max-w-full">
+      <p className="eyebrow r-fade">{work.eyebrow}</p>
+      <h2 id="work-heading" className="font-display mt-6 max-w-[16ch] text-display font-light">
         <Words text={work.headline} />
       </h2>
-      <p className="r-up mt-8 max-w-[52ch] text-body text-muted">{work.body}</p>
+      <p className="r-up mt-8 max-w-[54ch] text-lead text-muted">{work.body}</p>
 
-      <ul className="scene-near mt-24 space-y-32">
+      <ul className="mt-24 space-y-28">
         {PROJECTS.map((project, index) => (
           <li key={project.name} className={index % 2 === 1 ? 'd-plate-alt' : 'd-plate'}>
             <a
@@ -31,7 +32,7 @@ export function ActWork() {
               className="t group grid items-center gap-8 no-underline lg:grid-cols-12"
             >
               <div
-                className={`overflow-hidden border border-line lg:col-span-8 ${
+                className={`overflow-hidden rounded-lg border border-line lg:col-span-8 ${
                   index % 2 === 1 ? 'lg:order-2 lg:col-start-5' : ''
                 }`}
               >
@@ -49,9 +50,9 @@ export function ActWork() {
               </div>
 
               <div className={`lg:col-span-4 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                <p className="r-up text-body font-medium">{project.name}</p>
-                <p className="r-up mt-3 text-small text-muted">{project.caption}</p>
-                <p className="r-fade mt-4 text-small text-[color:var(--color-accent-ink)]">
+                <p className="r-up font-display text-title text-ink">{project.name}</p>
+                <p className="r-up mt-3 text-body text-muted">{project.caption}</p>
+                <p className="r-fade mt-5 font-data text-small text-ember">
                   {new URL(project.href).host.replace(/^www\./, '')}
                 </p>
               </div>
@@ -59,6 +60,7 @@ export function ActWork() {
           </li>
         ))}
       </ul>
+      </div>
     </section>
   );
 }

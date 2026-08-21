@@ -20,17 +20,17 @@ export function Recommendation({
 
   return (
     <section aria-labelledby="recommendation-heading" className="border-t border-line pt-14">
-      <h2 id="recommendation-heading" className="text-small font-medium text-muted">
+      <h2 id="recommendation-heading" className="eyebrow">
         {AUDIT.recommendationTitle}
       </h2>
 
-      <p className="mt-6 text-display font-regular">{t.name}</p>
-      <p className="mt-2 text-small text-muted">
+      <p className="font-display mt-6 text-display font-light">{t.name}</p>
+      <p className="mt-3 font-data text-small text-ember">
         {t.price} · {t.priceNote} · {t.timeline}
       </p>
 
-      <p className="mt-8 text-body">{reason}</p>
-      <p className="mt-6 text-body text-muted">{t.what}</p>
+      <p className="mt-8 max-w-[56ch] text-lead">{reason}</p>
+      <p className="mt-6 max-w-[56ch] text-body text-muted">{t.what}</p>
 
       <div className="mt-10">
         <ButtonLink href={bookHref}>{AUDIT.bookCta}</ButtonLink>

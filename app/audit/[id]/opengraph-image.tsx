@@ -16,7 +16,7 @@ export const alt = 'Website audit result';
  * that make someone open it: their own domain, and their number.
  */
 
-const BAND_COLOR = { poor: '#9f3d2f', fair: '#7e6210', good: '#3f6b45' } as const;
+const BAND_COLOR = { poor: '#ff6b4a', fair: '#e8b44a', good: '#6fd79a' } as const;
 
 export default async function Image({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -35,13 +35,13 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          backgroundColor: '#faf9f7',
-          color: '#1a1917',
+          backgroundColor: '#0a0908',
+          color: '#f6f2e9',
           padding: '72px 80px',
           fontFamily: 'sans-serif',
         }}
       >
-        <div style={{ display: 'flex', fontSize: 30, color: '#5b5952' }}>
+        <div style={{ display: 'flex', fontSize: 30, color: '#968d7e' }}>
           {AUDIT.metaPrefix} {name}
         </div>
 
@@ -68,7 +68,7 @@ export default async function Image({ params }: { params: Promise<{ id: string }
           </div>
         )}
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 28, color: '#5b5952' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 28, color: '#968d7e' }}>
           <span>{SITE.name}</span>
           <span>{SITE.domain}</span>
         </div>

@@ -14,19 +14,19 @@ export function ServicePage({ slug }: { slug: TierSlug }) {
   const tier = TIERS[slug];
 
   return (
-    <article className="mx-auto max-w-text px-6 pt-20 pb-8">
-      <h1 className="text-display font-regular">{tier.name}</h1>
+    <article className="mx-auto max-w-text px-6 pt-24 pb-8 lg:px-10">
+      <h1 className="font-display text-hero font-light">{tier.name}</h1>
 
       <section className="mt-14">
-        <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.whatTitle}</h2>
-        <p className="mt-4 text-body">{tier.what}</p>
+        <h2 className="eyebrow">{SERVICE_PAGE.whatTitle}</h2>
+        <p className="mt-5 text-lead">{tier.what}</p>
       </section>
 
       <section className="mt-14">
-        <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.includesTitle}</h2>
+        <h2 className="eyebrow">{SERVICE_PAGE.includesTitle}</h2>
         <ul className="mt-4 space-y-3">
           {tier.includes.map((item) => (
-            <li key={item} className="text-body">
+            <li key={item} className="border-b border-line pb-3 text-body">
               {item}
             </li>
           ))}
@@ -35,21 +35,21 @@ export function ServicePage({ slug }: { slug: TierSlug }) {
 
       <div className="mt-14 flex flex-col gap-14 sm:flex-row sm:gap-24">
         <section>
-          <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.priceTitle}</h2>
-          <p className="mt-4 text-body">
+          <h2 className="eyebrow">{SERVICE_PAGE.priceTitle}</h2>
+          <p className="font-display mt-4 text-display font-light text-ember">
             {tier.price}
             <span className="text-muted"> · {tier.priceNote}</span>
           </p>
         </section>
 
         <section>
-          <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.timelineTitle}</h2>
-          <p className="mt-4 text-body">{tier.timeline}</p>
+          <h2 className="eyebrow">{SERVICE_PAGE.timelineTitle}</h2>
+          <p className="font-display mt-4 text-display font-light">{tier.timeline}</p>
         </section>
       </div>
 
       <section className="mt-14">
-        <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.caseTitle}</h2>
+        <h2 className="eyebrow">{SERVICE_PAGE.caseTitle}</h2>
         <p className="mt-4 text-body text-muted">
           {tier.caseNote}{' '}
           {tier.caseHref ? (
@@ -66,7 +66,7 @@ export function ServicePage({ slug }: { slug: TierSlug }) {
 
       {tier.testimonial ? (
         <section className="mt-14">
-          <h2 className="text-small font-medium text-muted">{SERVICE_PAGE.testimonialTitle}</h2>
+          <h2 className="eyebrow">{SERVICE_PAGE.testimonialTitle}</h2>
           <div className="mt-4">
             <Testimonial name={tier.testimonial} />
           </div>

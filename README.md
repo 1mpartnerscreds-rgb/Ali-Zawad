@@ -165,54 +165,35 @@ Tokens live in `app/globals.css`. The default Tailwind palette and type scale ar
 cleared with `initial`, so a component *cannot* reference `text-slate-600` or
 `text-2xl`. If a utility is not defined there, it does not exist.
 
-- One accent (`#c2410c`), in exactly three places: the audit input, the score,
-  the primary button. When it appears, it means *act*.
-- Three type sizes — display, body, small. Two weights — 400 and 500. Never 700.
-- Every text colour is ≥ 4.5:1 against the page background.
-- The audit status lines are the only meaningful motion on the site. Everything
-  else is a 150ms state transition, and `prefers-reduced-motion` is respected.
+**Surface.** A warm near-black (`#0a0908`), not a cold one — `#000` is a void,
+this is ink on a press. Two acts invert to warm paper via a `.day` class that
+swaps the same token names, so no component knows which surface it is sitting on.
+
+**Three voices, one job each.**
+
+| | Face | Used for |
+|---|---|---|
+| Display | Fraunces | Headlines, prices, scores. Carries the personality so the interface does not have to. |
+| Body | Inter | Reading. Invisible on purpose. |
+| Data | JetBrains Mono | Every measured number and every label. A figure that came off an instrument should look like it did. |
+
+**Colour.** One signal — ember `#ff5d1f` — for actions, plus a cool counterpoint
+for measurement, so a number being *reported* reads differently from a number
+being *asked for*. Score bands own the score. Every text colour is ≥4.5:1 on both
+surfaces; the check that keeps this honest is `color-contrast` in Lighthouse.
+
+Two traps this cost:
+
+- **Token names become utilities.** `--container-wide` creates `max-w-wide` — and
+  a token named `--container-full` silently redefined the *built-in*
+  `max-w-full` from `100%` to a fixed 96rem, making five full-width wrappers
+  wider than the viewport. Never name a token after a core utility value.
+- Only the display face is preloaded. Preloading two families put 169KB ahead of
+  first paint and cost eight Lighthouse points; loading Fraunces with the `opsz`
+  axis alone rather than `opsz`+`SOFT`+`WONK` halved it again.
 
 All user-facing copy lives in `content/`. English only, no translation layer —
 but nothing is hardcoded in JSX, so adding one later is mechanical.
-
-## Progressive enhancement
-
-The audit form works with JavaScript disabled: it posts natively to
-`/api/audit/run`, which runs the audit server-side and redirects to the result.
-With JavaScript, the client streams real progress events from `/api/audit` and
-shows a status line as each check completes.
-
-A cached domain emits **no** progress lines and appears instantly. Faking a delay
-so cached work "feels authentic" would be a lie about our own product.
-
-## Measured
-
-| | Result |
-|---|---|
-| Lighthouse mobile, homepage | **97** / 100 / 100 / 100 |
-| Lighthouse mobile, all other pages | 98–99 / 100 / 100 / 100 |
-| Same HTML with scripts stripped | **100 / 100 / 100 / 100** |
-| Homepage JS, modern browsers | ~137 KB gzipped |
-| Homepage JS, framework floor | ~135 KB gzipped |
-
-The homepage ships **one** client component (`AuditForm`, ~3 KB). Everything else
-in that number is Next.js and React themselves: a page with zero client
-components measures the same. The stated 60 KB budget is not reachable on the
-App Router — see the note in the handover.
-
-## Testimonials
-
-Two real client quotes, in `content/site.ts`, verbatim apart from a closing full
-stop. They appear on `/book` — after the form, so somebody who arrived ready to
-book reaches the fields first — and the Cybertech one on `/services/build`,
-whose work it describes.
-
-They are deliberately **not** on the homepage. That page has one job: get one URL
-into one box. A testimonial there competes with the input for attention, which
-is the failure this site exists to fix, and §5.1 rules it out for that reason.
-
-`href` is null where a company's own site no longer resolves. We do not link a
-prospect to a dead domain to prove we are reliable.
 
 ## The scroll sequence
 
