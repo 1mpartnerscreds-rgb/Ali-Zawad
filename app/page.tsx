@@ -1,63 +1,59 @@
 import Link from 'next/link';
 import { AuditForm } from '@/components/AuditForm';
+import { ActClose } from '@/components/cinematic/ActClose';
+import { ActMeasure } from '@/components/cinematic/ActMeasure';
+import { ActThreshold } from '@/components/cinematic/ActThreshold';
+import { ActWork } from '@/components/cinematic/ActWork';
 import { Typewriter } from '@/components/Typewriter';
-import { HOME, PROJECTS } from '@/content/site';
+import { ACTS, HOME } from '@/content/site';
 
 /**
- * Three things above the fold: the headline, the input, one escape hatch.
+ * The homepage as a scroll sequence.
  *
- * There is deliberately no services menu, no tier grid and no pricing table on
- * this page. Showing a visitor three options and asking them to self-diagnose is
- * the exact failure this site exists to fix. They get diagnosed, then they get
- * told which one.
+ * The rule the original brief set still holds even here: above the fold there
+ * is a headline, an input, and one way out. Everything cinematic happens after
+ * the visitor has had the chance to do the only thing this page is for. A
+ * sequence that makes somebody scroll past the product to admire the product is
+ * a showreel, not a funnel.
+ *
+ * All choreography is native CSS scroll-driven animation — `view()` and named
+ * view timelines — so it runs on the compositor and adds no JavaScript. On a
+ * site that tells people their site is too slow, buying motion with a 70KB
+ * animation library would have made the argument a bluff.
  */
 export default function HomePage() {
   return (
     <>
-      <section className="mx-auto max-w-text px-6 pt-24 pb-28 sm:pt-32">
-        <Typewriter text={HOME.headline} className="text-display font-regular text-balance" />
+      <section className="scene relative mx-auto flex min-h-[92vh] max-w-text flex-col justify-center px-6 pt-20 pb-24">
+        <div className="d-recede">
+          <Typewriter text={HOME.headline} className="display-lg font-regular text-balance" />
 
-        <AuditForm />
+          <AuditForm />
 
-        <p className="mt-5 text-small text-muted">{HOME.reassurance}</p>
+          <p className="mt-5 text-small text-muted">{HOME.reassurance}</p>
 
-        <p className="mt-6">
-          <Link href="/services/launch" className="t text-small text-muted underline underline-offset-4 hover:text-ink">
-            {HOME.noSiteLink}
-          </Link>
+          <p className="mt-6">
+            <Link
+              href="/services/launch"
+              className="t text-small text-muted underline underline-offset-4 hover:text-ink"
+            >
+              {HOME.noSiteLink}
+            </Link>
+          </p>
+        </div>
+
+        <p
+          aria-hidden="true"
+          className="d-recede absolute bottom-8 left-6 text-small tracking-[0.14em] text-muted uppercase"
+        >
+          {ACTS.scrollCue}
         </p>
       </section>
 
-      <section className="border-t border-line" aria-labelledby="proof-heading">
-        <div className="mx-auto max-w-wide px-6 py-16">
-          <h2 id="proof-heading" className="text-small font-medium text-muted">
-            {HOME.proof.caption}
-          </h2>
-
-          <ul className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-            {PROJECTS.map((project) => (
-              <li key={project.name}>
-                <a href={project.href} rel="noreferrer" className="t group block no-underline">
-                  <img
-                    src={project.image}
-                    srcSet={`${project.imageSmall} 400w, ${project.imageMedium} 600w, ${project.image} 800w`}
-                    sizes="(min-width: 1024px) 248px, (min-width: 640px) 50vw, 100vw"
-                    alt={`The ${project.name} website homepage`}
-                    width={800}
-                    height={600}
-                    loading="lazy"
-                    decoding="async"
-                    className="t w-full rounded-sm border border-line bg-surface group-hover:opacity-85"
-                  />
-                  <p className="mt-3 text-small text-muted">{project.caption}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <p className="mt-12 max-w-text text-small text-muted">{HOME.proof.credibility}</p>
-        </div>
-      </section>
+      <ActThreshold />
+      <ActMeasure />
+      <ActWork />
+      <ActClose />
     </>
   );
 }

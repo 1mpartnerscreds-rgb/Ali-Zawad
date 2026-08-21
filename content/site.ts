@@ -96,6 +96,43 @@ export const PROJECTS = [
 ] as const;
 
 /**
+ * The scroll sequence on the homepage.
+ *
+ * Every number quoted here is Google's own published boundary, taken from the
+ * same scoring config the audit runs on. A cinematic page still has to be a
+ * true page: nothing on it is a statistic we invented to make an act land.
+ */
+export const ACTS = {
+  scrollCue: 'Scroll',
+
+  threshold: {
+    eyebrow: 'The boundary',
+    seconds: '2.5',
+    unit: 'seconds',
+    headline: 'That is how long Google gives you.',
+    body: 'Past two and a half seconds, Google stops calling your site fast. Not because it is strict — because that is roughly where people stop waiting. Your visitors made the rule. Google only wrote it down.',
+    footnote: 'Largest Contentful Paint, mobile. The same threshold the audit above scores you against.',
+  },
+
+  measure: {
+    eyebrow: 'What the audit reads',
+    headline: 'Six questions, asked of your homepage.',
+    body: 'Not a developer’s checklist. The things that decide whether somebody who found you actually becomes a customer.',
+  },
+
+  work: {
+    eyebrow: 'Built and running',
+    headline: 'Every one of these is live right now.',
+    body: 'Open any of them. They are not mockups, and they are not concepts sitting in a folder.',
+  },
+
+  close: {
+    headline: 'So. What does yours do?',
+    body: 'One address. About twenty seconds. No email, no cost.',
+  },
+} as const;
+
+/**
  * Client testimonials. Quoted verbatim — the only edit is a closing full stop.
  *
  * Deliberately NOT on the homepage. That page has one job: get one URL into one

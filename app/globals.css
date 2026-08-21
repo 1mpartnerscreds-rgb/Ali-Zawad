@@ -282,3 +282,545 @@ body {
     opacity: 1;
   }
 }
+
+/* ===========================================================================
+   CINEMATIC LAYER
+   ---------------------------------------------------------------------------
+   Scroll choreography, built on native CSS scroll-driven animations.
+
+   `animation-timeline: view()` and `scroll()` run on the compositor, off the
+   main thread, and cost zero JavaScript. That matters more here than anywhere
+   else on the web: this site tells people their site is too slow. Buying the
+   motion with a 70KB animation library would make that argument a bluff.
+
+   Everything degrades to "simply visible" where the timeline properties are not
+   supported, and to "simply visible" under prefers-reduced-motion. Nothing here
+   is load-bearing for reading the page.
+=========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --- Entrances: driven by an element's own travel through the viewport --- */
+
+  .r-up {
+    animation: r-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
+  @keyframes r-up {
+    from {
+      opacity: 0;
+      transform: translateY(2.5rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .r-fade {
+    animation: r-fade linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  @keyframes r-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Rises, holds, then releases as it leaves — the shot has a beginning and an
+     end rather than just appearing. */
+  .r-hold {
+    animation: r-hold linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+
+  @keyframes r-hold {
+    0% {
+      opacity: 0;
+      transform: translateY(3rem) scale(0.97);
+    }
+    22%,
+    76% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-2rem) scale(0.99);
+    }
+  }
+
+  /* --- The hero yielding the screen as you begin to scroll ---------------- */
+
+  .r-hero {
+    animation: r-hero linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 90vh;
+  }
+
+  @keyframes r-hero {
+    to {
+      opacity: 0;
+      transform: translateY(-4rem) scale(0.94);
+      filter: blur(6px);
+    }
+  }
+
+  /* --- Parallax: layers moving at different rates through the same frame -- */
+
+  .r-slow {
+    animation: r-slow linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes r-slow {
+    from {
+      transform: translateY(4rem);
+    }
+    to {
+      transform: translateY(-4rem);
+    }
+  }
+
+  .r-fast {
+    animation: r-fast linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes r-fast {
+    from {
+      transform: translateY(9rem);
+    }
+    to {
+      transform: translateY(-9rem);
+    }
+  }
+
+  /* --- Scrubbed: progress tied directly to scroll position --------------- */
+
+  /* A line that draws itself as its section passes through. */
+  .r-draw {
+    stroke-dasharray: var(--len, 1200);
+    stroke-dashoffset: var(--len, 1200);
+    animation: r-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 60%;
+  }
+
+  @keyframes r-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* A bar filling to a measured value. */
+  .r-meter {
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: r-meter linear both;
+    animation-timeline: view();
+    animation-range: entry 30% cover 50%;
+  }
+
+  @keyframes r-meter {
+    to {
+      transform: scaleX(var(--fill, 1));
+    }
+  }
+
+  /* Words assembling as the line crosses the screen. Each word carries its own
+     --i so the stagger is expressed in the range, not in delays. */
+  .r-word {
+    display: inline-block;
+    animation: r-word linear both;
+    animation-timeline: view();
+    animation-range: entry calc(var(--i, 0) * 3%) entry calc(30% + var(--i, 0) * 3%);
+  }
+
+  @keyframes r-word {
+    from {
+      opacity: 0;
+      transform: translateY(0.7em) rotate(2deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* --- The horizontal act -------------------------------------------------
+     The track is pushed sideways by the scroll position of its own tall
+     parent, so the page scrolls down while the content travels across. */
+  .r-rail-host {
+    view-timeline-name: --rail;
+    view-timeline-axis: block;
+  }
+
+  .r-rail {
+    animation: r-rail linear both;
+    /* Named timeline from the tall host above, so travel across is tied to the
+       host's own pass through the viewport rather than to the whole document.
+       `contain` is exactly the window in which the host fills the screen —
+       which is exactly the window in which it is pinned. */
+    animation-timeline: --rail;
+    animation-range: contain 0% contain 100%;
+  }
+
+  @keyframes r-rail {
+    to {
+      transform: translateX(calc(-100% + 100vw));
+    }
+  }
+
+  /* --- The dark act: the page itself changing state ---------------------- */
+  .r-nightfall {
+    animation: r-nightfall linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes r-nightfall {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    18%,
+    82% {
+      opacity: 1;
+    }
+  }
+}
+
+/* --- Rail fallbacks ------------------------------------------------------
+   The horizontal act only works because the track moves. If it cannot move —
+   reduced motion, or an engine without scroll-driven timelines — the cards past
+   the first two sit outside an overflow-hidden box with no way to reach them.
+   So in both cases the rail stops being a rail and becomes an ordinary grid.
+   Motion is allowed to be missing; content is not.
+--------------------------------------------------------------------------- */
+
+.r-rail-fallback {
+  height: auto;
+}
+
+.r-rail-fallback .r-rail-frame {
+  position: static;
+  height: auto;
+  overflow: visible;
+}
+
+.r-rail-fallback .r-rail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  transform: none;
+  padding-inline: 0;
+}
+
+.r-rail-fallback .r-rail > li {
+  width: auto;
+  height: auto;
+  min-height: 16rem;
+}
+
+.r-rail-fallback .r-rail > li[aria-hidden='true'] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .r-rail-host {
+    height: auto;
+  }
+
+  .r-rail-host .r-rail-frame {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .r-rail-host .r-rail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    transform: none;
+    padding-inline: 0;
+  }
+
+  .r-rail-host .r-rail > li {
+    width: auto;
+    height: auto;
+    min-height: 16rem;
+  }
+
+  .r-rail-host .r-rail > li[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+/* Fallback for engines without scroll-driven timelines: show everything. */
+@supports not (animation-timeline: view()) {
+  .r-rail-host {
+    height: auto;
+  }
+
+  .r-rail-host .r-rail-frame {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .r-rail-host .r-rail {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    transform: none;
+    padding-inline: 0;
+  }
+
+  .r-rail-host .r-rail > li {
+    width: auto;
+    height: auto;
+    min-height: 16rem;
+  }
+
+  .r-rail-host .r-rail > li[aria-hidden='true'] {
+    display: none;
+  }
+
+  .r-up,
+  .r-fade,
+  .r-hold,
+  .r-word,
+  .r-hero {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .r-draw {
+    stroke-dashoffset: 0;
+  }
+
+  .r-meter {
+    transform: scaleX(var(--fill, 1));
+  }
+}
+
+/* --- Surfaces ------------------------------------------------------------ */
+
+.night {
+  --color-ink: #f4f1ea;
+  --color-muted: #9c968a;
+  --color-line: #2b2823;
+  background-color: #0e0d0b;
+  color: #f4f1ea;
+}
+
+/* Film grain. One repeating SVG, no image request, sits above the fill and
+   below the text so the dark act has texture instead of flatness. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
+}
+
+/* The one glow on the site: the accent behaving like a signal lamp. */
+.lamp {
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-accent) 40%, transparent),
+    0 0 40px -6px color-mix(in srgb, var(--color-accent) 55%, transparent),
+    0 0 120px -30px color-mix(in srgb, var(--color-accent) 70%, transparent);
+}
+
+.display-xl {
+  font-size: clamp(2.75rem, 1rem + 8vw, 8.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.display-lg {
+  font-size: clamp(2rem, 0.9rem + 4.6vw, 4.75rem);
+  line-height: 1.03;
+  letter-spacing: -0.028em;
+}
+
+/* ===========================================================================
+   DEPTH
+   ---------------------------------------------------------------------------
+   Real 3D, not offset faked to look like it. A perspective container plus
+   transforms in Z, driven by the same scroll timelines as everything else, so
+   the depth costs no JavaScript either.
+
+   Two rules keep this from becoming a gimmick:
+   1. Nothing readable is ever left rotated. Every element resolves to flat and
+      face-on by the time it is in front of the reader.
+   2. Under reduced motion the whole layer collapses to plain 2D. Depth is an
+      effect; the content underneath it is not.
+=========================================================================== */
+
+.scene {
+  perspective: 1400px;
+  perspective-origin: 50% 45%;
+}
+
+.scene-near {
+  perspective: 900px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* --- Plates settling out of depth -------------------------------------
+     A project card arrives tilted and set back, then rotates flat and comes
+     forward as it reaches the reader. It is face-on for the entire time it can
+     actually be read. */
+  .d-plate {
+    transform-origin: 50% 100%;
+    animation: d-plate linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+
+  @keyframes d-plate {
+    from {
+      opacity: 0;
+      transform: translateZ(-340px) translateY(3rem) rotateX(26deg) rotateZ(-1.4deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .d-plate-alt {
+    transform-origin: 50% 100%;
+    animation: d-plate-alt linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 42%;
+  }
+
+  @keyframes d-plate-alt {
+    from {
+      opacity: 0;
+      transform: translateZ(-340px) translateY(3rem) rotateX(26deg) rotateZ(1.4deg);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* --- The hero receding rather than merely shrinking -------------------- */
+  .d-recede {
+    animation: d-recede linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 92vh;
+  }
+
+  @keyframes d-recede {
+    to {
+      opacity: 0;
+      transform: translateZ(-520px) translateY(-2rem);
+      filter: blur(5px);
+    }
+  }
+
+  /* --- The floor -------------------------------------------------------
+     A plane laid down at a steep angle so its lines converge at a horizon,
+     travelling toward the viewer as the act plays. This is the dark act's only
+     imagery, and it is drawn in CSS rather than fetched. */
+  .d-floor {
+    position: absolute;
+    inset: 46% -60% -30% -60%;
+    transform: rotateX(74deg);
+    transform-origin: 50% 0%;
+    background-image:
+      repeating-linear-gradient(
+        to right,
+        color-mix(in srgb, var(--color-accent) 34%, transparent) 0 1px,
+        transparent 1px 8.5%
+      ),
+      repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-accent) 24%, transparent) 0 1px, transparent 1px 88px);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 68%, transparent 100%);
+    animation: d-floor linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+
+  @keyframes d-floor {
+    from {
+      background-position:
+        0 0,
+        0 0;
+      opacity: 0.15;
+    }
+    45% {
+      opacity: 0.85;
+    }
+    to {
+      background-position:
+        0 0,
+        0 620px;
+      opacity: 0.15;
+    }
+  }
+
+  /* --- The corridor ----------------------------------------------------
+     Panels stood at an angle so travelling the rail reads as moving past a
+     wall rather than sliding a strip. They straighten as they pass the centre
+     of the screen, which is the only moment anyone is reading them. */
+  .d-corridor {
+    transform-style: preserve-3d;
+  }
+
+  .d-panel {
+    transform: rotateY(-19deg) translateZ(-90px);
+    transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .d-panel-mid {
+    transform: rotateY(0deg) translateZ(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene,
+  .scene-near {
+    perspective: none;
+  }
+
+  .d-plate,
+  .d-plate-alt,
+  .d-recede,
+  .d-panel {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+
+  .d-floor {
+    display: none;
+  }
+}
+
+@supports not (animation-timeline: view()) {
+  .d-plate,
+  .d-plate-alt,
+  .d-recede {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .d-floor {
+    display: none;
+  }
+}

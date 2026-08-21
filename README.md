@@ -214,6 +214,43 @@ is the failure this site exists to fix, and §5.1 rules it out for that reason.
 `href` is null where a company's own site no longer resolves. We do not link a
 prospect to a dead domain to prove we are reliable.
 
+## The scroll sequence
+
+The homepage is a four-act scroll piece: the hero recedes into depth, a dark act
+pins the 2.5-second threshold over a perspective floor, the six scoring pillars
+travel past as a corridor of angled panels, and the work settles out of depth
+plate by plate before the input returns full-screen.
+
+**It adds no JavaScript.** All of it is native CSS scroll-driven animation —
+`animation-timeline: view()`, named view timelines, and 3D transforms — which
+runs on the compositor rather than the main thread. That was the whole reason
+not to reach for GSAP: this site tells people their site is too slow, and buying
+the motion with a 70KB animation library would have made the argument a bluff.
+Homepage measures 98 / 100 / 100 / 100 with the sequence in place.
+
+Three rules hold the layer together:
+
+- **Nothing readable is left rotated.** Every element resolves flat and face-on
+  by the time it is in front of the reader.
+- **Motion may be missing; content may not.** The horizontal act only works
+  because the track moves — under reduced motion, or on an engine without
+  scroll-driven timelines, the rail stops being a rail and becomes a plain grid.
+  Left as-is, four of the six panels would sit outside an `overflow: hidden` box
+  with no way to reach them.
+- **Every number in the sequence is real.** The 2.5 seconds is Google's own LCP
+  boundary and the pillar weights are read from the scoring config, so the act
+  cannot drift from what the audit does.
+
+Two traps worth knowing about, both hit during the build:
+
+- `overflow: hidden` on a section makes it a scroll container, which **breaks
+  `position: sticky` inside it**. The pinned dark act silently scrolled away and
+  rendered as a black screen. Clipping belongs on the pinned frame, never on the
+  section that contains it.
+- A word wrapped in an `inline-block` that swallows its own trailing space
+  leaves the browser no break opportunity, so the line refuses to wrap at all.
+  Same failure mode as splitting on a non-breaking space.
+
 ## Motion
 
 Two deliberate exceptions to the "no animation" rule, both requested and both

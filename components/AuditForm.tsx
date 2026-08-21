@@ -18,7 +18,13 @@ import type { AuditStreamEvent } from '@/lib/audit/types';
  * server answers immediately and the visitor never sees a line — a staged delay
  * to make cached work "feel authentic" would be a lie about our own product.
  */
-export function AuditForm() {
+/**
+ * `night` is the same form on the dark surface at the end of the page. Only the
+ * input's own fill changes — the accent border and the accent button are
+ * identical, because a visitor should recognise this as the same control they
+ * saw at the top rather than as a second, different offer.
+ */
+export function AuditForm({ variant = 'day' }: { variant?: 'day' | 'night' } = {}) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -142,7 +148,9 @@ export function AuditForm() {
           placeholder={HOME.placeholder}
           aria-invalid={error ? true : undefined}
           onInput={() => error && setError(null)}
-          className="t min-w-0 flex-1 rounded-sm border-2 border-accent bg-white px-5 py-4 text-body text-ink placeholder:text-muted focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className={`t min-w-0 flex-1 rounded-sm border-2 border-accent px-5 py-4 text-body text-ink placeholder:text-muted focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${
+            variant === 'night' ? 'bg-transparent' : 'bg-white'
+          }`}
         />
         <button
           type="submit"
