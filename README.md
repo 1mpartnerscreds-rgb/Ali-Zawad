@@ -76,6 +76,21 @@ the body face is a static cut rather than a 132KB variable file that sat in the
 critical chain. The remaining cost is framework JavaScript. Astro would remove
 most of it and is the change that would actually meet the number.
 
+## Icons and the share card
+
+The mark is not drawn by hand — `app/icon.svg` is cut from Bricolage itself,
+instanced at the same weight and width the display type uses, so the favicon and
+the wordmark are the same object. `favicon.ico` and `apple-icon.png` are
+generated from that SVG.
+
+`app/opengraph-image.tsx` renders the share card at build time in the site's own
+two faces. Satori cannot read woff2, so `og-display.ttf` and `og-mono.ttf` are
+static cuts instanced from the same subset the site ships rather than separate
+downloads.
+
+These links get pasted into cold email, so the card is often the first frame
+anybody sees. It carries the statement and nothing else.
+
 ## Fonts
 
 `app/fonts/bricolage-subset.woff2` is generated, not vendored blind. Regenerate
