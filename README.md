@@ -1,268 +1,101 @@
 # AZ Studio
 
-The marketing site for AZ Studio at [alizawad.online](https://alizawad.online).
-
-It is not a brochure. A visitor enters their website address, gets a **real
-automated audit** of that site, and is routed to exactly one recommended tier
-based on what the audit found. The audit is the demo: it proves the work before
-any claim is made about it.
-
-## Running it
+Front-end and motion for brand studios. White-label: the studio keeps the
+client, the credit and the margin.
 
 ```bash
 npm install && npm run dev
-```
-
-```bash
 npm run build && npm start
 ```
 
-## Environment
+## What this site is
 
-Copy `.env.example` to `.env.local`.
+The portfolio, not a description of one. Every claim in the copy is redundant
+with something the page is already doing — the reel pieces are built in the
+page and scrub under the reader's scroll rather than playing as recordings.
 
-| Variable | Required | What it does |
-|---|---|---|
-| `PAGESPEED_API_KEY` | **In practice, yes** | Google PageSpeed Insights key. See the warning below. |
-| `NEXT_PUBLIC_SITE_URL` | For deploys | Absolute origin for canonical and OG image URLs. |
-| `RESEND_API_KEY` + `BOOKING_TO_EMAIL` | No | Sends booking enquiries to your inbox. |
-| `BOOKING_FROM_EMAIL` | No | From address for the above. Defaults to Resend's sandbox sender. |
-| `BOOKING_WEBHOOK_URL` | No | Fallback destination for enquiries (Zapier, Make, n8n). |
-
-### The PageSpeed key is not really optional
-
-The API works without a key, but the anonymous tier is a **single shared Google
-project quota** used by everyone on the internet who calls it unauthenticated.
-During this build it was already exhausted, returning HTTP 429 on every request.
-
-Without a key the site does not break and does not lie — it degrades to a
-**partial audit**: every check we run ourselves still runs, findings are still
-real, and the page says plainly that there is no score because the load
-measurements are missing. But nobody gets a score. Set the key.
-
-Get one at the Google Cloud console by enabling the *PageSpeed Insights API*.
-
-## How the audit works
-
-1. `lib/audit/normalize.ts` — turns whatever was typed into one canonical domain.
-   The audit id **is** that domain, so results live at readable, shareable URLs
-   like `/audit/theirsite.com`.
-2. `lib/audit/psi.ts` — PageSpeed Insights, **mobile strategy**. Mobile is the
-   harsher measurement and the device the customer is holding; a desktop number
-   flatters the site and misleads the owner.
-3. `lib/audit/page-checks.ts` — everything PSI will not tell us, read off the
-   HTML: HTTPS, viewport, a reachable contact method, title and description
-   quality, favicon, and signals that the site is already an application.
-4. `lib/audit/score.ts` — pillars, composite score, findings, tier routing.
-5. `lib/audit/run.ts` — orchestration, the 20s budget, and the 24h cache.
-
-### Scoring
-
-All tunable numbers live in **one file**: `lib/audit/weights.ts`.
-
-We do not surface Google's performance number as "the score". Google grades a
-page as an engineer sees it. The composite is weighted toward what a business
-owner is actually asking:
-
-| Pillar | Weight | The question it answers |
-|---|---|---|
-| `loads` | 28 | Does it load before people give up? |
-| `reach` | 20 | Can a customer actually reach me? |
-| `phone` | 18 | Does it work on a phone? |
-| `found` | 16 | Can Google find me? |
-| `trust` | 12 | Does it look safe to a browser? |
-| `usable` | 6 | Can everyone use it? |
-
-Metric thresholds are anchored to Google's own good / needs-improvement / poor
-boundaries, so any number quoted to a client can be checked against PageSpeed
-Insights directly.
-
-### Real visits beat the lab
-
-Lighthouse's lab run simulates a mid-range phone on throttled 4G. It is a stress
-test. On a large site it can read 28 seconds where real visitors wait three.
-
-So when Google has Chrome UX Report data for a site — real measurements from real
-visits — that is what we score and what we quote, and the finding says so. When
-it doesn't, we fall back to the lab run and **every sentence built on it says
-plainly that it was a simulation**. Quoting a lab number as "what your visitors
-experience" is the fastest possible way to have the whole audit dismissed: the
-owner opens their own site, watches it load, and stops believing the rest.
-
-### Checking the phone layout ourselves
-
-Lighthouse 13 deleted `content-width`, `font-size`, `tap-targets` and `viewport`.
-Anything still asking for them silently receives `null` — which is how "does this
-get cut off on a phone?" quietly stopped being checked at all.
-
-The `phone` pillar is now read directly from the page's own markup, so it cannot
-depend on which Lighthouse version PageSpeed happens to run:
-
-- a viewport pinned to a fixed pixel width (`width=1024`) is a **guarantee** the
-  page is cropped on a phone, and scores worse than having no viewport tag at all
-- `user-scalable=no` or a low `maximum-scale` means nobody can rescue a cramped
-  layout by zooming
-
-Everywhere else, audit ids are looked up through a candidate list (newest first)
-in `REPORTED_CHECKS`, so both old and new Lighthouse versions are understood.
-
-### Everything we checked
-
-Findings stay short — three to five things worth acting on. Underneath them is
-the full list of every test run, grouped and marked passed / needs work /
-couldn't check.
-
-That third state matters. A check we could not run is never counted as a pass.
-A report that pads its own pass rate is worthless, and the first time an owner
-notices one they stop trusting the rest of the page.
-
-### Tier routing
-
-Order matters here, and it was corrected against real measurements:
-
-- **A site that is already an application never routes to Launch**, however badly
-  it scores. Telling the owner of a working storefront that the answer is "up to
-  5 pages, $499" is a diagnosis nobody would believe.
-- **"Already an application" is decided on evidence, not vocabulary.** A password
-  field, a payment or booking provider, a shop platform, a cart, or an account
-  area *on this domain*. An account link pointing at another company — a lawn
-  care firm's billing portal, say — is the opposite of app evidence: the site
-  hands the customer to somebody else's software, which is a Build case. Getting
-  this wrong once routed a small local business to a custom retainer.
-- Subdomains are compared by registrable domain, so `accounts.nike.com` is Nike
-  and not a third party.
-- Broken foundations on a brochure site → **Launch**.
-- Nothing broken, but the site cannot transact and its own copy is about booking
-  or selling → **Build**.
-- Already an application, or nothing broken and nothing obviously missing →
-  **Scale**.
-
-### How it fails
-
-Failure handling is a feature, not an afterthought. Every failure mode names what
-actually happened and ends on the same door out — book a call. Handled: bad
-input, non-existent domain, unreachable host, connect timeout, invalid
-certificate, bot-blocked, non-HTML response, redirect loop, rate limit, and
-upstream outage.
-
-**Nothing is ever fabricated.** If we cannot measure it, we do not print a number
-for it.
-
-### Caching and abuse
-
-Results are cached by normalized domain for 24 hours via the Next.js data cache,
-so a repeat submission never re-runs the API. Failed audits are deliberately
-*not* cached — a domain that was down for a minute should not be wrong for a day.
-
-`lib/rate-limit.ts` limits by IP. It is in-process, so the limit is per
-serverless instance rather than global — enough to stop casual abuse, not a
-distributed attacker. If volume ever justifies it, swap the Map for Vercel KV;
-the call signature does not change.
-
-## Design system
-
-Tokens live in `app/globals.css`. The default Tailwind palette and type scale are
-cleared with `initial`, so a component *cannot* reference `text-slate-600` or
-`text-2xl`. If a utility is not defined there, it does not exist.
-
-**Surface.** A warm near-black (`#0a0908`), not a cold one — `#000` is a void,
-this is ink on a press. Two acts invert to warm paper via a `.day` class that
-swaps the same token names, so no component knows which surface it is sitting on.
-
-**Three voices, one job each.**
-
-| | Face | Used for |
-|---|---|---|
-| Display | Fraunces | Headlines, prices, scores. Carries the personality so the interface does not have to. |
-| Body | Inter | Reading. Invisible on purpose. |
-| Data | JetBrains Mono | Every measured number and every label. A figure that came off an instrument should look like it did. |
-
-**Colour.** One signal — ember `#ff5d1f` — for actions, plus a cool counterpoint
-for measurement, so a number being *reported* reads differently from a number
-being *asked for*. Score bands own the score. Every text colour is ≥4.5:1 on both
-surfaces; the check that keeps this honest is `color-contrast` in Lighthouse.
-
-Two traps this cost:
-
-- **Token names become utilities.** `--container-wide` creates `max-w-wide` — and
-  a token named `--container-full` silently redefined the *built-in*
-  `max-w-full` from `100%` to a fixed 96rem, making five full-width wrappers
-  wider than the viewport. Never name a token after a core utility value.
-- Only the display face is preloaded. Preloading two families put 169KB ahead of
-  first paint and cost eight Lighthouse points; loading Fraunces with the `opsz`
-  axis alone rather than `opsz`+`SOFT`+`WONK` halved it again.
-
-All user-facing copy lives in `content/`. English only, no translation layer —
-but nothing is hardcoded in JSX, so adding one later is mechanical.
-
-## The scroll sequence
-
-The homepage is a four-act scroll piece: the hero recedes into depth, a dark act
-pins the 2.5-second threshold over a perspective floor, the six scoring pillars
-travel past as a corridor of angled panels, and the work settles out of depth
-plate by plate before the input returns full-screen.
-
-**It adds no JavaScript.** All of it is native CSS scroll-driven animation —
-`animation-timeline: view()`, named view timelines, and 3D transforms — which
-runs on the compositor rather than the main thread. That was the whole reason
-not to reach for GSAP: this site tells people their site is too slow, and buying
-the motion with a 70KB animation library would have made the argument a bluff.
-Homepage measures 98 / 100 / 100 / 100 with the sequence in place.
-
-Three rules hold the layer together:
-
-- **Nothing readable is left rotated.** Every element resolves flat and face-on
-  by the time it is in front of the reader.
-- **Motion may be missing; content may not.** The horizontal act only works
-  because the track moves — under reduced motion, or on an engine without
-  scroll-driven timelines, the rail stops being a rail and becomes a plain grid.
-  Left as-is, four of the six panels would sit outside an `overflow: hidden` box
-  with no way to reach them.
-- **Every number in the sequence is real.** The 2.5 seconds is Google's own LCP
-  boundary and the pillar weights are read from the scoring config, so the act
-  cannot drift from what the audit does.
-
-Two traps worth knowing about, both hit during the build:
-
-- `overflow: hidden` on a section makes it a scroll container, which **breaks
-  `position: sticky` inside it**. The pinned dark act silently scrolled away and
-  rendered as a black screen. Clipping belongs on the pinned frame, never on the
-  section that contains it.
-- A word wrapped in an `inline-block` that swallows its own trailing space
-  leaves the browser no break opportunity, so the line refuses to wrap at all.
-  Same failure mode as splitting on a non-breaking space.
+Six movements: opening, the gap, the reel, terms, rates, contact. Total copy is
+208 words.
 
 ## Motion
 
-Two deliberate exceptions to the "no animation" rule, both requested and both
-measured.
+Lenis drives scroll position, GSAP ScrollTrigger reads it, and both run off
+gsap's single ticker — two independent rAF loops disagree by a half-frame,
+which shows up as jitter on exactly the pinned sections that are the argument.
 
-**The typed headline** (`components/Typewriter.tsx`). CSS only — no JavaScript,
-so it costs nothing against the bundle and works with scripting off. The
-characters are server-rendered real text, so search engines read the sentence
-normally, and the `h1` carries the full sentence as its accessible name because
-per-character spans make some screen readers spell words out. Under
-`prefers-reduced-motion` the text is simply there.
+Everything is scrubbed rather than triggered. Text reveals are masked wipes; the
+type is in place by default and only pushed out of frame once JavaScript has
+confirmed it can bring it back, so a failed script leaves a readable page.
 
-It animates the LCP element, which is the one thing on this site we cannot be
-careless with. Measured cost: **one Lighthouse point** (98 → 97) and about 150ms
-of LCP. Two implementation details mattered more than the type speed:
+Three moments are extraordinary and the rest is still: the load sequence, the
+reel, the contact reveal.
 
-- `steps(1, start)` over 200ms, not `steps(1, end)` over 1ms. A one-millisecond
-  animation puts the only visible state inside a sub-frame window the browser is
-  free never to sample — which silently ate the "o" in "Most" and left a
-  character-shaped hole in the headline.
-- Real spaces plus `white-space: pre-wrap`, never non-breaking spaces. NBSP
-  stops the headline wrapping at all, which produced 897px of horizontal
-  overflow on a 375px phone: the exact defect this site audits other people for.
+**Reduced motion removes scrub entirely.** The reel only exists because the
+track is translated — with nothing translating it, two of three panels sit
+outside an `overflow: hidden` frame with no way to reach them. So it stops being
+a rail and becomes the vertical sequence the markup already is. Motion may be
+absent; the work may not. Same behaviour under 900px.
 
-**Web-strand buttons** (`.az-web`). On hover, fine threads draw across the
-button left to right on a taut easing. Monochrome — it inherits `currentColor`,
-so the one-accent rule survives and there is no red or blue anywhere.
+## Design
 
-## The old site
+Two tones, no accent. Ink `#14161A`, Bone `#E8E4DC`, and two greys derived from
+Ink for hairlines and secondary type. The only colour anywhere comes from inside
+the reel pieces. Contrast is AA on both surfaces; one grey cannot serve both, so
+each carries an inverted counterpart made the same way.
+
+Three type roles: **Bricolage Grotesque** for display, set at `wdth` 88 for the
+statement and 100 elsewhere; **Newsreader** for reading; **IBM Plex Mono** for
+frame counts, easing labels, section markers and rates. Radii are sharp
+throughout. Vertical rhythm is deliberately uneven.
+
+The signature element is the playhead: the page is a timeline and the scrollbar
+is a scrub head, so a fixed monospace readout counts frames against a fixed
+duration. It updates by writing `textContent` directly rather than through React
+state, and inverts over Bone sections with `mix-blend-mode: difference` instead
+of a listener watching what is underneath it.
+
+Where a curve is named, it is drawn from the same four numbers gsap eases with —
+`components/motion.ts` is the single source for both.
+
+## Measured
+
+| | |
+|---|---|
+| Lighthouse | 96 perf / 100 a11y / 100 best-practices / 100 SEO |
+| LCP | 2.8s on Lighthouse's simulated slow 4G — see below |
+| CLS | 0 |
+| TBT | 0ms |
+| Client JS | 181KB gzipped (budget 200KB) |
+| Horizontal scroll | none, at 1440 and 375, both motion modes |
+
+**LCP misses the 2.0s budget.** 2.8s is against Lighthouse's simulated *slow*
+4G — 1.6Mbps and 150ms RTT, measured against localhost with no CDN. Real 4G is
+several times that. Two things already went into it: the display face is subset
+to the 92 characters the site sets in it (78KB → 41KB, both axes intact), and
+the body face is a static cut rather than a 132KB variable file that sat in the
+critical chain. The remaining cost is framework JavaScript. Astro would remove
+most of it and is the change that would actually meet the number.
+
+## Fonts
+
+`app/fonts/bricolage-subset.woff2` is generated, not vendored blind. Regenerate
+if display copy gains characters:
+
+```bash
+pyftsubset <source>.woff2 --output-file=app/fonts/bricolage-subset.woff2 \
+  --flavor=woff2 --text-file=<chars> --layout-features='kern,liga,calt' \
+  --no-hinting --desubroutinize
+```
+
+## Carried over
 
 `public/client-portal.html` and `public/admin-dashboard.html` are the previous
-static apps, preserved and still served at `/client-portal` and
-`/admin-dashboard`. Their Supabase config is unchanged. Old URLs (`/home`,
-`/pricing`, `/index.html`) redirect.
+client-facing apps, still served at `/client-portal` and `/admin-dashboard` with
+their Supabase config untouched. They are client infrastructure, not marketing,
+and nothing on this site links to them.
+
+## Open
+
+The contact address is `hello@alizawad.online` pending confirmation. It is the
+only conversion point on the site and is set at display scale, so it needs to be
+an inbox that is actually watched.

@@ -1,215 +1,166 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   AZ Studio design tokens.
+   Two tones. No accent.
 
-   The default Tailwind palette and type scale are cleared with `initial` so a
-   component physically cannot reference `text-slate-600` or `text-2xl`. If a
-   utility isn't defined below, it doesn't exist. That is the point: the visual
-   system is small enough to hold in your head.
+   Every colour on this site is Ink, Bone, or a grey derived from Ink. The only
+   chroma anywhere comes from inside the reel pieces themselves.
 
-   Colour: warm off-white base, warm near-black ink, ONE accent.
-   The accent (#C2410C) appears in exactly three places across the whole site —
-   the audit input, the score, the primary button. When it shows up, it means
-   *act*. Every contrast pair below is >= 4.5:1 against the page background.
+   One grey cannot serve both surfaces at AA — #828892 is 5.08:1 on Ink and
+   2.81:1 on Bone — so each grey carries an inverted counterpart produced the
+   same way. Two roles, four values.
 --------------------------------------------------------------------------- */
 
 @theme {
   --color-*: initial;
 
-  /* ---------------------------------------------------------------------
-     A warm near-black, not a cold one. #000 is a void; this is ink on a
-     press, or the inside of a camera body. Everything sits on it.
-  --------------------------------------------------------------------- */
-  --color-canvas: #0a0908;
-  --color-surface: #141110;
-  --color-raised: #1e1a17;
-  --color-ink: #f6f2e9; /* warm white — 17.8:1 */
-  --color-muted: #968d7e; /* secondary text — 6.07:1 */
-  --color-dim: #8a8175; /* tertiary text — 5.19:1 on canvas, 4.90:1 on surface */
-  --color-line: #2a2622;
+  --color-ink: #14161a;
+  --color-bone: #e8e4dc;
+  --color-grey: #828892; /* secondary type on Ink — 5.08:1 */
+  --color-rule: #282c32; /* hairlines on Ink */
 
-  /* The signal. Luminous on black in a way #c2410c never was. */
-  --color-ember: #ff5d1f; /* 6.48:1 */
-  --color-ember-soft: #ff8a5b;
-  --color-ember-deep: #b53d10;
-
-  /* The counterpoint. Cool, used only for measurement — so a number that is
-     being reported reads differently from a number that is being asked for. */
-  --color-ice: #8fd6e8; /* 12.3:1 */
-
-  /* Inverted acts. The page turning to daylight mid-scroll is the single
-     biggest gesture available, so the cream is warm enough to feel like paper
-     rather than like the lights coming on. */
-  --color-paper: #f2ede2;
-  --color-paper-ink: #14110f;
-  --color-paper-muted: #5d564c;
-  --color-paper-line: #d9d2c4;
-
-  --color-band-poor: #ff6b4a;
-  --color-band-fair: #e8b44a;
-  --color-band-good: #6fd79a;
-
-  --color-white: #ffffff;
-
-  /* ---------------------------------------------------------------------
-     Three voices, each with one job.
-     Display  — Fraunces. High contrast, optical sizing, a little wonk. It
-                carries the personality so the interface does not have to.
-     Body     — Inter. Invisible on purpose.
-     Data     — JetBrains Mono. Every measured number is set in it, so a
-                figure that came from an instrument looks like one.
-  --------------------------------------------------------------------- */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-*: initial;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-*: initial;
-  --text-hero: clamp(2.75rem, 1.4rem + 5.6vw, 6.75rem);
-  --text-hero--line-height: 0.92;
-  --text-hero--letter-spacing: -0.03em;
-  --text-display: clamp(2.25rem, 1.2rem + 4.2vw, 5.25rem);
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.022em;
-  --text-title: clamp(1.35rem, 1.1rem + 0.9vw, 1.9rem);
-  --text-title--line-height: 1.25;
-  --text-title--letter-spacing: -0.014em;
-  --text-body: 1.0625rem;
-  --text-body--line-height: 1.72;
-  --text-lead: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
-  --text-lead--line-height: 1.6;
-  --text-small: 0.875rem;
-  --text-small--line-height: 1.6;
-  --text-micro: 0.6875rem;
-  --text-micro--line-height: 1.4;
-  --text-micro--letter-spacing: 0.16em;
+  /* The opening runs to 15vw. Everything else is deliberately far below it —
+     the drop from statement to body is the hierarchy. */
+  /* Bound by height as well as width: the statement is four lines, and on a
+     short laptop viewport a purely vw-driven size pushes the last line under
+     the fold. */
+  --text-statement: clamp(2.75rem, min(14.5vw, 15.5vh), 13rem);
+  --text-piece: clamp(2.25rem, 6.2vw, 6rem);
+  --text-say: clamp(1.5rem, 3.2vw, 3.25rem);
+  --text-read: 1.125rem;
+  --text-mark: 0.6875rem;
 
   --font-weight-*: initial;
   --font-weight-light: 300;
-  --font-weight-regular: 400;
+  --font-weight-book: 400;
   --font-weight-medium: 500;
-  --font-weight-semibold: 600;
 
+  /* Sharp throughout. No radius language to maintain, nothing to soften. */
   --radius-*: initial;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
-  --radius-2xl: 24px;
-  --radius-full: 999px;
+  --radius-none: 0;
 
   --shadow-*: initial;
+  --blur-*: initial;
 
-  --spacing: 0.25rem;
-
+  /* Namespaces overlap: max-w-* reads --container-* AND --spacing-*, so a key
+     present in both resolves to the wrong one. `hold` existed in each, and the
+     rates table silently took the 15rem spacing value instead of the 78rem
+     container. Keys are kept distinct across the two groups. */
   --container-*: initial;
-  /* Names here become utilities: --container-wide creates max-w-wide. So they
-     must never collide with a built-in. A token called `full` silently
-     redefined `max-w-full` from "100%" to a fixed 96rem, which made every
-     full-width wrapper wider than the viewport. */
-  --container-form: 44rem;
-  --container-text: 46rem;
-  --container-wide: 82rem;
-  --container-page: 96rem;
+  --container-measure: 34rem; /* ~62ch at 18px Newsreader */
+  --container-frame: 78rem;
+
+  /* Vertical rhythm is uneven on purpose. Named, so a section reaches for an
+     interval rather than a number and the unevenness stays intentional. */
+  --spacing-beat: 4.5rem;
+  --spacing-rest: 9rem;
+  --spacing-hold: 15rem;
 }
 
-/* --- base ---------------------------------------------------------------- */
+/* --- surfaces ------------------------------------------------------------ */
 
 html {
+  background-color: var(--color-ink);
   -webkit-text-size-adjust: 100%;
-  background-color: var(--color-canvas);
 }
 
 body {
-  background-color: var(--color-canvas);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-  font-size: var(--text-body);
-  line-height: 1.72;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
+  font-family: var(--font-body);
+  font-size: var(--text-read);
+  line-height: 1.62;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
-/* Display type. Optical sizing does the work a second font would otherwise
-   have to: at hero scale the contrast opens up and the serifs sharpen. */
-.font-display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 400;
+/* Inverted movements. Token swap, so nothing downstream knows which side it is
+   on. The greys invert by the same derivation rather than being new colours. */
+.inverted {
+  --color-ink: #e8e4dc;
+  --color-bone: #14161a;
+  --color-grey: #5c6169; /* 5.07:1 on Bone */
+  --color-rule: #cfc9be;
+  background-color: var(--color-ink);
+  color: var(--color-bone);
 }
 
-.font-data {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-/* The label style used throughout: small, monospaced, widely tracked. It reads
-   as an instrument marking rather than as a heading. */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-/* Inverted acts. Scoped as a theme swap so every descendant follows without a
-   single component knowing which surface it is sitting on. */
-.day {
-  --color-canvas: var(--color-paper);
-  --color-surface: #e9e2d4;
-  --color-raised: #ffffff;
-  --color-ink: var(--color-paper-ink);
-  --color-muted: var(--color-paper-muted);
-  --color-dim: #9a9285;
-  --color-line: var(--color-paper-line);
-  --color-ember: #c2410c;
-  --color-ember-soft: #9a3412;
-  background-color: var(--color-canvas);
+::selection {
+  background: var(--color-bone);
   color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-ember);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline: 1px solid var(--color-bone);
+  outline-offset: 4px;
 }
 
-::selection {
-  background: var(--color-ember);
-  color: var(--color-canvas);
+/* --- type roles ---------------------------------------------------------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.035em;
+  /* Bricolage carries a width axis. The statement is set narrow so it can run
+     large without the line breaking into fragments. */
+  font-variation-settings: 'wdth' 88;
+  text-transform: none;
 }
 
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+.display-wide {
+  font-variation-settings: 'wdth' 100;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--color-canvas);
+.mark {
+  font-family: var(--font-mono);
+  font-size: var(--text-mark);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-grey);
+  font-weight: 400;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--color-line);
-  border-radius: 999px;
+.tech {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-dim);
+/* --- the wipe -----------------------------------------------------------
+   Every text reveal on this site is a mask travelling from a real direction.
+   Nothing fades up from twenty pixels.
+------------------------------------------------------------------------- */
+
+.wipe {
+  display: block;
+  overflow: hidden;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .t {
-    transition:
-      opacity 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1),
-      background-color 200ms ease,
-      border-color 200ms ease,
-      color 200ms ease;
-  }
+.wipe > * {
+  display: block;
+  will-change: transform;
 }
+
+/* Static fallback: with no JavaScript, or before GSAP takes over, the type is
+   simply in place. The wipe must never be what makes text visible. */
+.wipe > *:not([data-wipe-armed]) {
+  transform: none;
+}
+
+/* --- reduced motion ------------------------------------------------------
+   Scrub is removed entirely rather than shortened. What is left is a static
+   page that still reads in order, with the reel as a vertical sequence.
+------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -220,738 +171,34 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-}
 
-@keyframes az-line-in {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.az-status-line {
-  animation: az-line-in 220ms ease both;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .az-status-line {
-    animation: none;
-  }
-}
-
-/* Screen-reader-only, for live-region text and skip links. */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.sr-only.focus\:not-sr-only:focus {
-  position: static;
-  width: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  clip: auto;
-  white-space: normal;
-}
-
-/* --- The typed headline ---------------------------------------------------
-   Characters are already in the DOM; CSS only decides when each becomes
-   visible. `visibility` rather than `opacity` so there is no cross-fade — a
-   typewriter snaps, it does not dissolve.
---------------------------------------------------------------------------- */
-
-.az-type {
-  /* Each character is its own element, so single spaces must survive as their
-     own text nodes — but the headline still has to wrap. pre-wrap does both.
-     A non-breaking space here instead would stop the headline wrapping at all,
-     which is the exact "cut off on a phone" defect this site audits for. */
-  white-space: pre-wrap;
-}
-
-.az-type-char {
-  visibility: hidden;
-  /* steps(1, start) with a real duration, not steps(1, end) over 1ms.
-     A one-millisecond animation puts the only visible state inside a window
-     narrower than a frame, and the browser is free to never sample it — which
-     silently ate the "o" in "Most" and left a character-shaped hole in the
-     headline. Jumping at the start of a 200ms step leaves no such window. */
-  animation: az-type-in 200ms steps(1, start) forwards;
-}
-
-@keyframes az-type-in {
-  from,
-  to {
-    visibility: visible;
-  }
-}
-
-/* The cursor. Appears only once typing has finished, then blinks twice and
-   stops — a caret that blinks forever is a distraction sitting next to the one
-   thing on this page we want people to look at. */
-.az-lit {
-  font-style: italic;
-  color: var(--color-ember);
-}
-
-.az-caret {
-  display: inline-block;
-  width: 0.06em;
-  height: 0.78em;
-  margin-left: 0.06em;
-  vertical-align: baseline;
-  background: var(--color-ember);
-  opacity: 0;
-  animation: az-caret-blink 620ms steps(1, end) 4 forwards;
-}
-
-@keyframes az-caret-blink {
-  0%,
-  49% {
-    opacity: 1;
-  }
-  50%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .az-type-char {
-    visibility: visible;
-    animation: none;
+  .wipe > * {
+    transform: none !important;
+    opacity: 1 !important;
   }
 
-  .az-caret {
-    display: none;
-  }
-}
-
-/* --- Web-strand buttons ---------------------------------------------------
-   On hover, fine threads draw across the button left to right and pull taut.
-   The easing is the point: fast out, hard stop, like a line going tight. It
-   stays inside the existing palette — no red, no blue — so it reads as a detail
-   somebody notices on second look rather than a costume.
---------------------------------------------------------------------------- */
-
-.az-web {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.az-web::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  /* Loose enough to read as a few strands rather than fishnet. At 9px spacing
-     this became a mesh that fought the label for attention, which is the
-     opposite of what a button wants. */
-  background:
-    repeating-linear-gradient(
-      115deg,
-      transparent 0 17px,
-      color-mix(in srgb, currentColor 15%, transparent) 17px 18px
-    ),
-    repeating-linear-gradient(
-      65deg,
-      transparent 0 17px,
-      color-mix(in srgb, currentColor 11%, transparent) 17px 18px
-    );
-  transform: scaleX(0);
-  transform-origin: left center;
-  /* Overshoot then settle: the strand goes taut rather than easing to a stop. */
-  transition: transform 260ms cubic-bezier(0.16, 1.14, 0.3, 1);
-}
-
-.az-web:hover::before,
-.az-web:focus-visible::before {
-  transform: scaleX(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .az-web::before {
-    transition: opacity 150ms ease;
-    transform: scaleX(1);
-    opacity: 0;
-  }
-
-  .az-web:hover::before,
-  .az-web:focus-visible::before {
-    opacity: 1;
-  }
-}
-
-/* ===========================================================================
-   CINEMATIC LAYER
-   ---------------------------------------------------------------------------
-   Scroll choreography, built on native CSS scroll-driven animations.
-
-   `animation-timeline: view()` and `scroll()` run on the compositor, off the
-   main thread, and cost zero JavaScript. That matters more here than anywhere
-   else on the web: this site tells people their site is too slow. Buying the
-   motion with a 70KB animation library would make that argument a bluff.
-
-   Everything degrades to "simply visible" where the timeline properties are not
-   supported, and to "simply visible" under prefers-reduced-motion. Nothing here
-   is load-bearing for reading the page.
-=========================================================================== */
-
-@media (prefers-reduced-motion: no-preference) {
-  /* --- Entrances: driven by an element's own travel through the viewport --- */
-
-  .r-up {
-    animation: r-up linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 70%;
-  }
-
-  @keyframes r-up {
-    from {
-      opacity: 0;
-      transform: translateY(2.5rem);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .r-fade {
-    animation: r-fade linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 60%;
-  }
-
-  @keyframes r-fade {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  /* Rises, holds, then releases as it leaves — the shot has a beginning and an
-     end rather than just appearing. */
-  .r-hold {
-    animation: r-hold linear both;
-    animation-timeline: view();
-    animation-range: entry 0% exit 100%;
-  }
-
-  @keyframes r-hold {
-    0% {
-      opacity: 0;
-      transform: translateY(3rem) scale(0.97);
-    }
-    22%,
-    76% {
-      opacity: 1;
-      transform: none;
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(-2rem) scale(0.99);
-    }
-  }
-
-  /* --- The hero yielding the screen as you begin to scroll ---------------- */
-
-  .r-hero {
-    animation: r-hero linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0 90vh;
-  }
-
-  @keyframes r-hero {
-    to {
-      opacity: 0;
-      transform: translateY(-4rem) scale(0.94);
-      filter: blur(6px);
-    }
-  }
-
-  /* --- Parallax: layers moving at different rates through the same frame -- */
-
-  .r-slow {
-    animation: r-slow linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-
-  @keyframes r-slow {
-    from {
-      transform: translateY(4rem);
-    }
-    to {
-      transform: translateY(-4rem);
-    }
-  }
-
-  .r-fast {
-    animation: r-fast linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-
-  @keyframes r-fast {
-    from {
-      transform: translateY(9rem);
-    }
-    to {
-      transform: translateY(-9rem);
-    }
-  }
-
-  /* --- Scrubbed: progress tied directly to scroll position --------------- */
-
-  /* A line that draws itself as its section passes through. */
-  .r-draw {
-    stroke-dasharray: var(--len, 1200);
-    stroke-dashoffset: var(--len, 1200);
-    animation: r-draw linear both;
-    animation-timeline: view();
-    animation-range: entry 20% cover 60%;
-  }
-
-  @keyframes r-draw {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /* A bar filling to a measured value. */
-  .r-meter {
-    transform: scaleX(0);
-    transform-origin: left center;
-    animation: r-meter linear both;
-    animation-timeline: view();
-    animation-range: entry 30% cover 50%;
-  }
-
-  @keyframes r-meter {
-    to {
-      transform: scaleX(var(--fill, 1));
-    }
-  }
-
-  /* Words assembling as the line crosses the screen. Each word carries its own
-     --i so the stagger is expressed in the range, not in delays. */
-  .r-word {
-    display: inline-block;
-    animation: r-word linear both;
-    animation-timeline: view();
-    animation-range: entry calc(var(--i, 0) * 3%) entry calc(30% + var(--i, 0) * 3%);
-  }
-
-  @keyframes r-word {
-    from {
-      opacity: 0;
-      transform: translateY(0.7em) rotate(2deg);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* --- The horizontal act -------------------------------------------------
-     The track is pushed sideways by the scroll position of its own tall
-     parent, so the page scrolls down while the content travels across. */
-  .r-rail-host {
-    view-timeline-name: --rail;
-    view-timeline-axis: block;
-  }
-
-  .r-rail {
-    animation: r-rail linear both;
-    /* Named timeline from the tall host above, so travel across is tied to the
-       host's own pass through the viewport rather than to the whole document.
-       `contain` is exactly the window in which the host fills the screen —
-       which is exactly the window in which it is pinned. */
-    animation-timeline: --rail;
-    animation-range: contain 0% contain 100%;
-  }
-
-  @keyframes r-rail {
-    to {
-      transform: translateX(calc(-100% + 100vw));
-    }
-  }
-
-  /* --- The dark act: the page itself changing state ---------------------- */
-  .r-nightfall {
-    animation: r-nightfall linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-
-  @keyframes r-nightfall {
-    0%,
-    100% {
-      opacity: 0;
-    }
-    18%,
-    82% {
-      opacity: 1;
-    }
-  }
-}
-
-/* --- Rail fallbacks ------------------------------------------------------
-   The horizontal act only works because the track moves. If it cannot move —
-   reduced motion, or an engine without scroll-driven timelines — the cards past
-   the first two sit outside an overflow-hidden box with no way to reach them.
-   So in both cases the rail stops being a rail and becomes an ordinary grid.
-   Motion is allowed to be missing; content is not.
---------------------------------------------------------------------------- */
-
-.r-rail-fallback {
-  height: auto;
-}
-
-.r-rail-fallback .r-rail-frame {
-  display: block;
-  position: static;
-  height: auto;
-  overflow: visible;
-  padding-inline: 1.5rem;
-}
-
-.r-rail-fallback .r-rail {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  transform: none;
-  padding-inline: 0;
-}
-
-.r-rail-fallback .r-rail > li {
-  width: auto;
-  height: auto;
-  min-height: 16rem;
-}
-
-.r-rail-fallback .r-rail > li[aria-hidden='true'] {
-  display: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .r-rail-host {
-    height: auto;
-  }
-
-  .r-rail-host .r-rail-frame {
-    /* display matters as much as position here. The frame is a flex container;
-       leaving it as one makes the unwrapped grid a flex ITEM, which then sizes
-       to max-content and blows a kilometre of horizontal scroll into the page. */
-    display: block;
-    position: static;
+  /* The reel only works because the track is translated. With no scrub there is
+     nothing to translate it, and two of the three panels would sit outside an
+     overflow-hidden frame with no way to reach them. So it stops being a rail
+     and becomes the vertical sequence the markup already is. Motion may be
+     absent; the work may not. */
+  .reel-frame {
     height: auto;
     overflow: visible;
-    padding-inline: 1.5rem;
   }
 
-  .r-rail-host .r-rail {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  .reel-track {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-hold);
+    padding-inline: 1.25rem;
     transform: none;
-    padding-inline: 0;
+    height: auto;
   }
 
-  .r-rail-host .r-rail > li {
+  .reel-panel {
     width: auto;
     height: auto;
-    min-height: 16rem;
-  }
-
-  .r-rail-host .r-rail > li[aria-hidden='true'] {
-    display: none;
-  }
-}
-
-/* Fallback for engines without scroll-driven timelines: show everything. */
-@supports not (animation-timeline: view()) {
-  .r-rail-host {
-    height: auto;
-  }
-
-  .r-rail-host .r-rail-frame {
-    /* display matters as much as position here. The frame is a flex container;
-       leaving it as one makes the unwrapped grid a flex ITEM, which then sizes
-       to max-content and blows a kilometre of horizontal scroll into the page. */
-    display: block;
-    position: static;
-    height: auto;
-    overflow: visible;
-    padding-inline: 1.5rem;
-  }
-
-  .r-rail-host .r-rail {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-    transform: none;
     padding-inline: 0;
   }
-
-  .r-rail-host .r-rail > li {
-    width: auto;
-    height: auto;
-    min-height: 16rem;
-  }
-
-  .r-rail-host .r-rail > li[aria-hidden='true'] {
-    display: none;
-  }
-
-  .r-up,
-  .r-fade,
-  .r-hold,
-  .r-word,
-  .r-hero {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
-  .r-draw {
-    stroke-dashoffset: 0;
-  }
-
-  .r-meter {
-    transform: scaleX(var(--fill, 1));
-  }
-}
-
-/* --- Surfaces ------------------------------------------------------------ */
-
-.night {
-  --color-ink: #f4f1ea;
-  --color-muted: #9c968a;
-  --color-line: #2b2823;
-  background-color: #0e0d0b;
-  color: #f4f1ea;
-}
-
-/* Film grain. One repeating SVG, no image request, sits above the fill and
-   below the text so the dark act has texture instead of flatness. */
-.grain::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.32'/%3E%3C/svg%3E");
-}
-
-/* The one glow on the site: the accent behaving like a signal lamp. */
-.lamp {
-  box-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-ember) 40%, transparent),
-    0 0 40px -6px color-mix(in srgb, var(--color-ember) 55%, transparent),
-    0 0 120px -30px color-mix(in srgb, var(--color-ember) 70%, transparent);
-}
-
-.display-xl {
-  font-size: clamp(2.75rem, 1rem + 8vw, 8.5rem);
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-}
-
-.display-lg {
-  font-size: clamp(2rem, 0.9rem + 4.6vw, 4.75rem);
-  line-height: 1.03;
-  letter-spacing: -0.028em;
-}
-
-/* ===========================================================================
-   DEPTH
-   ---------------------------------------------------------------------------
-   Real 3D, not offset faked to look like it. A perspective container plus
-   transforms in Z, driven by the same scroll timelines as everything else, so
-   the depth costs no JavaScript either.
-
-   Two rules keep this from becoming a gimmick:
-   1. Nothing readable is ever left rotated. Every element resolves to flat and
-      face-on by the time it is in front of the reader.
-   2. Under reduced motion the whole layer collapses to plain 2D. Depth is an
-      effect; the content underneath it is not.
-=========================================================================== */
-
-.scene {
-  perspective: 1400px;
-  perspective-origin: 50% 45%;
-}
-
-.scene-near {
-  perspective: 900px;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  /* --- Plates settling out of depth -------------------------------------
-     A project card arrives tilted and set back, then rotates flat and comes
-     forward as it reaches the reader. It is face-on for the entire time it can
-     actually be read. */
-  .d-plate {
-    transform-origin: 50% 100%;
-    animation: d-plate linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 42%;
-  }
-
-  @keyframes d-plate {
-    from {
-      opacity: 0;
-      transform: translateZ(-340px) translateY(3rem) rotateX(26deg) rotateZ(-1.4deg);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .d-plate-alt {
-    transform-origin: 50% 100%;
-    animation: d-plate-alt linear both;
-    animation-timeline: view();
-    animation-range: entry 0% cover 42%;
-  }
-
-  @keyframes d-plate-alt {
-    from {
-      opacity: 0;
-      transform: translateZ(-340px) translateY(3rem) rotateX(26deg) rotateZ(1.4deg);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  /* --- The hero receding rather than merely shrinking -------------------- */
-  .d-recede {
-    animation: d-recede linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0 92vh;
-  }
-
-  @keyframes d-recede {
-    to {
-      opacity: 0;
-      transform: translateZ(-520px) translateY(-2rem);
-      filter: blur(5px);
-    }
-  }
-
-  /* --- The floor -------------------------------------------------------
-     A plane laid down at a steep angle so its lines converge at a horizon,
-     travelling toward the viewer as the act plays. This is the dark act's only
-     imagery, and it is drawn in CSS rather than fetched. */
-  .d-floor {
-    position: absolute;
-    inset: 46% -60% -30% -60%;
-    transform: rotateX(74deg);
-    transform-origin: 50% 0%;
-    background-image:
-      repeating-linear-gradient(
-        to right,
-        color-mix(in srgb, var(--color-ember) 34%, transparent) 0 1px,
-        transparent 1px 8.5%
-      ),
-      repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-ember) 24%, transparent) 0 1px, transparent 1px 88px);
-    mask-image: linear-gradient(to bottom, transparent 0%, #000 34%, #000 68%, transparent 100%);
-    animation: d-floor linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-
-  @keyframes d-floor {
-    from {
-      background-position:
-        0 0,
-        0 0;
-      opacity: 0.15;
-    }
-    45% {
-      opacity: 0.85;
-    }
-    to {
-      background-position:
-        0 0,
-        0 620px;
-      opacity: 0.15;
-    }
-  }
-
-  /* --- The corridor ----------------------------------------------------
-     Panels stood at an angle so travelling the rail reads as moving past a
-     wall rather than sliding a strip. They straighten as they pass the centre
-     of the screen, which is the only moment anyone is reading them. */
-  .d-corridor {
-    transform-style: preserve-3d;
-  }
-
-  .d-panel {
-    transform: rotateY(-19deg) translateZ(-90px);
-    transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-
-  .d-panel-mid {
-    transform: rotateY(0deg) translateZ(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scene,
-  .scene-near {
-    perspective: none;
-  }
-
-  .d-plate,
-  .d-plate-alt,
-  .d-recede,
-  .d-panel {
-    transform: none;
-    opacity: 1;
-    filter: none;
-  }
-
-  .d-floor {
-    display: none;
-  }
-}
-
-@supports not (animation-timeline: view()) {
-  .d-plate,
-  .d-plate-alt,
-  .d-recede {
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
-  .d-floor {
-    display: none;
-  }
-}
-
-/* The oversized footer wordmark. Drawn as an outline, not filled type: it is a
-   mark rather than something anyone is meant to read, and an unreadable fill is
-   a legitimate contrast failure rather than a false positive. */
-.az-ghostmark {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--color-line);
 }

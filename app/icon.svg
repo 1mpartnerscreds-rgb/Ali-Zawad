@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0a0908"/>
-  <text x="32" y="43" font-family="Georgia, 'Times New Roman', serif" font-size="32"
-        letter-spacing="-1" fill="#ff5d1f" text-anchor="middle">AZ</text>
+  <rect width="64" height="64" fill="#14161A"/>
+  <path d="M13 46 L24 18 L30 18 L41 46 L34.5 46 L32 39 L22 39 L19.5 46 Z M24 33.5 L30 33.5 L27 25 Z"
+        fill="#E8E4DC"/>
+  <path d="M36 18 L53 18 L53 23 L43.5 41 L53 41 L53 46 L36 46 L36 41 L45.5 23 L36 23 Z" fill="#E8E4DC"/>
 </svg>
