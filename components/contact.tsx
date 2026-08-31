@@ -1,7 +1,7 @@
 import { Reveal } from '@/components/reveal';
 import { CONTACT, SITE } from '@/content/site';
 
-/** One screen. Two ways to reach a person. No form. */
+/** One screen, one route in. No form, no phone tree. */
 export function Contact() {
   return (
     <section aria-labelledby="contact-mark" className="px-5 pt-hold pb-hold lg:px-8">
@@ -18,20 +18,16 @@ export function Contact() {
 
         <p className="mt-8 max-w-measure text-grey">{CONTACT.body}</p>
 
-        <div className="mt-rest flex flex-col gap-5 sm:flex-row sm:items-baseline sm:gap-12">
-          <a
-            href={SITE.whatsapp}
-            rel="noreferrer"
-            className="display display-wide text-say text-bone no-underline transition-opacity duration-500 hover:opacity-55"
-          >
-            {CONTACT.whatsappLabel}
-          </a>
+        {/* The address itself is the button. A label like "Send an email"
+            hides the one thing a buyer wants to see before they commit. */}
+        <div className="mt-rest flex flex-col gap-4">
           <a
             href={`mailto:${SITE.email}`}
-            className="tech text-[0.95rem] text-grey no-underline transition-colors duration-300 hover:text-bone"
+            className="display display-wide text-say text-bone no-underline transition-opacity duration-500 hover:opacity-55 break-words"
           >
             {SITE.email}
           </a>
+          <p className="mark">{CONTACT.replyNote}</p>
         </div>
       </Reveal>
     </section>

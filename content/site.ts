@@ -4,9 +4,8 @@ export const SITE = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aimsstudio.online',
   title: 'AIMS Studio — websites for small businesses',
   description:
-    'A five-page website for your business, live in two weeks. £399 to start. Built by one developer who answers the phone.',
+    'A five-page website for your business, live in two weeks. £399 to start. Fixed price, fixed date, everything in your name.',
   email: 'hello@aimsstudio.online',
-  whatsapp: 'https://wa.me/8801921459811',
   phone: '+8801921459811',
 } as const;
 
@@ -86,7 +85,7 @@ export const WORKS = {
   steps: [
     {
       n: '01',
-      title: 'You talk, I write it down.',
+      title: 'You talk, we write it down.',
       body: 'One call. What you do, where you cover, what you want the phone to ring about. No brief to fill in.',
     },
     {
@@ -97,7 +96,7 @@ export const WORKS = {
     {
       n: '03',
       title: 'It goes live. You pay the rest.',
-      body: 'Your domain, your hosting, in your name. One round of changes after launch, and I am on WhatsApp when something breaks.',
+      body: 'Your domain, your hosting, in your name. One round of changes after launch, and we answer by email when something breaks.',
     },
   ],
 } as const;
@@ -136,10 +135,11 @@ export const PRICES = {
 } as const;
 
 export const TRUST = {
-  marker: 'Who builds it',
+  marker: 'Why AIMS',
   lines: [
-    'One developer. Not an agency, not a reseller, not a template shop.',
-    'Building for small businesses since 2022, from Bogura, Bangladesh. Working UK hours.',
+    'Fixed price and a fixed date, agreed before anything starts.',
+    'Your domain, your hosting, your accounts. All in your name.',
+    'Building for small businesses since 2022, working UK hours.',
   ],
   quotes: [
     {
@@ -155,8 +155,8 @@ export const TRUST = {
 
 export const CONTACT = {
   marker: 'Start',
-  line: 'Tell me what your business does.',
-  body: 'A ten minute call. If a website is not what you need, I will say so.',
-  whatsappLabel: 'Message on WhatsApp',
-  emailLabel: 'Send an email',
+  line: 'Tell us what your business does.',
+  body: 'A ten minute call. If a website is not what you need, we will say so.',
+  emailLabel: 'Email us',
+  replyNote: 'We reply the same working day.',
 } as const;
