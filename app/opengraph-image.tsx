@@ -32,7 +32,7 @@ export default function Image() {
         }}
       >
         <div style={{ display: 'flex', fontFamily: 'Mono', fontSize: 20, letterSpacing: 4, color: '#828892' }}>
-          AZ STUDIO
+          AIMS STUDIO
         </div>
 
         <div
@@ -63,7 +63,7 @@ export default function Image() {
             color: '#828892',
           }}
         >
-          <span>FRONT-END + MOTION, WHITE LABEL</span>
+          <span>WEBSITES FOR SMALL BUSINESSES</span>
           <span>{SITE.domain}</span>
         </div>
       </div>

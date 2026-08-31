@@ -1,84 +1,162 @@
 export const SITE = {
-  name: 'AZ Studio',
-  domain: 'alizawad.online',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://alizawad.online',
-  title: 'AZ Studio — front-end and motion for brand studios',
+  name: 'AIMS Studio',
+  domain: 'aimsstudio.online',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aimsstudio.online',
+  title: 'AIMS Studio — websites for small businesses',
   description:
-    'White-label front-end build partner. Brand studios keep the client and the credit; I build the parts that move.',
-  // Placeholder until the real inbox is confirmed. Single conversion point on
-  // the site, so it has to be an address that is actually watched.
-  email: 'hello@alizawad.online',
+    'A five-page website for your business, live in two weeks. £399 to start. Built by one developer who answers the phone.',
+  email: 'hello@aimsstudio.online',
+  whatsapp: 'https://wa.me/8801921459811',
+  phone: '+8801921459811',
 } as const;
 
 export const OPENING = {
-  wordmark: 'AZ Studio',
+  wordmark: 'AIMS Studio',
   /* Broken by hand. Each line is its own mask band, so a line that wraps splits
      across two bands and the reveal reads as an accident. */
-  statement: ['Brand studios', 'hire me for', 'the parts', 'that move.'],
+  statement: ['Your customers', 'looked you up', 'and found', 'nothing.'],
+  sub: 'A five-page website for your business, live in two weeks.',
 } as const;
 
 export const GAP = {
-  marker: 'The gap',
+  marker: 'The problem',
   lines: [
-    'You sold them a system.',
-    'The builder gives them a template of it.',
-    'Rhythm and timing are the first things it drops.',
+    'You are good at the job.',
+    'Your reviews say so.',
+    'But when someone searches your name, they find a Facebook page from 2019 and a Yell listing you never wrote.',
   ],
 } as const;
 
 /**
- * Three rebuilds, none of them commissioned. Each is built in the page rather
- * than recorded, so what a visitor scrubs is the running thing, not footage of
- * it. Labelled as rebuilds because ambiguity about what was paid work is the
- * fastest way to lose the person this site is written for.
+ * Real work, live right now. Every one of these can be opened and checked,
+ * which is the only reason to put them on the page at all.
  */
 export const REEL = {
-  marker: 'The reel',
+  marker: 'Built and running',
   pieces: [
     {
-      id: 'aesop',
-      client: 'Aesop',
-      kind: 'Unsolicited rebuild',
-      note: 'A catalogue is a list of names. Reading it should feel like type setting itself, not a carousel advancing.',
-      technique: 'Variable width axis, scrubbed',
+      id: 'startupsolution',
+      client: 'Startup Solution',
+      kind: 'Live',
+      href: 'https://www.startupsolution.online',
+      host: 'startupsolution.online',
+      image: '/proof/startupsolution.webp',
+      imageSmall: '/proof/startupsolution-400.webp',
+      imageMedium: '/proof/startupsolution-600.webp',
+      note: 'Business consultancy. Eight pages, one enquiry flow, shipped in nine days.',
     },
     {
-      id: 'monocle',
-      client: 'Monocle',
-      kind: 'Unsolicited rebuild',
-      note: 'Winkreative drew the masthead. It should assemble on arrival, and come apart if you scroll back.',
-      technique: 'Staggered mask wipes, reversible',
+      id: 'cybertech',
+      client: 'Cybertech',
+      kind: 'Live',
+      href: 'https://www.cybertechedu.com',
+      host: 'cybertechedu.com',
+      image: '/proof/cybertech.webp',
+      imageSmall: '/proof/cybertech-400.webp',
+      imageMedium: '/proof/cybertech-600.webp',
+      note: 'Training institute in Bogura, running since 2000. Course listings, admissions, student login.',
     },
     {
-      id: 'vitsoe',
-      client: 'Vitsœ',
-      kind: 'Unsolicited rebuild',
-      note: 'The whole argument is a system that adapts. So the shelf reconfigures while you read that sentence.',
-      technique: 'Path drawing on scroll',
+      id: 'lawncare',
+      client: 'Cutting Edge Lawn Care',
+      kind: 'Live',
+      href: 'https://cutting-edge-lawn-care-concept.vercel.app',
+      host: 'cutting-edge-lawn-care',
+      image: '/proof/lawncare.webp',
+      imageSmall: '/proof/lawncare-400.webp',
+      imageMedium: '/proof/lawncare-600.webp',
+      note: 'Local service business in Austin. Built around one action: get a free estimate.',
+    },
+    {
+      id: 'ahmedmobasher',
+      client: 'Ahmed Mobasher',
+      kind: 'Live',
+      href: 'https://www.ahmedmobasher.online',
+      host: 'ahmedmobasher.online',
+      image: '/proof/ahmedmobasher.webp',
+      imageSmall: '/proof/ahmedmobasher-400.webp',
+      imageMedium: '/proof/ahmedmobasher-600.webp',
+      note: 'Personal brand site. Every contact route lands in one WhatsApp thread.',
     },
   ],
 } as const;
 
-export const PARTNERSHIP = {
+export const WORKS = {
   marker: 'How it works',
-  statements: [
-    'Your studio keeps the client and the relationship.',
-    "The work ships under your name. I'm not in the credits, the code comments, or the footer.",
-    'NDA before the first brief. IP assigned to you on delivery.',
+  steps: [
+    {
+      n: '01',
+      title: 'You talk, I write it down.',
+      body: 'One call. What you do, where you cover, what you want the phone to ring about. No brief to fill in.',
+    },
+    {
+      n: '02',
+      title: 'Half up front. Two weeks.',
+      body: 'You pay half to start and see the first version inside a week. Nothing is hidden until the end.',
+    },
+    {
+      n: '03',
+      title: 'It goes live. You pay the rest.',
+      body: 'Your domain, your hosting, in your name. One round of changes after launch, and I am on WhatsApp when something breaks.',
+    },
   ],
 } as const;
 
-export const RATES = {
-  marker: 'Rates',
-  rows: [
-    { label: 'Single interactive section', value: '600 — 900' },
-    { label: 'Full front-end build', value: '2,000 — 3,500' },
-    { label: 'Ongoing capacity', value: '1,500 — 2,500 / mo' },
+export const PRICES = {
+  marker: 'Price',
+  tiers: [
+    {
+      name: 'Launch',
+      price: '£399',
+      note: 'five pages · two weeks',
+      includes: [
+        'Home, services, areas covered, reviews, contact',
+        'Your phone number on every screen, one tap to call',
+        'Built for phones first',
+        'Your own domain, set up for you',
+        'Your Google reviews on the page',
+        'One round of changes after launch',
+      ],
+    },
+    {
+      name: 'Build',
+      price: '£799',
+      note: 'everything above, plus a site that does things',
+      includes: [
+        'Online booking or enquiry system',
+        'Take payments through the site',
+        'Customer logins',
+        'A dashboard you can actually read',
+        'Email alerts when someone books',
+        'Two rounds of changes after launch',
+      ],
+    },
   ],
-  unit: 'USD',
+  foot: 'Half up front, half when it is live. No monthly fee. Paid by bank transfer.',
+} as const;
+
+export const TRUST = {
+  marker: 'Who builds it',
+  lines: [
+    'One developer. Not an agency, not a reseller, not a template shop.',
+    'Building for small businesses since 2022, from Bogura, Bangladesh. Working UK hours.',
+  ],
+  quotes: [
+    {
+      text: 'Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional. Our engineering team was genuinely impressed.',
+      who: 'Founder, 1M Partners',
+    },
+    {
+      text: 'The sophistication of the design and the sheer quality of execution set a new standard for our brand.',
+      who: 'Managing Director, Cybertech',
+    },
+  ],
 } as const;
 
 export const CONTACT = {
-  marker: 'Contact',
-  line: 'Send me the brand book.',
+  marker: 'Start',
+  line: 'Tell me what your business does.',
+  body: 'A ten minute call. If a website is not what you need, I will say so.',
+  whatsappLabel: 'Message on WhatsApp',
+  emailLabel: 'Send an email',
 } as const;

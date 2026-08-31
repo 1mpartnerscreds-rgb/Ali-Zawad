@@ -7,3 +7,8 @@ out
 next-env.d.ts
 *.tsbuildinfo
 .DS_Store
+
+# Sales operations — scraped prospect contact data and call scripts.
+# This repo is public; the call list holds real businesses' phone numbers,
+# and the scripts are competitive material. Kept locally, never pushed.
+sprint/

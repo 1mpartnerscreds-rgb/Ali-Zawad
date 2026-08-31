@@ -1,26 +1,19 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Bezier } from '@/components/bezier';
-import { LEAD, SETTLE, armGsap, ease, prefersStill } from '@/components/motion';
-import { Aesop } from '@/components/reel/aesop';
-import { Monocle } from '@/components/reel/monocle';
-import { Vitsoe } from '@/components/reel/vitsoe';
+import { LEAD, armGsap, ease, prefersStill } from '@/components/motion';
 import { REEL } from '@/content/site';
 
-const PIECES = [Aesop, Monocle, Vitsoe];
-const CURVES = [LEAD, SETTLE, LEAD];
-
 /**
- * The reel.
+ * The work, travelling sideways under vertical scroll.
  *
- * Vertical input drives horizontal travel, and each piece's own motion hangs off
- * that same tween via `containerAnimation` — so moving sideways is what plays
- * the work. Sliding finished cards past the viewport would have been the easier
- * build and would have proved nothing.
+ * Each panel's screenshot drifts against its own frame on the same tween that
+ * moves the track, so the images have depth rather than sliding flat. Real
+ * sites, real screenshots — a small business owner is buying evidence that this
+ * has been done before, not a demonstration of technique.
  *
- * Under reduced motion, and on narrow screens, none of this runs: the markup is
- * already a vertical list and simply stays one.
+ * Under reduced motion, and below 900px, none of it runs: the markup is already
+ * a vertical list and stays one.
  */
 export function Reel() {
   const host = useRef<HTMLDivElement>(null);
@@ -51,89 +44,28 @@ export function Reel() {
         },
       });
 
-      const panels = gsap.utils.toArray<HTMLElement>('[data-panel]', trackEl);
+      gsap.utils.toArray<HTMLElement>('[data-panel]', trackEl).forEach((panel) => {
+        const shot = panel.querySelector('[data-shot]');
+        if (!shot) return;
 
-      panels.forEach((panel) => {
-        const inside = (vars: gsap.TweenVars) => ({
-          ...vars,
-          scrollTrigger: {
-            trigger: panel,
-            containerAnimation: travel,
-            start: 'left 78%',
-            end: 'right 34%',
-            scrub: 1,
+        // The image is oversized inside a clipped frame, so counter-drift reads
+        // as parallax rather than as the picture sliding about.
+        gsap.fromTo(
+          shot,
+          { xPercent: -6, scale: 1.12 },
+          {
+            xPercent: 6,
+            scale: 1,
+            ease: ease(LEAD),
+            scrollTrigger: {
+              trigger: panel,
+              containerAnimation: travel,
+              start: 'left right',
+              end: 'right left',
+              scrub: 1,
+            },
           },
-        });
-
-        const kind = panel.querySelector('[data-piece]')?.getAttribute('data-piece');
-
-        if (kind === 'aesop') {
-          // The list re-sets rather than moves: only the width axis changes.
-          gsap.fromTo(
-            panel.querySelector('[data-axis]'),
-            { '--w': 58 },
-            inside({ '--w': 128, ease: ease(LEAD) }),
-          );
-          gsap.fromTo(
-            panel.querySelectorAll('[data-rule]'),
-            { scaleX: 0 },
-            inside({ scaleX: 1, stagger: 0.06, ease: ease(LEAD) }),
-          );
-        }
-
-        if (kind === 'monocle') {
-          gsap.fromTo(
-            panel.querySelectorAll('[data-rule]'),
-            { scaleX: 0 },
-            inside({ scaleX: 1, stagger: 0.12, ease: ease(SETTLE) }),
-          );
-          gsap.fromTo(panel.querySelector('[data-word]'), { yPercent: 112 }, inside({ yPercent: 0, ease: ease(LEAD) }));
-          gsap.fromTo(
-            panel.querySelectorAll('[data-column]'),
-            { yPercent: 106 },
-            inside({ yPercent: 0, stagger: 0.09, ease: ease(LEAD) }),
-          );
-          gsap.fromTo(
-            panel.querySelector('[data-kicker]'),
-            { clipPath: 'inset(0 100% 0 0)' },
-            inside({ clipPath: 'inset(0 0% 0 0)', ease: ease(SETTLE) }),
-          );
-        }
-
-        if (kind === 'vitsoe') {
-          gsap.fromTo(
-            panel.querySelectorAll('[data-upright]'),
-            { scaleY: 0, transformOrigin: '50% 0%' },
-            inside({ scaleY: 1, stagger: 0.08, ease: ease(SETTLE) }),
-          );
-
-          const shelves = Array.from(panel.querySelectorAll<SVGLineElement>('[data-shelf]'));
-          gsap.fromTo(
-            shelves,
-            { scaleX: 0, transformOrigin: '0% 50%' },
-            inside({ scaleX: 1, stagger: 0.07, ease: ease(LEAD) }),
-          );
-
-          // Second half of the panel's pass: the shelf configuration changes.
-          shelves.forEach((shelf) => {
-            const y = shelf.dataset.toY;
-            const from = shelf.dataset.toFrom;
-            const to = shelf.dataset.toTo;
-            if (!y || !from || !to) return;
-
-            gsap.to(shelf, {
-              attr: { y1: y, y2: y, x1: from, x2: to },
-              ease: ease(SETTLE),
-              scrollTrigger: {
-                trigger: panel,
-                containerAnimation: travel,
-                start: 'center 52%',
-                end: 'right 20%',
-                scrub: 1,
-              },
-            });
-          });
-        }
+        );
       });
     }, hostEl);
 
@@ -149,34 +81,42 @@ export function Reel() {
       <div ref={host} className="reel-frame mt-beat lg:h-screen lg:overflow-hidden">
         <div
           ref={track}
-          className="reel-track flex flex-col gap-hold px-5 lg:h-screen lg:flex-row lg:gap-0 lg:px-0 lg:will-change-transform"
+          className="reel-track flex flex-col gap-rest px-5 lg:h-screen lg:flex-row lg:gap-0 lg:px-0 lg:will-change-transform"
         >
-          {REEL.pieces.map((piece, index) => {
-            const Piece = PIECES[index]!;
-            return (
-              <article
-                key={piece.id}
-                data-panel
-                className="reel-panel flex shrink-0 flex-col justify-center lg:h-screen lg:w-[78vw] lg:px-[6vw]"
-              >
-                <div className="flex items-baseline justify-between gap-6 border-b border-rule pb-4">
-                  <h3 className="display display-wide text-[clamp(1.5rem,2.4vw,2.25rem)] text-bone">{piece.client}</h3>
-                  <p className="mark shrink-0">{piece.kind}</p>
+          {REEL.pieces.map((piece) => (
+            <article
+              key={piece.id}
+              data-panel
+              className="reel-panel flex shrink-0 flex-col justify-center lg:h-screen lg:w-[72vw] lg:px-[5vw]"
+            >
+              <a href={piece.href} rel="noreferrer" className="group block no-underline">
+                <div className="overflow-hidden border border-rule">
+                  <img
+                    data-shot
+                    src={piece.image}
+                    srcSet={`${piece.imageSmall} 400w, ${piece.imageMedium} 600w, ${piece.image} 800w`}
+                    sizes="(min-width: 900px) 62vw, 100vw"
+                    alt={`The ${piece.client} website`}
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full will-change-transform"
+                  />
                 </div>
 
-                <div className="min-h-[52vh] py-[4vh] lg:min-h-0 lg:flex-1">
-                  <Piece />
+                <div className="mt-6 flex flex-col gap-4 border-t border-rule pt-5 sm:flex-row sm:items-baseline sm:justify-between">
+                  <div>
+                    <h3 className="display display-wide text-[clamp(1.5rem,2.4vw,2.25rem)] text-bone">
+                      {piece.client}
+                    </h3>
+                    <p className="mt-2 max-w-measure text-[0.95rem] text-grey">{piece.note}</p>
+                  </div>
+                  <p className="mark shrink-0">{piece.host}</p>
                 </div>
-
-                <div className="flex flex-col gap-6 border-t border-rule pt-5 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="max-w-measure text-[0.9375rem] leading-relaxed text-grey">{piece.note}</p>
-                  <span className="shrink-0 text-grey">
-                    <Bezier curve={CURVES[index]!} label={piece.technique} />
-                  </span>
-                </div>
-              </article>
-            );
-          })}
+              </a>
+            </article>
+          ))}
         </div>
       </div>
     </section>

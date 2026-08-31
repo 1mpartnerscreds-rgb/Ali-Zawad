@@ -1,9 +1,10 @@
 import { Contact } from '@/components/contact';
 import { Gap } from '@/components/gap';
 import { Opening } from '@/components/opening';
-import { Partnership } from '@/components/partnership';
-import { Rates } from '@/components/rates';
+import { Prices } from '@/components/prices';
 import { Reel } from '@/components/reel';
+import { Trust } from '@/components/trust';
+import { Works } from '@/components/works';
 
 export default function Page() {
   return (
@@ -11,8 +12,9 @@ export default function Page() {
       <Opening />
       <Gap />
       <Reel />
-      <Partnership />
-      <Rates />
+      <Works />
+      <Prices />
+      <Trust />
       <Contact />
     </main>
   );

@@ -8,13 +8,6 @@ const nextConfig: NextConfig = {
     inlineCss: true,
   },
 
-  async rewrites() {
-    return [
-      { source: '/client-portal', destination: '/client-portal.html' },
-      { source: '/admin-dashboard', destination: '/admin-dashboard.html' },
-    ];
-  },
-
   async headers() {
     return [
       {
