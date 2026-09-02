@@ -1,162 +1,278 @@
+/**
+ * Every user-facing word on the site.
+ *
+ * Two rules this file exists to enforce. First, nothing here may claim
+ * something the business cannot do today — there is no UK registration, no
+ * company number, and no card processing, so none of those appear. Second,
+ * anything still unknown lives in TO_FILL rather than being invented, so a
+ * missing fact is visible instead of quietly shipping as a lie.
+ */
+
+/* ---------------------------------------------------------------------------
+   FILL THESE BEFORE THE SITE GOES LIVE. Each one appears on the page exactly
+   as written here. An unfilled value renders as a visible marker, which is
+   deliberate — a wrong phone number is worse than an obvious gap.
+--------------------------------------------------------------------------- */
+export const TO_FILL = {
+  founder: 'Ali Zawad',              // named on every contract and on the About page
+  phone: '[UK PHONE NUMBER]',        // the number that is actually answered
+  phoneHref: '',                     // e.g. +441610000000 — leave '' to hide the tel: link
+  hours: '9am–6pm',                  // support hours, UK time
+  hostingRenewal: '£60',             // year two onward
+  lateCredit: '£50',                 // comes off the invoice if the deadline slips on us
+  privacyUrl: '',                    // set once the notice is published; empty hides the link
+} as const;
+
 export const SITE = {
   name: 'AIMS Studio',
   domain: 'aimsstudio.online',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aimsstudio.online',
-  title: 'AIMS Studio — websites for small businesses',
+  title: 'AIMS Studio — five-page websites for UK trades',
   description:
-    'A five-page website for your business, live in two weeks. £399 to start. Fixed price, fixed date, everything in your name.',
+    'Five-page websites for UK trades and small service businesses. £399, live in two weeks. Your domain in your name, £99 to start.',
   email: 'hello@aimsstudio.online',
-  phone: '+8801921459811',
 } as const;
 
-export const OPENING = {
-  wordmark: 'AIMS Studio',
-  /* Broken by hand. Each line is its own mask band, so a line that wraps splits
-     across two bands and the reveal reads as an accident. */
-  statement: ['Your customers', 'looked you up', 'and found', 'nothing.'],
-  sub: 'A five-page website for your business, live in two weeks.',
-} as const;
+export const NAV = [
+  { href: '/', label: 'Home' },
+  { href: '/what-you-get', label: 'What you get' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/how-it-works', label: 'How it works' },
+  { href: '/about', label: 'About' },
+] as const;
 
-export const GAP = {
-  marker: 'The problem',
-  lines: [
-    'You are good at the job.',
-    'Your reviews say so.',
-    'But when someone searches your name, they find a Facebook page from 2019 and a Yell listing you never wrote.',
+/* --- home ---------------------------------------------------------------- */
+
+export const HOME = {
+  hero: {
+    statement: ["You're not hard", 'to recommend.', "You're hard", 'to find.'],
+    body: 'Your customers rate you. Your work speaks for itself. But when someone searches for a tradesman in your town tonight, they find three companies who are worse than you — and one who is not there at all.',
+    kicker: 'That last one is you.',
+    offer: 'Five-page websites for UK trades. £399. Live in two weeks. You own it outright.',
+  },
+
+  /* Replaces a registration strip. Every line is true today and every line
+     protects the buyer rather than describing us. */
+  strip: [
+    { k: '£99 to start', v: 'The rest only when it is live and you have approved it.' },
+    { k: 'Your domain, in your name', v: 'From day one. Not ours. Never ours.' },
+    { k: 'A written contract', v: 'Signed before any money moves.' },
+    { k: 'A named person', v: `${TO_FILL.founder}, on the contract and on the phone.` },
   ],
+
+  problem: {
+    marker: 'Why you have not got one',
+    lines: [
+      'Most trades businesses without a website did not decide against one.',
+      'They got quoted £3,000 and a three-month timeline. Or they paid a monthly fee to someone who went quiet. Or they were told they needed to understand hosting, DNS and SEO before anyone would help them.',
+      'None of that was necessary.',
+    ],
+    turn: 'A working website for a trade is five pages: who you are, what you do, what it costs, proof that you are good, and how to reach you. It should take two weeks and cost less than a decent set of tools.',
+    close: 'That is the entire business we are in.',
+  },
+
+  gets: {
+    marker: 'What you actually get',
+    items: [
+      { t: 'A five-page website, built for your trade', b: 'Home, services, about, reviews, contact. Written by us from a single call. You do not write anything.' },
+      { t: 'Found on a phone first', b: 'Most customers find you on a phone, at the side of a road, deciding in about eleven seconds. Built for that first, desktop second.' },
+      { t: 'Your reviews on the page', b: 'Your Google reviews on your own site, where a customer sees them before they call rather than after.' },
+      { t: 'A phone number that dials', b: 'One tap, no form to fill in. Trades customers ring — the whole site is built to get them to.' },
+      { t: 'Set up so Google can find you', b: 'Google Business Profile connected, pages structured so you show up for your trade and your town.' },
+      { t: 'Yours, permanently', b: 'The domain is in your name and the files are handed to you. If you never speak to us again, nothing switches off.' },
+    ],
+  },
+
+  price: {
+    marker: 'Price',
+    lead: 'We publish our prices. You will not be asked to book a call to find out what it costs.',
+    foot: '£99 to start. The balance when the site is live and you have signed it off. No monthly fee, nothing to be tied into, no charge to leave.',
+  },
+
+  closing: {
+    line: 'Two weeks from now, you can be findable.',
+    body: 'One call to tell us about the business. Two weeks to build it. Then it is yours.',
+  },
 } as const;
 
-/**
- * Real work, live right now. Every one of these can be opened and checked,
- * which is the only reason to put them on the page at all.
- */
-export const REEL = {
-  marker: 'Built and running',
+export const TIERS = [
+  {
+    name: 'Launch',
+    price: '£399',
+    who: 'For a business that needs to exist online and be called.',
+    note: 'five pages · two weeks',
+    includes: [
+      'Five pages, written for you from one call',
+      'Built for phones first',
+      'Your Google reviews on the page',
+      'Google Business Profile connected',
+      'Your domain, registered in your name',
+      'Hosting and business email, first year included',
+      '30-day warranty after launch',
+    ],
+  },
+  {
+    name: 'Build',
+    price: '£799',
+    who: 'For a business that wants the website to take the booking, not just the call.',
+    note: 'everything in Launch, plus',
+    includes: [
+      'Online booking from your own calendar',
+      'Take payments through the site',
+      'Customer logins for quotes and job history',
+      'Everything in Launch',
+    ],
+  },
+] as const;
+
+/* --- what you get -------------------------------------------------------- */
+
+export const PAGES_DETAIL = {
+  head: 'Five pages. Everything a trade actually needs. Nothing it does not.',
+  lead: 'We build one thing, repeatedly. That is why it takes two weeks and costs £399 instead of three months and £3,000.',
+  five: [
+    { n: 'Home', b: 'Who you are, where you work, what you do, and a phone number. Written so a customer knows within ten seconds whether you can help them.' },
+    { n: 'Services', b: 'Every job you take, in the words your customers use, not trade terms. This is the page Google reads to decide whether to show you.' },
+    { n: 'About', b: 'The part that wins the job. How long you have been doing this, who you are, what you will and will not take on. Trades work is bought on trust before price.' },
+    { n: 'Reviews', b: 'Your Google reviews on your own site, where someone sees them before deciding to call.' },
+    { n: 'Contact', b: 'Phone, email, hours, area covered, and a short form for anyone who will not ring. Straight to your inbox.' },
+  ],
+  included: [
+    ['Domain', 'Registered in your name, first year paid by us'],
+    ['Hosting', `First year included, then ${TO_FILL.hostingRenewal} a year — or move it anywhere you like`],
+    ['SSL certificate', 'Included, renews automatically'],
+    ['Mobile build', 'Designed for phones first'],
+    ['Google Business Profile', 'Connected and verified'],
+    ['Business email', 'you@yourbusiness.co.uk, set up and working'],
+    ['Photography', 'Your photos edited and placed. No photos? We supply licensed ones'],
+    ['Copywriting', 'Every word written by us, from one call'],
+    ['Warranty', '30 days after launch — anything broken, fixed free'],
+    ['Handover', 'Every login, every file, and a plain-English guide to editing it yourself'],
+  ],
+  buildOnly: [
+    { t: 'Online booking', b: 'Customers take a slot from your calendar without ringing.' },
+    { t: 'Card payments', b: 'Take deposits or payment in full through your site.' },
+    { t: 'Customer logins', b: 'A private area for quotes, job history or documents.' },
+  ],
+  wont: {
+    head: 'What we do not do',
+    lead: 'Said plainly, because you will find out anyway.',
+    items: [
+      'No monthly retainers. There is nothing to cancel.',
+      'No ongoing SEO campaigns. We build the site correctly and connect your Google profile. That is where the honest work ends and the sales pitch usually starts.',
+      'No brand strategy, logo design or social media management.',
+      'No large e-commerce stores.',
+    ],
+    close: 'If you need those, we will say so on the first call and you will not be sold anything.',
+  },
+} as const;
+
+/* --- pricing ------------------------------------------------------------- */
+
+export const PRICING = {
+  head: 'Two prices. Both published. Neither changes after you have signed.',
+  payHead: 'How you pay — and what protects you',
+  payLead: 'You found us because we rang you. You have not met us. So here is exactly how the money works and exactly what you keep hold of.',
+  /* Bank transfer only. The card-protection argument is deliberately absent —
+     it would be the strongest line on this page and it is not available. */
+  table: [
+    ['To start', '£99'],
+    ['On go-live, after you have approved it', 'The balance'],
+    ['How', 'Bank transfer'],
+    ['Ongoing cost', `None. Hosting renews at ${TO_FILL.hostingRenewal} a year from year two, or move it elsewhere free`],
+    ['Before you pay anything', 'You get the written contract'],
+  ],
+  domain: {
+    head: 'Your domain is registered in your name, not ours.',
+    body: 'This is the one that matters most and almost nobody offers it. It means we cannot hold your website over you, we cannot charge you to release it, and if you decide tomorrow that you would rather someone else looked after it, you take it and go. Nothing to ask us for.',
+  },
+  safeguards: {
+    head: 'What happens if you are not happy',
+    items: [
+      'You see the design before we build the rest. If it is wrong, we redraw it — twice, at no cost.',
+      'You approve every page before it goes live. Nothing publishes without your say-so.',
+      'The balance is not due until the site is live and you have signed it off. If we never deliver, you are £99 down, not £399.',
+      'For 30 days after launch, anything broken is fixed free within one working day.',
+      `If we miss the two-week deadline for a reason that is ours, ${TO_FILL.lateCredit} comes off the final invoice.`,
+      'All of the above is in the written contract you sign before any money moves.',
+    ],
+  },
+} as const;
+
+/* --- how it works -------------------------------------------------------- */
+
+export const PROCESS = {
+  head: 'Two weeks, five stages. You are needed for about ninety minutes of it.',
+  steps: [
+    { d: 'Day 1', t: 'The call', b: 'Forty-five minutes. What you do, where you work, what jobs you want more of, what you would rather stop doing. We take it from there. You do not write anything or fill in a brief.' },
+    { d: 'Days 2–3', t: 'Design', b: 'You get one page, designed, in your colours, with your words. Not a template preview. Wrong? We redraw it, twice if needed, free. Nothing continues until you say yes.' },
+    { d: 'Days 4–9', t: 'Build', b: 'The other four pages, your photos edited, the copy written, Google profile connected, email set up. One progress message mid-week. You are not needed.' },
+    { d: 'Day 10', t: 'Review', b: 'Forty-five minutes. You see the whole site on a private link and go through it page by page. Changes made the same day.' },
+    { d: 'Days 11–14', t: 'Launch and handover', b: 'Domain points at the site, SSL goes on, it goes live. You get every login, the files, and a short guide to changing your own text and photos.' },
+  ],
+  after: 'Then the 30-day warranty runs.',
+  who: {
+    head: 'Who you deal with',
+    body: `${TO_FILL.founder}. Named on your contract, on the phone, for the whole project and the warranty after it. Not a ticket queue and not a different account manager every week.`,
+    hours: `Emails answered within one working day, Monday to Friday, ${TO_FILL.hours} UK time.`,
+  },
+} as const;
+
+/* --- about --------------------------------------------------------------- */
+
+export const ABOUT = {
+  head: 'We build websites for UK trades and small service businesses. That is the whole of it.',
+  who: {
+    head: 'Who you are actually dealing with',
+    body: `AIMS Studio is ${TO_FILL.founder} and a small build team, working remotely for clients across the UK.`,
+    why: 'We put that on the About page rather than leaving you to work it out later, because you are about to send money to people you have never met and you are entitled to know who they are. Our phone number is real, it is answered by the person who will build your site, and it is on every contract we send.',
+  },
+  narrow: {
+    head: 'Why we only do this one thing',
+    body: 'Because a plumber, a barber and a recovery garage need the same five pages, and pretending otherwise is how the price gets to £3,000.',
+    body2: 'We have built this specific thing enough times to know what a customer looks for on a trades website in the first ten seconds. That is why it takes two weeks. It is not a shortcut. It is a narrow business.',
+  },
+  privacy: {
+    head: "Your customers' information",
+    body: 'Any enquiry that comes through your site goes straight to your inbox. We do not keep it, we do not sell it, and we do not market to it.',
+  },
+} as const;
+
+/* Real, live, and checkable. The only claim on the site that a buyer can
+   verify himself, which is why no number is attached to it — four sites is
+   four sites, and "X delivered" would invite a question we cannot answer. */
+export const WORK = {
+  marker: 'Recent work',
   pieces: [
     {
-      id: 'startupsolution',
-      client: 'Startup Solution',
-      kind: 'Live',
-      href: 'https://www.startupsolution.online',
-      host: 'startupsolution.online',
-      image: '/proof/startupsolution.webp',
-      imageSmall: '/proof/startupsolution-400.webp',
-      imageMedium: '/proof/startupsolution-600.webp',
+      id: 'startupsolution', client: 'Startup Solution', href: 'https://www.startupsolution.online',
+      host: 'startupsolution.online', image: '/proof/startupsolution.webp',
+      imageSmall: '/proof/startupsolution-400.webp', imageMedium: '/proof/startupsolution-600.webp',
       note: 'Business consultancy. Eight pages, one enquiry flow, shipped in nine days.',
     },
     {
-      id: 'cybertech',
-      client: 'Cybertech',
-      kind: 'Live',
-      href: 'https://www.cybertechedu.com',
-      host: 'cybertechedu.com',
-      image: '/proof/cybertech.webp',
-      imageSmall: '/proof/cybertech-400.webp',
-      imageMedium: '/proof/cybertech-600.webp',
-      note: 'Training institute in Bogura, running since 2000. Course listings, admissions, student login.',
+      id: 'cybertech', client: 'Cybertech', href: 'https://www.cybertechedu.com',
+      host: 'cybertechedu.com', image: '/proof/cybertech.webp',
+      imageSmall: '/proof/cybertech-400.webp', imageMedium: '/proof/cybertech-600.webp',
+      note: 'Training institute running since 2000. Course listings, admissions, student login.',
     },
     {
-      id: 'lawncare',
-      client: 'Cutting Edge Lawn Care',
-      kind: 'Live',
-      href: 'https://cutting-edge-lawn-care-concept.vercel.app',
-      host: 'cutting-edge-lawn-care',
-      image: '/proof/lawncare.webp',
-      imageSmall: '/proof/lawncare-400.webp',
-      imageMedium: '/proof/lawncare-600.webp',
-      note: 'Local service business in Austin. Built around one action: get a free estimate.',
+      id: 'lawncare', client: 'Cutting Edge Lawn Care', href: 'https://cutting-edge-lawn-care-concept.vercel.app',
+      host: 'cutting-edge-lawn-care', image: '/proof/lawncare.webp',
+      imageSmall: '/proof/lawncare-400.webp', imageMedium: '/proof/lawncare-600.webp',
+      note: 'Local service business. Built around one action: get a free estimate.',
     },
     {
-      id: 'ahmedmobasher',
-      client: 'Ahmed Mobasher',
-      kind: 'Live',
-      href: 'https://www.ahmedmobasher.online',
-      host: 'ahmedmobasher.online',
-      image: '/proof/ahmedmobasher.webp',
-      imageSmall: '/proof/ahmedmobasher-400.webp',
-      imageMedium: '/proof/ahmedmobasher-600.webp',
-      note: 'Personal brand site. Every contact route lands in one WhatsApp thread.',
+      id: 'ahmedmobasher', client: 'Ahmed Mobasher', href: 'https://www.ahmedmobasher.online',
+      host: 'ahmedmobasher.online', image: '/proof/ahmedmobasher.webp',
+      imageSmall: '/proof/ahmedmobasher-400.webp', imageMedium: '/proof/ahmedmobasher-600.webp',
+      note: 'Personal brand site. Every contact route lands in one place.',
     },
   ],
 } as const;
 
-export const WORKS = {
-  marker: 'How it works',
-  steps: [
-    {
-      n: '01',
-      title: 'You talk, we write it down.',
-      body: 'One call. What you do, where you cover, what you want the phone to ring about. No brief to fill in.',
-    },
-    {
-      n: '02',
-      title: 'Half up front. Two weeks.',
-      body: 'You pay half to start and see the first version inside a week. Nothing is hidden until the end.',
-    },
-    {
-      n: '03',
-      title: 'It goes live. You pay the rest.',
-      body: 'Your domain, your hosting, in your name. One round of changes after launch, and we answer by email when something breaks.',
-    },
-  ],
-} as const;
-
-export const PRICES = {
-  marker: 'Price',
-  tiers: [
-    {
-      name: 'Launch',
-      price: '£399',
-      note: 'five pages · two weeks',
-      includes: [
-        'Home, services, areas covered, reviews, contact',
-        'Your phone number on every screen, one tap to call',
-        'Built for phones first',
-        'Your own domain, set up for you',
-        'Your Google reviews on the page',
-        'One round of changes after launch',
-      ],
-    },
-    {
-      name: 'Build',
-      price: '£799',
-      note: 'everything above, plus a site that does things',
-      includes: [
-        'Online booking or enquiry system',
-        'Take payments through the site',
-        'Customer logins',
-        'A dashboard you can actually read',
-        'Email alerts when someone books',
-        'Two rounds of changes after launch',
-      ],
-    },
-  ],
-  foot: 'Half up front, half when it is live. No monthly fee. Paid by bank transfer.',
-} as const;
-
-export const TRUST = {
-  marker: 'Why AIMS',
-  lines: [
-    'Fixed price and a fixed date, agreed before anything starts.',
-    'Your domain, your hosting, your accounts. All in your name.',
-    'Building for small businesses since 2022, working UK hours.',
-  ],
-  quotes: [
-    {
-      text: 'Ali delivered our platform two weeks ahead of schedule. The code quality was exceptional. Our engineering team was genuinely impressed.',
-      who: 'Founder, 1M Partners',
-    },
-    {
-      text: 'The sophistication of the design and the sheer quality of execution set a new standard for our brand.',
-      who: 'Managing Director, Cybertech',
-    },
-  ],
-} as const;
-
-export const CONTACT = {
-  marker: 'Start',
-  line: 'Tell us what your business does.',
-  body: 'A ten minute call. If a website is not what you need, we will say so.',
-  emailLabel: 'Email us',
-  replyNote: 'We reply the same working day.',
+export const CTA = {
+  cost: 'See what it costs',
+  call: 'Book a 15-minute call',
+  breakdown: 'See the full breakdown',
 } as const;

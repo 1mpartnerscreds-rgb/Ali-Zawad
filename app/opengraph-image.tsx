@@ -1,12 +1,12 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ImageResponse } from 'next/og';
-import { OPENING, SITE } from '@/content/site';
+import { HOME, SITE } from '@/content/site';
 
 export const runtime = 'nodejs';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = OPENING.statement.join(' ');
+export const alt = HOME.hero.statement.join(' ');
 
 const font = (file: string) => readFileSync(join(process.cwd(), 'app/fonts', file));
 
@@ -46,7 +46,7 @@ export default function Image() {
             color: '#E8E4DC',
           }}
         >
-          {OPENING.statement.map((line) => (
+          {HOME.hero.statement.map((line) => (
             <div key={line} style={{ display: 'flex' }}>
               {line}
             </div>

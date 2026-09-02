@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, Newsreader } from 'next/font/google';
 import localFont from 'next/font/local';
-import { Playhead } from '@/components/playhead';
+import { Footer } from '@/components/footer';
+import { Nav } from '@/components/nav';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { SITE } from '@/content/site';
 import './globals.css';
@@ -51,6 +52,7 @@ export const metadata: Metadata = {
   title: SITE.title,
   description: SITE.description,
   alternates: { canonical: '/' },
+  robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
     siteName: SITE.name,
@@ -71,8 +73,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${bricolage.variable} ${newsreader.variable} ${plexMono.variable}`}>
       <body>
         <SmoothScroll />
-        {children}
-        <Playhead />
+        <a href="#main" className="sr-only">Skip to content</a>
+        <Nav />
+        <div id="main">{children}</div>
+        <Footer />
       </body>
     </html>
   );
