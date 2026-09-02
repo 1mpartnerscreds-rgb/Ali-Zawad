@@ -1,4 +1,5 @@
 import { Cta, Section } from '@/components/bits';
+import { Stagger } from '@/components/stagger';
 import { Reveal } from '@/components/reveal';
 import { CTA, HOME, TIERS } from '@/content/site';
 
@@ -36,16 +37,16 @@ export default function Page() {
       </section>
 
       {/* Four things that are true today, each one protecting the buyer. */}
-      <div className="mx-auto max-w-frame px-5 lg:px-8">
+      <Stagger className="mx-auto max-w-frame px-5 lg:px-8" stagger={0.09}>
         <dl className="grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-4">
           {HOME.strip.map((s) => (
-            <div key={s.k} className="bg-ink p-6">
+            <div key={s.k} className="rise bg-ink p-6">
               <dt className="display display-wide text-[1.05rem] text-bone">{s.k}</dt>
               <dd className="mt-2 text-[0.92rem] leading-relaxed text-grey">{s.v}</dd>
             </div>
           ))}
         </dl>
-      </div>
+      </Stagger>
 
       <Section mark={HOME.problem.marker}>
         <Reveal stagger={0.08}>
@@ -71,21 +72,21 @@ export default function Page() {
       </Section>
 
       <Section mark={HOME.gets.marker}>
-        <div className="grid gap-x-12 gap-y-10 md:grid-cols-2">
+        <Stagger className="grid gap-x-12 gap-y-10 md:grid-cols-2">
           {HOME.gets.items.map((i) => (
-            <div key={i.t} className="border-t border-rule pt-5">
+            <div key={i.t} className="rise border-t border-rule pt-5">
               <h2 className="display display-wide text-[1.15rem] text-bone">{i.t}</h2>
               <p className="mt-2 max-w-measure text-[0.95rem] leading-relaxed text-grey">{i.b}</p>
             </div>
           ))}
-        </div>
+        </Stagger>
       </Section>
 
       <Section mark={HOME.price.marker}>
         <p className="max-w-measure text-[1.05rem] text-grey">{HOME.price.lead}</p>
-        <div className="mt-beat grid gap-10 md:grid-cols-2">
+        <Stagger className="mt-beat grid gap-10 md:grid-cols-2" stagger={0.12}>
           {TIERS.map((t) => (
-            <div key={t.name} className="border-t border-rule pt-6">
+            <div key={t.name} className="rise border-t border-rule pt-6">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="display display-wide text-say text-bone">{t.name}</h2>
                 <p className="display text-[clamp(2rem,4.5vw,3.25rem)] leading-none text-bone tabular-nums">
@@ -96,7 +97,7 @@ export default function Page() {
               <p className="mt-4 max-w-measure text-[0.95rem] text-grey">{t.who}</p>
             </div>
           ))}
-        </div>
+        </Stagger>
         <p className="mt-10 max-w-measure text-[0.95rem] text-grey">{HOME.price.foot}</p>
         <div className="mt-8"><Cta href="/pricing">{CTA.breakdown}</Cta></div>
       </Section>

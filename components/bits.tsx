@@ -18,21 +18,19 @@ export function Lede({ children }: { children: ReactNode }) {
   );
 }
 
-/** Primary action. Filled, because on a five-page site the CTA must win. */
+/**
+ * Primary action. The label is doubled on purpose — one copy leaves upward as
+ * the other arrives, inside a masked band, while the ground wipes in behind
+ * it. The duplicate is hidden from assistive tech so the link reads once.
+ */
 export function Cta({ href, children, tone = 'solid' }:
   { href: string; children: ReactNode; tone?: 'solid' | 'line' }) {
-  const base =
-    'inline-block px-6 py-3.5 text-[0.95rem] no-underline transition-colors duration-300';
   return (
-    <Link
-      href={href}
-      className={
-        tone === 'solid'
-          ? `${base} bg-bone text-ink hover:bg-bone/85`
-          : `${base} border border-rule text-bone hover:border-bone`
-      }
-    >
-      {children}
+    <Link href={href} className={`btn ${tone === 'solid' ? 'btn--solid' : ''}`}>
+      <span className="btn-lab">
+        <i>{children}</i>
+        <i aria-hidden="true">{children}</i>
+      </span>
     </Link>
   );
 }

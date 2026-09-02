@@ -203,6 +203,131 @@ body {
   }
 }
 
+/* --- actions -------------------------------------------------------------
+   The label is two copies in a masked band: the visible one leaves upward as
+   its twin arrives from below, while a ground wipes in behind from the same
+   direction. Same grammar as the type reveals — a mask travelling, never a
+   fade. All transform and opacity, so it stays on the compositor.
+------------------------------------------------------------------------- */
+
+.btn {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 0.95rem 1.7rem;
+  border: 1px solid var(--color-rule);
+  color: var(--color-bone);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+  transition:
+    color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-bone);
+  transform: translateY(101%);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  color: var(--color-ink);
+  border-color: var(--color-bone);
+}
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: translateY(0);
+}
+
+/* Filled by default: the ground inverts instead of arriving. */
+.btn--solid {
+  background: var(--color-bone);
+  border-color: var(--color-bone);
+  color: var(--color-ink);
+}
+.btn--solid::after {
+  background: var(--color-ink);
+}
+.btn--solid:hover,
+.btn--solid:focus-visible {
+  color: var(--color-bone);
+}
+
+.btn-lab {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+.btn-lab i {
+  display: block;
+  font-style: normal;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-lab i + i {
+  position: absolute;
+  inset: 0;
+  transform: translateY(105%);
+}
+.btn:hover .btn-lab i,
+.btn:focus-visible .btn-lab i {
+  transform: translateY(-105%);
+}
+.btn:hover .btn-lab i + i,
+.btn:focus-visible .btn-lab i + i {
+  transform: translateY(0);
+}
+
+/* --- nav links ----------------------------------------------------------- */
+
+.navlink {
+  position: relative;
+  text-decoration: none;
+  transition: color 0.35s ease;
+}
+.navlink::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.4em;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.navlink:hover::after,
+.navlink:focus-visible::after,
+.navlink[aria-current='page']::after {
+  transform: scaleX(1);
+}
+
+/* Blocks arrive by uncovering, not by fading. JS sets the start state so the
+   page still reads with no script. */
+.rise[data-rise-armed] {
+  will-change: clip-path, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn::after,
+  .btn-lab i,
+  .navlink::after {
+    transition: none !important;
+  }
+  .rise {
+    clip-path: none !important;
+    transform: none !important;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

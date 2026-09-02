@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cta, Lede, Section } from '@/components/bits';
+import { Stagger } from '@/components/stagger';
 import { ABOUT, CTA, SITE, TO_FILL, WORK } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -20,9 +21,9 @@ export default function Page() {
       </Section>
 
       <Section mark={WORK.marker}>
-        <div className="grid gap-10 sm:grid-cols-2">
+        <Stagger className="grid gap-10 sm:grid-cols-2" stagger={0.1}>
           {WORK.pieces.map((p) => (
-            <article key={p.id}>
+            <article key={p.id} className="rise">
               <a href={p.href} rel="noreferrer" className="group block no-underline">
                 <div className="overflow-hidden border border-rule">
                   <img
@@ -40,7 +41,7 @@ export default function Page() {
               </a>
             </article>
           ))}
-        </div>
+        </Stagger>
       </Section>
 
       <Section mark={ABOUT.narrow.head}>
