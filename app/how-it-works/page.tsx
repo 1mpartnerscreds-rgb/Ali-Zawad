@@ -33,7 +33,7 @@ export default function Page() {
       <Section mark={PROCESS.who.head}>
         <p className="display display-wide max-w-[24ch] text-say text-bone">{PROCESS.who.body}</p>
         <p className="mt-6 max-w-measure text-[0.98rem] text-grey">{PROCESS.who.hours}</p>
-        <div className="mt-10"><Cta href="/about">{CTA.call}</Cta></div>
+        <div className="mt-10"><Cta href={CTA.callHref}>{CTA.call}</Cta></div>
       </Section>
     </main>
   );

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cta, Lede, Section } from '@/components/bits';
+import { EnquiryForm } from '@/components/enquiry-form';
 import { Stagger } from '@/components/stagger';
 import { ABOUT, CTA, SITE, TO_FILL, WORK } from '@/content/site';
 
@@ -64,8 +65,19 @@ export default function Page() {
         </p>
       </Section>
 
-      <Section mark="Contact">
-        <div className="flex flex-col gap-6">
+      <Section id="contact" mark="Contact">
+        <h2 className="display display-wide max-w-[20ch] text-say text-bone">
+          Tell us what your business does.
+        </h2>
+        <p className="mt-5 max-w-measure text-[1.02rem] text-grey">
+          A ten minute call. If a website is not what you need, we will say so.
+        </p>
+
+        <div className="mt-beat">
+          <EnquiryForm />
+        </div>
+
+        <div className="mt-rest flex flex-col gap-6 border-t border-rule pt-10">
           <a
             href={`mailto:${SITE.email}`}
             className="display display-wide text-say text-bone no-underline transition-opacity duration-500 hover:opacity-60"
@@ -81,7 +93,6 @@ export default function Page() {
           )}
           <p className="mark">Monday to Friday · {TO_FILL.hours} UK time</p>
         </div>
-        <div className="mt-10"><Cta href="/pricing">{CTA.cost}</Cta></div>
       </Section>
     </main>
   );

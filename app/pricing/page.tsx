@@ -70,7 +70,7 @@ export default function Page() {
             </li>
           ))}
         </ol></Stagger>
-        <div className="mt-10"><Cta href="/how-it-works">{CTA.call}</Cta></div>
+        <div className="mt-10"><Cta href={CTA.callHref}>{CTA.call}</Cta></div>
       </Section>
     </main>
   );

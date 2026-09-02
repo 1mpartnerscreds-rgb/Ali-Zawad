@@ -21,6 +21,9 @@ export const TO_FILL = {
   hostingRenewal: '£60',             // year two onward
   lateCredit: '£50',                 // comes off the invoice if the deadline slips on us
   privacyUrl: '',                    // set once the notice is published; empty hides the link
+  booking: '',                       // Cal.com / Calendly URL. Empty = the button
+                                     // sends people to the contact block instead of
+                                     // promising a calendar that does not exist.
 } as const;
 
 export const SITE = {
@@ -273,6 +276,10 @@ export const WORK = {
 
 export const CTA = {
   cost: 'See what it costs',
-  call: 'Book a 15-minute call',
   breakdown: 'See the full breakdown',
+  /* The label follows what the button can actually do. Promising to book a
+     call and then landing someone on a page is the exact broken promise this
+     site is built to avoid. */
+  call: TO_FILL.booking ? 'Book a 15-minute call' : 'Talk to us',
+  callHref: TO_FILL.booking || '/about#contact',
 } as const;

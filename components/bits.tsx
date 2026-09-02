@@ -2,10 +2,10 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 export function Section({
-  mark, children, className = '',
-}: { mark?: string; children: ReactNode; className?: string }) {
+  mark, children, className = '', id,
+}: { mark?: string; children: ReactNode; className?: string; id?: string }) {
   return (
-    <section className={`mx-auto max-w-frame px-5 pt-rest lg:px-8 ${className}`}>
+    <section id={id} className={`mx-auto max-w-frame px-5 pt-rest lg:px-8 ${className}`}>
       {mark ? <p className="mark mb-beat">{mark}</p> : null}
       {children}
     </section>
@@ -25,12 +25,23 @@ export function Lede({ children }: { children: ReactNode }) {
  */
 export function Cta({ href, children, tone = 'solid' }:
   { href: string; children: ReactNode; tone?: 'solid' | 'line' }) {
-  return (
-    <Link href={href} className={`btn ${tone === 'solid' ? 'btn--solid' : ''}`}>
-      <span className="btn-lab">
-        <i>{children}</i>
-        <i aria-hidden="true">{children}</i>
-      </span>
-    </Link>
+  const cls = `btn ${tone === 'solid' ? 'btn--solid' : ''}`;
+  const label = (
+    <span className="btn-lab">
+      <i>{children}</i>
+      <i aria-hidden="true">{children}</i>
+    </span>
   );
+
+  // A booking tool lives on someone else's domain, so it cannot go through
+  // the router. Anything starting with a scheme leaves the site.
+  if (/^(https?:|mailto:|tel:)/.test(href)) {
+    return (
+      <a href={href} target={href.startsWith('http') ? '_blank' : undefined}
+         rel={href.startsWith('http') ? 'noreferrer' : undefined} className={cls}>
+        {label}
+      </a>
+    );
+  }
+  return <Link href={href} className={cls}>{label}</Link>;
 }

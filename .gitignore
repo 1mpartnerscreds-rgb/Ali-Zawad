@@ -12,3 +12,4 @@ next-env.d.ts
 # This repo is public; the call list holds real businesses' phone numbers,
 # and the scripts are competitive material. Kept locally, never pushed.
 sprint/
+.env*

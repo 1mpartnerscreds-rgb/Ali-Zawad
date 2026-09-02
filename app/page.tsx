@@ -32,7 +32,7 @@ export default function Page() {
 
         <div className="mt-12 flex flex-wrap gap-4">
           <Cta href="/pricing">{CTA.cost}</Cta>
-          <Cta href="/about" tone="line">{CTA.call}</Cta>
+          <Cta href={CTA.callHref} tone="line">{CTA.call}</Cta>
         </div>
       </section>
 
@@ -107,7 +107,7 @@ export default function Page() {
           {HOME.closing.line}
         </p>
         <p className="mt-6 max-w-measure text-[1.05rem] text-grey">{HOME.closing.body}</p>
-        <div className="mt-10"><Cta href="/about">{CTA.call}</Cta></div>
+        <div className="mt-10"><Cta href={CTA.callHref}>{CTA.call}</Cta></div>
       </Section>
     </main>
   );
