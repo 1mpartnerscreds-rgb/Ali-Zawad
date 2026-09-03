@@ -23,14 +23,19 @@ export function Footer() {
           <a href={`mailto:${SITE.email}`} className="text-[0.95rem] text-bone no-underline hover:opacity-70">
             {SITE.email}
           </a>
-          {TO_FILL.phoneHref ? (
-            <a href={`tel:${TO_FILL.phoneHref}`} className="tech text-[0.95rem] text-bone no-underline hover:opacity-70">
-              {TO_FILL.phone}
-            </a>
-          ) : (
-            <span className="tech text-[0.95rem] text-grey">{TO_FILL.phone}</span>
-          )}
-          <p className="mark mt-1">Mon–Fri · {TO_FILL.hours} UK</p>
+          {TO_FILL.phone ? (
+            TO_FILL.phoneHref ? (
+              <a
+                href={`tel:${TO_FILL.phoneHref}`}
+                className="tech text-[0.95rem] text-bone no-underline hover:opacity-70"
+              >
+                {TO_FILL.phone}
+              </a>
+            ) : (
+              <span className="tech text-[0.95rem] text-bone">{TO_FILL.phone}</span>
+            )
+          ) : null}
+          <p className="mark mt-1">Mon–Fri · same working day</p>
         </div>
 
         <div className="flex flex-col gap-2">

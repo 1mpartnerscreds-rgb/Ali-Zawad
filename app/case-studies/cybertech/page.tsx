@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Cta, Section } from '@/components/bits';
-import { Reveal } from '@/components/reveal';
 import { CTA, WORK } from '@/content/site';
 
 /* The strongest client story on the site, told at length. The buyer needs
@@ -21,19 +20,13 @@ export default function Page() {
     <main>
       <Section className="!pt-beat">
         <p className="mark mb-6">Case study · 01</p>
-        <Reveal mode="load" stagger={0.08}>
-          <h1 className="display text-[clamp(2.2rem,7vw,5.5rem)] max-w-[16ch] -ml-[0.04em] text-bone">
-            <span className="wipe"><span>A training institute,</span></span>
-            <span className="wipe"><span>online for the</span></span>
-            <span className="wipe"><span>first time.</span></span>
-          </h1>
-          <p className="wipe mt-8 max-w-measure">
-            <span className="block text-[1.1rem] leading-relaxed text-grey">
-              Cybertech has been teaching IT and software courses out of Bogura since 2000.
-              Twenty-five years of a real business, and no website that showed it.
-            </span>
-          </p>
-        </Reveal>
+        <h1 className="display text-[clamp(2.2rem,7vw,5.5rem)] max-w-[16ch] -ml-[0.04em] text-bone">
+          A training institute, online for the first time.
+        </h1>
+        <p className="mt-8 max-w-measure text-[1.1rem] leading-relaxed text-grey">
+          Cybertech has been teaching IT and software courses out of Bogura since 2000.
+          Twenty-five years of a real business, and no website that showed it.
+        </p>
       </Section>
 
       <Section>

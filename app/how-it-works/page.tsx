@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Cta, Lede, Section } from '@/components/bits';
-import { Stagger } from '@/components/stagger';
 import { CTA, PROCESS } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -16,9 +15,9 @@ export default function Page() {
       </Section>
 
       <Section>
-        <Stagger><ol>
+        <div><ol>
           {PROCESS.steps.map((s) => (
-            <li key={s.d} className="rise grid gap-x-10 gap-y-2 border-t border-rule py-8 md:grid-cols-[9rem_1fr]">
+            <li key={s.d} className="grid gap-x-10 gap-y-2 border-t border-rule py-8 md:grid-cols-[9rem_1fr]">
               <p className="mark pt-1">{s.d}</p>
               <div>
                 <h2 className="display display-wide text-[1.35rem] text-bone">{s.t}</h2>
@@ -26,7 +25,7 @@ export default function Page() {
               </div>
             </li>
           ))}
-        </ol></Stagger>
+        </ol></div>
         <p className="mt-8 text-[0.98rem] text-bone">{PROCESS.after}</p>
       </Section>
 

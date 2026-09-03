@@ -15,8 +15,8 @@
 --------------------------------------------------------------------------- */
 export const TO_FILL = {
   founder: 'Ali Zawad',              // named on every contract and on the About page
-  phone: '[UK PHONE NUMBER]',        // the number that is actually answered
-  phoneHref: '',                     // e.g. +441610000000 — leave '' to hide the tel: link
+  phone: '',                         // set to the number, e.g. '+44 161 000 0000'; empty hides the field
+  phoneHref: '',                     // set to '+441610000000' (no spaces) once phone is filled
   hours: '9am–6pm',                  // support hours (unused since dual-region)
   hostingRenewal: '£60',             // year two onward
   lateCredit: '£50',                 // comes off the invoice if the deadline slips on us
@@ -60,7 +60,7 @@ export const HOME = {
     { k: '£99 or $99 to start', v: 'The rest only when it is live and you have approved it.' },
     { k: 'Your domain, in your name', v: 'From day one. Not ours. Never ours.' },
     { k: 'A written contract', v: 'Signed before any money moves.' },
-    { k: 'A named person', v: `${TO_FILL.founder}, on the contract and on the phone.` },
+    { k: 'A named person', v: `${TO_FILL.founder}, our developer, on every contract we send.` },
   ],
 
   problem: {
@@ -96,6 +96,29 @@ export const HOME = {
     line: 'Two weeks from now, you can be findable.',
     body: 'One call to tell us about the business. Two weeks to build it. Then it is yours.',
   },
+} as const;
+
+/* Signature block on Home: what £399 actually buys, itemised. Placed here
+   because a sceptical tradesman does not read the argument until he has
+   seen the deliverable. Every line is a thing that goes on his site — no
+   process talk, no jargon. */
+export const WHAT_YOU_GET = {
+  marker: 'What you get for £399',
+  intro: 'Five pages, done in two weeks. Nothing hidden, no extras to buy later.',
+  pages: [
+    { n: 'Home', b: 'Who you are, where you cover, your phone number one tap away.' },
+    { n: 'Services', b: 'Every job you take, in the words your customers use.' },
+    { n: 'About', b: 'How long you have been doing this, and what wins the job.' },
+    { n: 'Reviews', b: 'Your Google reviews on your own page.' },
+    { n: 'Contact', b: 'Phone, email, hours, area — straight to your inbox.' },
+  ],
+  bundled: [
+    'Your domain, registered in your name',
+    'Hosting and business email, first year included',
+    'Built for phones first',
+    'Google Business Profile connected',
+    'One round of changes after launch, then a 30-day fix warranty',
+  ],
 } as const;
 
 export const TIERS = [

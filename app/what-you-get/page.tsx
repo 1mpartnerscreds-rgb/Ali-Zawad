@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Cta, Lede, Section } from '@/components/bits';
-import { Stagger } from '@/components/stagger';
 import { CTA, PAGES_DETAIL } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -18,18 +17,18 @@ export default function Page() {
       </Section>
 
       <Section mark="The five pages">
-        <Stagger className="grid gap-x-12 gap-y-9 md:grid-cols-2">
+        <div className="grid gap-x-12 gap-y-9 md:grid-cols-2">
           {d.five.map((p) => (
-            <div key={p.n} className="rise border-t border-rule pt-5">
+            <div key={p.n} className="border-t border-rule pt-5">
               <h2 className="display display-wide text-[1.25rem] text-bone">{p.n}</h2>
               <p className="mt-2 max-w-measure text-[0.95rem] leading-relaxed text-grey">{p.b}</p>
             </div>
           ))}
-        </Stagger>
+        </div>
       </Section>
 
       <Section mark="Included on every build">
-        <Stagger className="overflow-x-auto" selector="tbody tr" stagger={0.05}>
+        <div className="overflow-x-auto">
           <table className="stacktable w-full min-w-[34rem] border-collapse text-left">
             <tbody>
               {d.included.map(([k, v]) => (
@@ -42,29 +41,29 @@ export default function Page() {
               ))}
             </tbody>
           </table>
-        </Stagger>
+        </div>
       </Section>
 
       <Section mark="Build tier only · £799">
-        <Stagger className="grid gap-8 md:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-3">
           {d.buildOnly.map((b) => (
-            <div key={b.t} className="rise border-t border-rule pt-5">
+            <div key={b.t} className="border-t border-rule pt-5">
               <h2 className="display display-wide text-[1.15rem] text-bone">{b.t}</h2>
               <p className="mt-2 text-[0.95rem] leading-relaxed text-grey">{b.b}</p>
             </div>
           ))}
-        </Stagger>
+        </div>
       </Section>
 
       <Section mark={d.wont.head}>
         <p className="max-w-measure text-[1.05rem] text-grey">{d.wont.lead}</p>
-        <Stagger><ul className="mt-8 max-w-measure">
+        <div><ul className="mt-8 max-w-measure">
           {d.wont.items.map((i) => (
-            <li key={i} className="rise border-b border-rule py-4 text-[0.98rem] leading-relaxed text-bone/85">
+            <li key={i} className="border-b border-rule py-4 text-[0.98rem] leading-relaxed text-bone/85">
               {i}
             </li>
           ))}
-        </ul></Stagger>
+        </ul></div>
         <p className="mt-8 max-w-measure text-[0.95rem] text-grey">{d.wont.close}</p>
         <div className="mt-10"><Cta href="/pricing">{CTA.cost}</Cta></div>
       </Section>

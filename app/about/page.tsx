@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Cta, Lede, Section } from '@/components/bits';
 import { EnquiryForm } from '@/components/enquiry-form';
-import { Stagger } from '@/components/stagger';
 import { ABOUT, CTA, SITE, TO_FILL, WORK } from '@/content/site';
 
 export const metadata: Metadata = {
@@ -22,9 +21,9 @@ export default function Page() {
       </Section>
 
       <Section mark={WORK.marker}>
-        <Stagger className="grid gap-10 sm:grid-cols-2" stagger={0.1}>
+        <div className="grid gap-10 sm:grid-cols-2">
           {WORK.pieces.map((p) => (
-            <article key={p.id} className="rise">
+            <article key={p.id}>
               <a href={p.href} rel="noreferrer" className="group block no-underline">
                 <div className="overflow-hidden border border-rule">
                   <img
@@ -42,7 +41,7 @@ export default function Page() {
               </a>
             </article>
           ))}
-        </Stagger>
+        </div>
       </Section>
 
       <Section mark={ABOUT.narrow.head}>
@@ -84,14 +83,19 @@ export default function Page() {
           >
             {SITE.email}
           </a>
-          {TO_FILL.phoneHref ? (
-            <a href={`tel:${TO_FILL.phoneHref}`} className="tech text-[1.05rem] text-bone no-underline hover:opacity-70">
-              {TO_FILL.phone}
-            </a>
-          ) : (
-            <p className="tech text-[1.05rem] text-grey">{TO_FILL.phone}</p>
-          )}
-          <p className="mark">Monday to Friday · {TO_FILL.hours} UK time</p>
+          {TO_FILL.phone ? (
+            TO_FILL.phoneHref ? (
+              <a
+                href={`tel:${TO_FILL.phoneHref}`}
+                className="tech text-[1.05rem] text-bone no-underline hover:opacity-70"
+              >
+                {TO_FILL.phone}
+              </a>
+            ) : (
+              <p className="tech text-[1.05rem] text-bone">{TO_FILL.phone}</p>
+            )
+          ) : null}
+          <p className="mark">Monday to Friday · we reply the same working day</p>
         </div>
       </Section>
     </main>

@@ -3,7 +3,7 @@ import { Cta, Section } from '@/components/bits';
 import { RecentWork } from '@/components/recent-work';
 import { Stagger } from '@/components/stagger';
 import { Reveal } from '@/components/reveal';
-import { CTA, HOME, TIERS } from '@/content/site';
+import { CTA, HOME, TIERS, WHAT_YOU_GET } from '@/content/site';
 
 export default function Page() {
   return (
@@ -49,6 +49,35 @@ export default function Page() {
           ))}
         </dl>
       </Stagger>
+
+      {/* Signature: what £399 actually buys. On a site whose one job is to
+          convince a sceptical mechanic the offer is real, itemising the
+          deliverable comes before any argument for it. */}
+      <Section mark={WHAT_YOU_GET.marker}>
+        <p className="max-w-measure text-[1.05rem] leading-relaxed text-grey">{WHAT_YOU_GET.intro}</p>
+
+        <ol className="mt-beat">
+          {WHAT_YOU_GET.pages.map((p, i) => (
+            <li key={p.n} className="grid gap-x-8 gap-y-1 border-t border-rule py-5 md:grid-cols-[3rem_10rem_1fr]">
+              <span className="mark pt-1">{String(i + 1).padStart(2, '0')}</span>
+              <h3 className="display display-wide text-[1.15rem] text-bone">{p.n}</h3>
+              <p className="text-[0.98rem] leading-relaxed text-grey">{p.b}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div className="mt-hold border-t border-accent pt-8">
+          <p className="mark">Bundled with every build</p>
+          <ul className="mt-6 grid gap-y-3 gap-x-10 md:grid-cols-2">
+            {WHAT_YOU_GET.bundled.map((b) => (
+              <li key={b} className="text-[0.98rem] text-bone/90 leading-relaxed">
+                <span className="mr-2 text-accent">·</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
 
       {/* Evidence, earlier than the argument. A trades buyer has to see real
           sites before the sales pitch is worth reading, and putting it above

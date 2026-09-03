@@ -3,7 +3,7 @@ import { IBM_Plex_Mono, Newsreader } from 'next/font/google';
 import localFont from 'next/font/local';
 import { Footer } from '@/components/footer';
 import { Nav } from '@/components/nav';
-import { SmoothScroll } from '@/components/smooth-scroll';
+
 import { SITE } from '@/content/site';
 import './globals.css';
 
@@ -72,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${bricolage.variable} ${newsreader.variable} ${plexMono.variable}`}>
       <body>
-        <SmoothScroll />
+
         <a href="#main" className="sr-only">Skip to content</a>
         <Nav />
         <div id="main">{children}</div>
