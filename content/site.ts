@@ -17,7 +17,7 @@ export const TO_FILL = {
   founder: 'Ali Zawad',              // named on every contract and on the About page
   phone: '[UK PHONE NUMBER]',        // the number that is actually answered
   phoneHref: '',                     // e.g. +441610000000 — leave '' to hide the tel: link
-  hours: '9am–6pm',                  // support hours, UK time
+  hours: '9am–6pm',                  // support hours (unused since dual-region)
   hostingRenewal: '£60',             // year two onward
   lateCredit: '£50',                 // comes off the invoice if the deadline slips on us
   privacyUrl: '',                    // set once the notice is published; empty hides the link
@@ -30,9 +30,9 @@ export const SITE = {
   name: 'AIMS Studio',
   domain: 'aimsstudio.online',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aimsstudio.online',
-  title: 'AIMS Studio — five-page websites for UK trades',
+  title: 'AIMS Studio — five-page websites for trades and service businesses',
   description:
-    'Five-page websites for UK trades and small service businesses. £399, live in two weeks. Your domain in your name, £99 to start.',
+    'Five-page websites for trades and small service businesses. £399 or $499, live in two weeks. Your domain in your name, £99 or $99 to start.',
   email: 'hello@aimsstudio.online',
 } as const;
 
@@ -51,13 +51,13 @@ export const HOME = {
     statement: ["You're not hard", 'to recommend.', "You're hard", 'to find.'],
     body: 'Your customers rate you. Your work speaks for itself. But when someone searches for a tradesman in your town tonight, they find three companies who are worse than you — and one who is not there at all.',
     kicker: 'That last one is you.',
-    offer: 'Five-page websites for UK trades. £399. Live in two weeks. You own it outright.',
+    offer: 'Five-page websites for trades. £399 or $499. Live in two weeks. You own it outright.',
   },
 
   /* Replaces a registration strip. Every line is true today and every line
      protects the buyer rather than describing us. */
   strip: [
-    { k: '£99 to start', v: 'The rest only when it is live and you have approved it.' },
+    { k: '£99 or $99 to start', v: 'The rest only when it is live and you have approved it.' },
     { k: 'Your domain, in your name', v: 'From day one. Not ours. Never ours.' },
     { k: 'A written contract', v: 'Signed before any money moves.' },
     { k: 'A named person', v: `${TO_FILL.founder}, on the contract and on the phone.` },
@@ -89,7 +89,7 @@ export const HOME = {
   price: {
     marker: 'Price',
     lead: 'We publish our prices. You will not be asked to book a call to find out what it costs.',
-    foot: '£99 to start. The balance when the site is live and you have signed it off. No monthly fee, nothing to be tied into, no charge to leave.',
+    foot: '£99 or $99 to start. The balance when the site is live and you have signed it off. No monthly fee, nothing to be tied into, no charge to leave.',
   },
 
   closing: {
@@ -101,7 +101,7 @@ export const HOME = {
 export const TIERS = [
   {
     name: 'Launch',
-    price: '£399',
+    price: '£399 · $499',
     who: 'For a business that needs to exist online and be called.',
     note: 'five pages · two weeks',
     includes: [
@@ -116,7 +116,7 @@ export const TIERS = [
   },
   {
     name: 'Build',
-    price: '£799',
+    price: '£799 · $999',
     who: 'For a business that wants the website to take the booking, not just the call.',
     note: 'everything in Launch, plus',
     includes: [
@@ -132,7 +132,7 @@ export const TIERS = [
 
 export const PAGES_DETAIL = {
   head: 'Five pages. Everything a trade actually needs. Nothing it does not.',
-  lead: 'We build one thing, repeatedly. That is why it takes two weeks and costs £399 instead of three months and £3,000.',
+  lead: 'We build one thing, repeatedly. That is why it takes two weeks and costs £399 (or $499) instead of three months and £3,000.',
   five: [
     { n: 'Home', b: 'Who you are, where you work, what you do, and a phone number. Written so a customer knows within ten seconds whether you can help them.' },
     { n: 'Services', b: 'Every job you take, in the words your customers use, not trade terms. This is the page Google reads to decide whether to show you.' },
@@ -179,7 +179,7 @@ export const PRICING = {
   /* Bank transfer only. The card-protection argument is deliberately absent —
      it would be the strongest line on this page and it is not available. */
   table: [
-    ['To start', '£99'],
+    ['To start', '£99 or $99'],
     ['On go-live, after you have approved it', 'The balance'],
     ['How', 'Bank transfer'],
     ['Ongoing cost', `None. Hosting renews at ${TO_FILL.hostingRenewal} a year from year two, or move it elsewhere free`],
@@ -194,7 +194,7 @@ export const PRICING = {
     items: [
       'You see the design before we build the rest. If it is wrong, we redraw it — twice, at no cost.',
       'You approve every page before it goes live. Nothing publishes without your say-so.',
-      'The balance is not due until the site is live and you have signed it off. If we never deliver, you are £99 down, not £399.',
+      'The balance is not due until the site is live and you have signed it off. If we never deliver, you are £99 down, not £399 (or $99, not $499).',
       'For 30 days after launch, anything broken is fixed free within one working day.',
       `If we miss the two-week deadline for a reason that is ours, ${TO_FILL.lateCredit} comes off the final invoice.`,
       'All of the above is in the written contract you sign before any money moves.',
@@ -217,17 +217,17 @@ export const PROCESS = {
   who: {
     head: 'Who you deal with',
     body: `${TO_FILL.founder}. Named on your contract, on the phone, for the whole project and the warranty after it. Not a ticket queue and not a different account manager every week.`,
-    hours: `Emails answered within one working day, Monday to Friday, ${TO_FILL.hours} UK time.`,
+    hours: `Emails answered within one working day, Monday to Friday.`,
   },
 } as const;
 
 /* --- about --------------------------------------------------------------- */
 
 export const ABOUT = {
-  head: 'We build websites for UK trades and small service businesses. That is the whole of it.',
+  head: 'We build websites for trades and small service businesses, on both sides of the Atlantic. That is the whole of it.',
   who: {
     head: 'Who you are actually dealing with',
-    body: `AIMS Studio is ${TO_FILL.founder} and a small build team, working remotely for clients across the UK.`,
+    body: `AIMS Studio is ${TO_FILL.founder} and a small build team, working remotely for clients across the UK and the US.`,
     why: 'We put that on the About page rather than leaving you to work it out later, because you are about to send money to people you have never met and you are entitled to know who they are. Our phone number is real, it is answered by the person who will build your site, and it is on every contract we send.',
   },
   narrow: {

@@ -13,7 +13,7 @@ export function Footer() {
         <div className="max-w-measure">
           <p className="mark">{SITE.name}</p>
           <p className="mt-3 text-[0.95rem] text-grey">
-            Five-page websites for UK trades and small service businesses. £399, live in two weeks,
+            Five-page websites for trades and small service businesses. £399 or $499, live in two weeks,
             and the domain is registered in your name.
           </p>
         </div>
