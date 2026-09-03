@@ -68,8 +68,11 @@ export function EnquiryForm() {
     );
   }
 
+  // 16px on phones is not a style choice: iOS Safari zooms the whole page in
+  // when a field smaller than that is focused, and the person then has to
+  // pinch back out to see the rest of the form.
   const field =
-    'w-full border border-rule bg-transparent px-4 py-3.5 text-[0.98rem] text-bone ' +
+    'w-full border border-rule bg-transparent px-4 py-3.5 text-[16px] md:text-[0.98rem] text-bone ' +
     'placeholder:text-grey focus:border-bone focus:outline-none transition-colors duration-300';
 
   return (

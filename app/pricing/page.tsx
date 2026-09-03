@@ -41,7 +41,7 @@ export default function Page() {
         <p className="mt-6 max-w-measure text-[1.05rem] leading-relaxed text-grey">{PRICING.payLead}</p>
 
         <Stagger className="mt-10 overflow-x-auto" selector="tbody tr" stagger={0.06}>
-          <table className="w-full min-w-[34rem] border-collapse text-left">
+          <table className="stacktable w-full min-w-[34rem] border-collapse text-left">
             <tbody>
               {PRICING.table.map(([k, v]) => (
                 <tr key={k} className="border-b border-rule">

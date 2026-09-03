@@ -30,7 +30,7 @@ export default function Page() {
 
       <Section mark="Included on every build">
         <Stagger className="overflow-x-auto" selector="tbody tr" stagger={0.05}>
-          <table className="w-full min-w-[34rem] border-collapse text-left">
+          <table className="stacktable w-full min-w-[34rem] border-collapse text-left">
             <tbody>
               {d.included.map(([k, v]) => (
                 <tr key={k} className="border-b border-rule">

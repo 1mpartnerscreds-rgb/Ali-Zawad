@@ -63,6 +63,24 @@
   --spacing-hold: 15rem;
 }
 
+/* The vertical scale is set for a desktop viewport, where 9rem between
+   movements reads as composure. On a 375px screen the same interval is a
+   third of the viewport and reads as a loading error — the first button on
+   the home page fell below the fold. The utilities compile to var() lookups,
+   so re-declaring the tokens here rescales every section at once rather than
+   scattering responsive padding through the pages.
+
+   The breakpoint matches the nav's `md:` switch at 768px deliberately. Held
+   at 640px instead, a tablet between the two got desktop spacing while the
+   header was still in its stacked mobile form. */
+@media (width < 48rem) {
+  :root {
+    --spacing-beat: 2.75rem;
+    --spacing-rest: 4.5rem;
+    --spacing-hold: 6.5rem;
+  }
+}
+
 /* --- surfaces ------------------------------------------------------------ */
 
 html {
@@ -285,7 +303,23 @@ body {
   transform: translateY(0);
 }
 
-/* --- nav links ----------------------------------------------------------- */
+/* --- nav links -----------------------------------------------------------
+   On a phone the four labels have to share one line or the header becomes
+   three stacked rows and eats a third of the screen before any content.
+   Smaller and tighter buys that line back.
+------------------------------------------------------------------------- */
+
+.navlink {
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+}
+
+@media (min-width: 768px) {
+  .navlink {
+    font-size: var(--text-mark);
+    letter-spacing: 0.18em;
+  }
+}
 
 .navlink {
   position: relative;
@@ -325,6 +359,36 @@ body {
   .rise {
     clip-path: none !important;
     transform: none !important;
+  }
+}
+
+/* Two-column label/value tables become stacked pairs on a phone. Left as a
+   table they are 544px wide in a scroll container, so reading what any price
+   row actually says means swiping sideways — on the one page where the buyer
+   is deciding whether to trust the number. */
+@media (width < 48rem) {
+  .stacktable,
+  .stacktable tbody,
+  .stacktable tr,
+  .stacktable th,
+  .stacktable td {
+    display: block;
+    width: auto;
+  }
+  .stacktable {
+    min-width: 0;
+  }
+  .stacktable tr {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .stacktable th {
+    padding: 0 0 0.3rem;
+    border: 0;
+  }
+  .stacktable td {
+    padding: 0;
+    border: 0;
   }
 }
 
