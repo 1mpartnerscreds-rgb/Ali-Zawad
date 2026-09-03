@@ -176,12 +176,15 @@ export const PRICING = {
   head: 'Two prices. Both published. Neither changes after you have signed.',
   payHead: 'How you pay — and what protects you',
   payLead: 'You found us because we rang you. You have not met us. So here is exactly how the money works and exactly what you keep hold of.',
-  /* Bank transfer only. The card-protection argument is deliberately absent —
-     it would be the strongest line on this page and it is not available. */
+  /* Two rails: UK buyers by bank transfer, US buyers by card via PayPal.
+     Naming both on the page matches what the caller says on the phone and
+     what the buyer sees at checkout — a rail that surfaces without warning
+     is the fastest way to lose a sale that had already closed. */
   table: [
     ['To start', '£99 or $99'],
     ['On go-live, after you have approved it', 'The balance'],
-    ['How', 'Bank transfer'],
+    ['How', 'Card by PayPal, or bank transfer'],
+    ['What that gets you (card)', 'The protection your card gives you against a supplier that does not deliver — kept.'],
     ['Ongoing cost', `None. Hosting renews at ${TO_FILL.hostingRenewal} a year from year two, or move it elsewhere free`],
     ['Before you pay anything', 'You get the written contract'],
   ],
