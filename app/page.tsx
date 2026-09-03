@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { Cta, Section } from '@/components/bits';
+import { RecentWork } from '@/components/recent-work';
 import { Stagger } from '@/components/stagger';
 import { Reveal } from '@/components/reveal';
 import { CTA, HOME, TIERS } from '@/content/site';
@@ -47,6 +49,18 @@ export default function Page() {
           ))}
         </dl>
       </Stagger>
+
+      {/* Evidence, earlier than the argument. A trades buyer has to see real
+          sites before the sales pitch is worth reading, and putting it above
+          the problem statement means he sees it while he still has energy
+          for the page. */}
+      <Section mark="Recent work">
+        <RecentWork compact />
+        <p className="mt-8 max-w-measure text-[0.95rem] text-grey">
+          Four live sites you can click and check. The Cybertech one is a training institute running since 2000 —{' '}
+          <Link href="/case-studies/cybertech" className="text-bone hover:opacity-70">read how it came together</Link>.
+        </p>
+      </Section>
 
       <Section mark={HOME.problem.marker}>
         <Reveal stagger={0.08}>

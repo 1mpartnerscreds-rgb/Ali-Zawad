@@ -18,6 +18,12 @@
   --color-bone: #e8e4dc;
   --color-grey: #828892; /* secondary type on Ink — 5.08:1 */
   --color-rule: #282c32; /* hairlines on Ink */
+  /* One warm accent, used exactly once — the primary CTA. Restraint reads as
+     cheap when there is no evidence carrying the weight, and a single warm
+     note on the button that matters raises the room's temperature without
+     turning the site into a colour piece. Brass, not orange. */
+  --color-accent: #c48b47;
+  --color-accent-ink: #14161a; /* type sitting on the accent surface */
 
   --font-*: initial;
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
@@ -265,11 +271,11 @@ body {
   transform: translateY(0);
 }
 
-/* Filled by default: the ground inverts instead of arriving. */
+/* Filled: the primary action carries the site's only accent. */
 .btn--solid {
-  background: var(--color-bone);
-  border-color: var(--color-bone);
-  color: var(--color-ink);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 .btn--solid::after {
   background: var(--color-ink);
@@ -277,6 +283,7 @@ body {
 .btn--solid:hover,
 .btn--solid:focus-visible {
   color: var(--color-bone);
+  border-color: var(--color-ink);
 }
 
 .btn-lab {
