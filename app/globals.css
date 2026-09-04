@@ -16,7 +16,7 @@
 
   --color-ink: #14161a;
   --color-bone: #e8e4dc;
-  --color-grey: #828892; /* secondary type on Ink — 5.08:1 */
+  --color-grey: #a0a6b0; /* secondary type on Ink — 7.40:1, AAA */
   --color-rule: #282c32; /* hairlines on Ink */
   /* One warm accent, used exactly once — the primary CTA. Restraint reads as
      cheap when there is no evidence carrying the weight, and a single warm
@@ -110,7 +110,7 @@ body {
 .inverted {
   --color-ink: #e8e4dc;
   --color-bone: #14161a;
-  --color-grey: #5c6169; /* 5.07:1 on Bone */
+  --color-grey: #42474e; /* 7.38:1 on Bone, AAA */
   --color-rule: #cfc9be;
   background-color: var(--color-ink);
   color: var(--color-bone);
@@ -122,8 +122,8 @@ body {
 }
 
 :focus-visible {
-  outline: 1px solid var(--color-bone);
-  outline-offset: 4px;
+  outline: 3px solid var(--color-bone);
+  outline-offset: 3px;
 }
 
 /* --- type roles ---------------------------------------------------------- */

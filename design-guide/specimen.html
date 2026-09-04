@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AIMS Studio — Trade Van specimen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600&family=Inter:wght@400;500&display=swap">
+<style>
+/* ============================================================
+   AIMS Studio — Design guide specimen, v1
+   Direction: Trade Van
+   Single file. No framework. Every rule stated once.
+   ============================================================ */
+
+:root {
+  /* ---- palette (OKLCH with hex fallback) ----------------- */
+  --paper:   #F7F5F0;
+  --paper-2: #EEEAE0;
+  --rule:    #D8D0C0;
+  --ink:     #141821;
+  --grey:    #63697A;
+  --red:     #B93124;
+  --paper-on-red: #F7F5F0;
+
+  /* ---- type ---------------------------------------------- */
+  --font-display: "Inter Tight", "Arial", sans-serif;
+  --font-body:    "Inter",       "Arial", sans-serif;
+  --font-mono:    ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* type-scale, mobile-first — desktop values overridden below */
+  --t-hero:  34px;
+  --t-h1:    26px;
+  --t-h2:    22px;
+  --t-h3:    20px;
+  --t-body:  17px;
+  --t-small: 14px;
+  --t-label: 12px;
+
+  /* ---- space (8-based) ----------------------------------- */
+  --s1:   4px;  --s2:   8px;  --s3:  12px;  --s4:  16px;
+  --s6:  24px;  --s8:  32px;  --s12: 48px;  --s16: 64px;
+  --s24: 96px;  --s32: 128px; --s48: 192px;
+
+  /* ---- surface & rhythm ---------------------------------- */
+  --frame-max:  1200px;
+  --frame-pad:  16px;
+  --line-max:   62ch;
+  --section:    96px;
+  --block:      48px;
+  --row:        24px;
+}
+@media (min-width: 768px) {
+  :root {
+    --t-hero: 60px; --t-h1: 40px; --t-h2: 28px; --t-h3: 22px;
+    --t-body: 18px;
+    --frame-pad: 32px;
+    --section: 128px;
+    --block:   64px;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--ink); color: var(--paper); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ---- utilities used across specimen ---------------------- */
+.frame { max-width: var(--frame-max); margin-inline: auto; padding-inline: var(--frame-pad); }
+.stack > * + * { margin-block-start: var(--row); }
+.hr    { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+.tab   { font-variant-numeric: tabular-nums; }
+.label {
+  font: 500 var(--t-label)/1.3 var(--font-body);
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--grey);
+}
+.small { font-size: var(--t-small); line-height: 1.45; color: var(--grey); overflow-wrap: break-word; }
+
+/* ---- type roles ----------------------------------------- */
+.h-hero {
+  font: 600 var(--t-hero)/1.05 var(--font-display);
+  letter-spacing: -0.02em; margin: 0; text-wrap: balance;
+  overflow-wrap: break-word;
+}
+.h-h1 { font: 600 var(--t-h1)/1.10 var(--font-display); letter-spacing: -0.015em; margin: 0; text-wrap: balance; overflow-wrap: break-word; }
+.h-h2 { font: 600 var(--t-h2)/1.20 var(--font-display); letter-spacing: -0.01em;  margin: 0; text-wrap: balance; overflow-wrap: break-word; }
+.h-h3 { font: 500 var(--t-h3)/1.30 var(--font-display); letter-spacing: -0.005em; margin: 0; }
+p     { max-width: var(--line-max); margin: 0; }
+
+/* ============================================================
+   1 · Header of the specimen itself
+   ============================================================ */
+.doc-head {
+  border-bottom: 1px solid var(--rule);
+  padding: var(--s8) 0;
+}
+.doc-head .frame {
+  display: grid; row-gap: var(--s3); column-gap: var(--s6);
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+}
+@media (min-width: 700px) {
+  .doc-head .frame { grid-template-columns: 40px minmax(0, 1fr) auto; }
+}
+.doc-head svg { width: 40px; height: 40px; color: var(--ink); }
+.doc-head h1  { font: 500 var(--t-h3)/1.3 var(--font-display); margin: 0; min-width: 0; overflow-wrap: break-word; }
+.doc-head .meta { color: var(--grey); font-size: var(--t-small); grid-column: 2 / -1; }
+@media (min-width: 700px) { .doc-head .meta { grid-column: auto; text-align: right; } }
+
+/* ============================================================
+   2 · Section frame
+   ============================================================ */
+section.spec {
+  padding-block: var(--section);
+  border-bottom: 1px solid var(--rule);
+}
+section.spec > .frame { min-width: 0; }
+section.spec > .frame > .h-h2  { margin-bottom: var(--s6); }
+section.spec > .frame > p      { margin-bottom: var(--block); color: var(--grey); }
+section.spec .section-label {
+  display: block; margin-bottom: var(--s4);
+  color: var(--red);
+}
+
+/* ============================================================
+   3 · Hero mock — full-page hero using every token
+   ============================================================ */
+.hero {
+  padding-block: var(--section);
+  border-bottom: 1px solid var(--rule);
+}
+.hero .frame { display: grid; gap: var(--block); min-width: 0; }
+.hero > .frame > * { min-width: 0; }
+@media (min-width: 900px) { .hero .frame { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: center; } }
+.hero .kicker { color: var(--grey); }
+.hero .h-hero { margin-block: var(--s4) var(--s6); }
+.hero .lead   { max-width: 40ch; color: var(--grey); margin-bottom: var(--s6); }
+.hero .price-line { color: var(--ink); margin-bottom: var(--s8); }
+.hero .price-line .fig { font-family: var(--font-display); font-weight: 600; font-size: var(--t-h2); }
+.hero .ctas { display: flex; gap: var(--s3); flex-wrap: wrap; }
+
+/* hero photo mock — the specimen doesn't have a real photo, so it
+   renders a labelled placeholder with the right aspect + treatment.
+   The rule in the guide is "one real photo replaces this on ship." */
+.hero .photo {
+  aspect-ratio: 4 / 5;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  position: relative;
+  display: grid; place-items: center;
+  color: var(--grey);
+  text-align: center;
+}
+.hero .photo .label { max-width: 22ch; }
+
+/* ============================================================
+   4 · Buttons — every state
+   ============================================================ */
+.btn {
+  display: inline-block;
+  padding: 16px 24px;
+  min-height: 48px;
+  font: 500 var(--t-body)/1 var(--font-display);
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  transition: background 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.btn:hover, .btn:focus-visible { background: transparent; color: var(--ink); }
+.btn--primary {
+  background: var(--red);
+  color: var(--paper-on-red);
+  border-color: var(--red);
+}
+.btn--primary:hover, .btn--primary:focus-visible {
+  background: var(--ink); color: var(--paper); border-color: var(--ink);
+}
+.btn--secondary {
+  background: transparent; color: var(--ink);
+}
+.btn--secondary:hover, .btn--secondary:focus-visible {
+  background: var(--ink); color: var(--paper);
+}
+.btn[disabled], .btn.is-disabled {
+  background: var(--paper-2); color: var(--grey); border-color: var(--rule);
+  cursor: not-allowed;
+}
+.btn[disabled]:hover { background: var(--paper-2); color: var(--grey); }
+
+/* ============================================================
+   5 · Type scale table — real headlines at real size
+   ============================================================ */
+.scale > .row { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3);
+  padding-block: var(--s6);
+  border-top: 1px solid var(--rule);
+}
+@media (min-width: 640px) {
+  .scale > .row { grid-template-columns: 90px minmax(0, 1fr); gap: var(--s6); align-items: baseline; }
+}
+.scale .sample { min-width: 0; overflow-wrap: anywhere; }
+.scale .sample p { max-width: none; }
+.scale .sample .h-hero, .scale .sample .h-h1, .scale .sample .h-h2 { hyphens: auto; }
+.scale > .row:last-child { border-bottom: 1px solid var(--rule); }
+.scale .meta { color: var(--grey); font-family: var(--font-mono); font-size: var(--t-small); }
+.scale .sample { min-width: 0; overflow-wrap: anywhere; }
+.scale .sample p { max-width: none; }
+.scale .sample p { margin-top: var(--s2); color: var(--grey); font-size: var(--t-small); }
+
+/* ============================================================
+   6 · Palette — every colour with hex + contrast
+   ============================================================ */
+.palette {
+  display: grid; gap: var(--s4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (min-width: 640px) { .palette { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); } }
+.swatch {
+  border: 1px solid var(--rule);
+  overflow: hidden;
+}
+.swatch .chip {
+  aspect-ratio: 3 / 2;
+  display: grid; place-items: center;
+  color: var(--paper);
+  font: 500 var(--t-body)/1 var(--font-display);
+}
+.swatch .body { padding: var(--s3) var(--s4) var(--s4); font-size: var(--t-small); }
+.swatch .body .label { color: var(--ink); }
+.swatch dl { margin: var(--s3) 0 0; display: grid; grid-template-columns: 66px 1fr; row-gap: 2px; font-family: var(--font-mono); font-size: 11px; color: var(--grey); word-break: break-word; }
+.swatch dt { color: var(--ink); }
+
+/* ============================================================
+   7 · Space scale — visualised as bars
+   ============================================================ */
+.spaces { display: grid; gap: var(--s4); }
+.space-row {
+  display: grid; grid-template-columns: 70px minmax(0, 1fr); align-items: center;
+  gap: var(--s4); min-width: 0;
+  font-family: var(--font-mono); font-size: var(--t-small); color: var(--grey);
+}
+.space-bar { height: 20px; background: var(--ink); }
+
+/* ============================================================
+   8 · Nav component
+   ============================================================ */
+.spec-nav {
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+.spec-nav > div {
+  display: flex; align-items: center; gap: var(--s6);
+  padding: var(--s4) var(--s6);
+  border-bottom: 1px solid var(--rule);
+  min-height: 64px;
+}
+.spec-nav > div:last-child { border-bottom: 0; }
+.spec-nav .brand {
+  display: flex; align-items: center; gap: var(--s3);
+  text-decoration: none; color: var(--ink); font: 500 var(--t-body)/1 var(--font-display);
+}
+.spec-nav .brand svg { width: 24px; height: 24px; color: var(--ink); }
+.spec-nav ul { margin: 0 0 0 auto; padding: 0; list-style: none; display: flex; gap: var(--s6); flex-wrap: wrap; }
+.spec-nav a  { text-decoration: none; color: var(--grey); font-size: var(--t-small); }
+.spec-nav a:hover { color: var(--ink); }
+.spec-nav a[aria-current="page"] { color: var(--ink); border-bottom: 2px solid var(--ink); padding-bottom: 2px; }
+
+/* ============================================================
+   9 · Price block — invoice-formatted
+   ============================================================ */
+.pricebook {
+  border: 1px solid var(--ink);
+}
+.pricebook > .tier + .tier { border-top: 1px solid var(--ink); }
+.pricebook .tier { padding: var(--s6); }
+@media (min-width: 640px) { .pricebook .tier { padding: var(--s8); } }
+.pricebook .head {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s6); align-items: baseline;
+  padding-bottom: var(--s4); border-bottom: 1px solid var(--rule);
+}
+.pricebook .head .name  { font: 600 var(--t-h1)/1 var(--font-display); letter-spacing: -0.015em; }
+.pricebook .head .price { font: 600 var(--t-h1)/1 var(--font-display); font-variant-numeric: tabular-nums; letter-spacing: -0.015em; }
+.pricebook .who { color: var(--grey); margin-top: var(--s3); }
+.pricebook ul  { list-style: none; padding: 0; margin: var(--s4) 0 0; }
+.pricebook ul li {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: baseline;
+  padding-block: var(--s3); border-bottom: 1px solid var(--rule);
+}
+.pricebook ul li:last-child { border-bottom: 0; }
+.pricebook ul li::before {
+  content: ""; width: 12px; height: 1px; background: var(--ink); margin-top: 10px;
+}
+.pricebook .note { color: var(--grey); font-size: var(--t-small); margin-top: var(--s4); }
+
+/* ============================================================
+   10 · Contact / form
+   ============================================================ */
+.form { display: grid; gap: var(--s4); }
+.field { display: block; }
+.field > .label { display: block; margin-bottom: var(--s2); }
+.field input, .field textarea {
+  width: 100%; padding: 14px 16px;
+  font: 400 16px/1.4 var(--font-body);
+  color: var(--ink); background: var(--paper);
+  border: 1px solid var(--rule);
+  min-height: 48px;
+}
+.field textarea { min-height: 6em; resize: vertical; }
+.field input:focus-visible, .field textarea:focus-visible {
+  outline: 2px solid var(--ink); outline-offset: 0; border-color: var(--ink);
+}
+.field.is-error input, .field.is-error textarea { border-color: var(--red); }
+.field .err { color: var(--red); font-size: var(--t-small); margin-top: var(--s2); }
+
+/* ============================================================
+   11 · Do / don't pairs
+   ============================================================ */
+.pairs { display: grid; gap: var(--s6); grid-template-columns: 1fr; }
+@media (min-width: 720px) { .pairs { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.pair {
+  border: 1px solid var(--rule);
+  padding: var(--s6);
+  min-height: 220px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--s4);
+}
+.pair.dont { background: var(--paper-2); }
+.pair .tag { font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; }
+.pair.dont .tag { color: var(--red); }
+.pair.do   .tag { color: var(--ink); }
+.pair .demo { font: 500 var(--t-h2)/1.2 var(--font-display); }
+.pair .why  { color: var(--grey); font-size: var(--t-small); }
+
+/* Simulated bad-example patterns for the don't panels. Zero effort
+   to make these look inviting — they are deliberately what the
+   guide says not to ship. */
+.demo--gradient {
+  background: linear-gradient(135deg, #7B4FFF, #3EA6FF);
+  color: #fff; padding: var(--s6); border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.2);
+}
+.demo--elevate {
+  color: transparent;
+  background: linear-gradient(90deg, #7B4FFF, #3EA6FF);
+  -webkit-background-clip: text; background-clip: text;
+}
+.demo--handshake {
+  height: 120px; background:
+    repeating-linear-gradient(45deg, #B5BAC3 0 8px, #C7CBD3 8px 16px);
+  color: #4a4f5a; display: grid; place-items: center; border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+  font-family: var(--font-mono); font-size: 12px;
+}
+.demo--3card {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px;
+}
+.demo--3card > div {
+  border-radius: 16px; padding: 12px; text-align: center;
+  background: #fff; box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  font-family: var(--font-mono); font-size: 11px; color: #9aa;
+}
+
+/* Good-example patterns using the actual system */
+.demo--paper { background: var(--paper); padding: var(--s6); }
+.demo--plain { color: var(--ink); }
+.demo--photo {
+  aspect-ratio: 4 / 3; background: var(--paper-2); border: 1px solid var(--rule);
+  display: grid; place-items: center; color: var(--grey); font-size: var(--t-small);
+  text-align: center;
+}
+.demo--invoice {
+  border: 1px solid var(--ink);
+}
+.demo--invoice .r {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; padding: 8px 12px;
+  border-bottom: 1px solid var(--rule);
+  font: 500 15px/1 var(--font-display); font-variant-numeric: tabular-nums;
+}
+.demo--invoice .r:last-child { border-bottom: 0; }
+.demo--flat { border: 1px solid var(--rule); padding: var(--s6); background: var(--paper); }
+
+/* ============================================================
+   12 · Footer of the specimen
+   ============================================================ */
+.doc-foot {
+  background: var(--paper-2);
+  padding: var(--s12) 0;
+}
+.doc-foot .frame { display: flex; flex-wrap: wrap; gap: var(--s6); align-items: baseline; color: var(--grey); font-size: var(--t-small); }
+.doc-foot .brand { display: flex; align-items: center; gap: var(--s3); color: var(--ink); font: 500 var(--t-body)/1 var(--font-display); }
+.doc-foot .brand svg { width: 20px; height: 20px; color: var(--ink); }
+
+/* ============================================================
+   13 · Reduced motion — matches guide § 9
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<a href="#hero" class="btn btn--secondary" style="position:absolute;left:-999px;top:0;"
+   onfocus="this.style.left='16px';this.style.top='16px';this.style.zIndex=99;"
+   onblur="this.style.left='-999px';">Skip to content</a>
+
+<!-- ============================================================
+     Document header
+     ============================================================ -->
+<header class="doc-head">
+  <div class="frame">
+    <svg viewBox="0 0 100 100" aria-hidden="true" fill="currentColor">
+      <path fill-rule="evenodd" d="M45.653 96.915C43.431 95.607 41.366 94.396 41.064 94.223C40.763 94.05 39.65 93.4 38.593 92.776C37.535 92.153 36.394 91.484 36.058 91.288C35.721 91.093 33.538 89.815 31.206 88.448C28.875 87.081 25.728 85.24 24.213 84.357C22.699 83.474 20.712 82.309 19.799 81.769C18.885 81.229 17.677 80.53 17.114 80.216C16.551 79.901 15.646 79.373 15.104 79.042C14.561 78.71 12.504 77.503 10.533 76.359C8.562 75.215 6.399 73.955 5.726 73.56C5.052 73.164 3.665 72.353 2.641 71.757C1.618 71.161 0.654 70.569 0.5 70.442L0.219 70.211L0.196 50.022L0.174 29.833L0.355 29.602C0.455 29.475 0.898 29.159 1.339 28.9C2.338 28.313 5.554 26.445 7.299 25.438C8.02 25.022 9.535 24.137 10.664 23.472C11.794 22.808 12.994 22.106 13.33 21.913C13.933 21.568 16.746 19.922 19.231 18.462C19.928 18.052 21.049 17.397 21.722 17.005C33.882 9.93 35.56 8.949 37.019 8.06C37.452 7.796 38.199 7.357 38.68 7.085C39.161 6.813 41.324 5.553 43.488 4.286C50.313 0.286 49.901 0.499 50.438 0.686C50.587 0.738 52.034 1.564 53.654 2.522C55.274 3.479 57.721 4.913 59.091 5.708C61.895 7.334 62.097 7.452 63.68 8.391C64.305 8.761 67.924 10.877 71.722 13.091C75.52 15.306 78.982 17.333 79.414 17.595C80.582 18.303 85.146 20.972 86.101 21.506C86.558 21.761 87.483 22.303 88.156 22.711C88.829 23.118 90.382 24.032 91.608 24.74C92.834 25.448 95.076 26.744 96.591 27.62C98.105 28.496 99.453 29.327 99.585 29.468L99.825 29.723L99.825 49.922C99.825 68.42 99.813 70.142 99.683 70.362C99.587 70.524 99.023 70.898 97.957 71.504C97.085 72.0 95.625 72.846 94.712 73.385C93.798 73.924 91.34 75.359 89.248 76.573C87.157 77.787 85.052 79.024 84.572 79.321C84.091 79.619 83.363 80.042 82.955 80.262C82.546 80.482 81.543 81.065 80.726 81.559C79.908 82.052 78.905 82.641 78.497 82.867C78.088 83.094 76.023 84.293 73.907 85.533C71.792 86.773 68.901 88.464 67.483 89.292C66.064 90.119 64.707 90.915 64.467 91.06C64.226 91.206 63.361 91.708 62.544 92.177C61.726 92.646 60.546 93.335 59.921 93.708C59.296 94.082 57.467 95.154 55.857 96.091C54.246 97.028 52.361 98.134 51.669 98.548C49.901 99.604 50.495 99.765 45.653 96.915ZM39.038 88.22C39.091 88.184 39.175 88.077 39.225 87.981C39.287 87.862 39.335 79.481 39.377 61.888C39.411 47.27 39.471 35.936 39.514 35.891C39.625 35.776 39.81 35.958 39.972 36.341C40.206 36.891 41.863 40.857 43.269 44.231C44.001 45.986 44.965 48.287 45.413 49.344C45.861 50.402 46.979 53.075 47.898 55.284C49.641 59.477 49.724 59.64 50.074 59.598C50.455 59.551 50.626 59.183 53.628 51.923C53.976 51.082 55.153 48.289 56.243 45.717C57.334 43.145 58.638 40.037 59.141 38.811C60.226 36.169 60.315 35.981 60.501 35.945C60.741 35.899 60.74 35.727 60.751 62.237C60.761 85.663 60.775 87.993 60.902 88.133C61.16 88.418 61.468 88.308 63.073 87.358C63.936 86.848 65.291 86.057 66.084 85.6C67.872 84.572 68.425 84.204 68.657 83.888L68.837 83.641L68.859 50.015C68.88 17.057 68.877 16.384 68.713 16.116C68.476 15.726 68.136 15.489 66.284 14.425C65.381 13.906 64.145 13.179 63.538 12.809C61.447 11.534 61.869 10.998 58.609 19.056C57.115 22.745 53.486 31.601 52.644 33.61C52.261 34.524 51.917 35.369 51.879 35.49C51.842 35.61 51.568 36.259 51.271 36.932C50.974 37.605 50.642 38.399 50.532 38.696C50.125 39.799 49.908 39.748 49.428 38.436C49.248 37.945 48.93 37.141 48.72 36.649C48.511 36.156 48.339 35.736 48.339 35.714C48.339 35.692 47.037 32.515 45.446 28.655C43.855 24.794 42.108 20.533 41.563 19.187C39.163 13.253 38.821 12.458 38.592 12.26C38.198 11.919 38.01 11.987 35.97 13.2C35.345 13.572 34.193 14.245 33.409 14.696C31.845 15.596 31.435 15.925 31.35 16.35C31.222 16.987 31.288 83.472 31.417 83.78C31.566 84.137 31.87 84.348 33.872 85.488C34.738 85.98 35.544 86.451 35.664 86.535C35.881 86.685 38.04 87.947 38.462 88.17C38.706 88.299 38.895 88.316 39.038 88.22ZM27.266 81.063L27.448 80.833L27.448 49.941L27.448 19.048L27.225 18.825C26.91 18.51 26.826 18.544 24.519 19.907C21.362 21.772 20.614 22.211 20.192 22.45C19.547 22.815 9.269 28.794 7.474 29.85C6.56 30.386 5.577 30.958 5.288 31.12C4.524 31.549 4.307 31.725 4.187 32.014C4.068 32.301 4.006 67.077 4.123 67.657C4.199 68.033 4.571 68.371 5.435 68.85C5.787 69.045 7.235 69.884 8.652 70.715C11.392 72.321 11.713 72.454 12.02 72.115C12.191 71.925 12.194 71.774 12.217 62.171C12.24 52.343 12.245 52.185 12.54 52.185C12.689 52.185 18.617 55.572 18.869 55.8C19.226 56.125 19.231 56.235 19.243 63.315C19.26 74.068 19.318 76.677 19.545 76.981C19.753 77.259 20.415 77.668 23.137 79.199C24.186 79.79 25.348 80.464 25.72 80.698C26.79 81.371 26.987 81.418 27.266 81.063ZM73.57 81.163C73.743 81.091 74.223 80.822 74.638 80.565C75.054 80.308 75.865 79.832 76.442 79.506C77.019 79.18 78.042 78.589 78.715 78.193C79.388 77.796 81.532 76.546 83.479 75.414C85.426 74.282 88.514 72.48 90.341 71.409C92.168 70.338 93.958 69.294 94.318 69.089C96.314 67.956 96.112 68.597 96.102 63.433C96.074 49.613 96.243 51.337 94.843 50.569C94.386 50.318 93.245 49.66 92.308 49.107C90.89 48.27 82.918 43.651 81.666 42.941C80.925 42.521 80.979 42.884 80.907 37.774C80.84 32.992 80.849 32.867 81.224 32.867C81.443 32.867 87.358 36.201 87.668 36.499C87.866 36.69 87.882 36.781 87.933 37.954C88.007 39.659 87.733 39.376 91.215 41.347C92.513 42.082 93.952 42.914 94.414 43.195C96.184 44.275 96.091 44.578 96.08 37.801C96.069 31.1 96.307 31.968 94.143 30.736C93.557 30.402 80.934 23.043 78.977 21.895C78.545 21.641 77.161 20.82 75.903 20.07C74.109 19.0 73.55 18.706 73.308 18.706C72.679 18.706 72.727 17.516 72.727 33.164L72.727 47.233L73.099 47.579C73.44 47.897 77.586 50.31 78.497 50.721C78.713 50.818 79.159 51.071 79.487 51.282C79.816 51.494 81.724 52.611 83.727 53.766C85.73 54.92 87.477 55.982 87.609 56.124L87.85 56.384L87.85 59.782C87.85 62.89 87.837 63.196 87.697 63.363C87.545 63.544 84.971 65.114 84.135 65.535C83.894 65.656 83.18 66.065 82.548 66.444C80.754 67.52 80.857 67.647 80.857 64.341C80.857 61.336 80.919 61.517 79.633 60.776C73.218 57.076 73.291 57.116 73.003 57.207C72.638 57.323 72.64 57.278 72.64 68.077C72.641 82.135 72.6 81.568 73.57 81.163ZM18.341 45.947C16.94 45.2 12.776 42.737 12.522 42.505L12.238 42.245L12.238 39.452C12.238 37.352 12.265 36.624 12.347 36.517C12.407 36.438 13.735 35.637 15.297 34.736C16.86 33.835 18.295 33.007 18.488 32.896C19.36 32.392 19.318 32.058 19.318 39.498C19.318 47.084 19.405 46.513 18.341 45.947Z"/>
+    </svg>
+    <h1>AIMS Studio — Design guide specimen</h1>
+    <p class="meta">Direction: Trade Van · v1 · Sept 2026</p>
+  </div>
+</header>
+
+<!-- ============================================================
+     HERO MOCK — full-width, real copy, uses the whole system
+     ============================================================ -->
+<section id="hero" class="hero">
+  <div class="frame">
+    <div>
+      <p class="label">A five-page website</p>
+      <h2 class="h-hero">You're good. Nobody can find you. We fix that.</h2>
+      <p class="lead">Your customers look you up on a phone tonight, find three companies who are worse than you and one who isn't there at all. That last one is you.</p>
+      <p class="price-line"><span class="fig tab">£399 · $499</span>. Five pages, live in two weeks. You own it outright.</p>
+      <div class="ctas">
+        <a href="#" class="btn btn--primary">Get you findable</a>
+        <a href="#" class="btn btn--secondary">See what it costs</a>
+      </div>
+    </div>
+    <div class="photo">
+      <p class="label">Photo — hand holding a phone showing<br/>one of our sites, taken on a workbench.<br/><br/>See guide § 6</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TYPE SCALE
+     ============================================================ -->
+<section class="spec">
+  <div class="frame">
+    <p class="label section-label">§ 3 · Type</p>
+    <h2 class="h-h2">Two typefaces, seven sizes.</h2>
+    <p>Inter Tight for display, Inter for body. 1.25 scale. Minimum 17px body on any device. Numbers are tabular.</p>
+
+    <div class="scale">
+      <div class="row"><div class="meta">hero · 44/60</div>
+        <div class="sample">
+          <div class="h-hero">You're good. Nobody can find you.</div>
+          <p>Semibold 600 · line-height 1.05 · tracking &minus;0.02em · one per page maximum</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">h1 · 32/40</div>
+        <div class="sample">
+          <div class="h-h1">Five-page websites for trades</div>
+          <p>Semibold 600 · line-height 1.10 · tracking &minus;0.015em · used once per interior page</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">h2 · 24/28</div>
+        <div class="sample">
+          <div class="h-h2">What you get for £399</div>
+          <p>Semibold 600 · line-height 1.20 · section titles</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">h3 · 20/22</div>
+        <div class="sample">
+          <div class="h-h3">Your domain, in your name</div>
+          <p>Medium 500 · line-height 1.30 · block titles inside a section</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">body · 17/18</div>
+        <div class="sample">
+          <p>Most trades businesses without a website did not decide against one. They got quoted £3,000 and a three-month timeline. Or they paid a monthly fee to someone who went quiet.</p>
+          <p>Regular 400 · line-height 1.5 · maximum 62 characters per line</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">small · 14</div>
+        <div class="sample">
+          <p class="small">£99 or $99 to start. The balance when the site is live and you have signed it off. No monthly fee.</p>
+          <p>Regular 400 · notes, meta, footnotes</p>
+        </div>
+      </div>
+      <div class="row"><div class="meta">label · 12 caps</div>
+        <div class="sample">
+          <div class="label">Section 03 · Recent work</div>
+          <p>Medium 500 · uppercase · tracking 0.08em · never longer than five words</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PALETTE
+     ============================================================ -->
+<section class="spec">
+  <div class="frame">
+    <p class="label section-label">§ 4 · Colour</p>
+    <h2 class="h-h2">Five values. One accent.</h2>
+    <p>Derived in OKLCH from one warm anchor. Red appears in exactly one place per page — the primary CTA — plus optionally the AMS mark's stripe. Nowhere else.</p>
+
+    <div class="palette">
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--paper);color:var(--ink);border-bottom:1px solid var(--rule)">Paper</div>
+        <div class="body">
+          <p class="label">Ground</p>
+          <dl><dt>hex</dt><dd>#F7F5F0</dd><dt>OKLCH</dt><dd>96.3 .010 82</dd><dt>role</dt><dd>Page surface</dd></dl>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--paper-2);color:var(--ink);border-bottom:1px solid var(--rule)">Paper 2</div>
+        <div class="body">
+          <p class="label">Section shade</p>
+          <dl><dt>hex</dt><dd>#EEEAE0</dd><dt>OKLCH</dt><dd>93.0 .013 82</dd><dt>role</dt><dd>Alt panels</dd></dl>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--rule);color:var(--ink);border-bottom:1px solid var(--ink)">Rule</div>
+        <div class="body">
+          <p class="label">Hairlines</p>
+          <dl><dt>hex</dt><dd>#D8D0C0</dd><dt>OKLCH</dt><dd>85.0 .014 82</dd><dt>role</dt><dd>Dividers only</dd></dl>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--ink);color:var(--paper)">Ink</div>
+        <div class="body">
+          <p class="label">All type</p>
+          <dl><dt>hex</dt><dd>#141821</dd><dt>OKLCH</dt><dd>20.5 .017 250</dd><dt>on paper</dt><dd>14.8 : 1</dd></dl>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--grey);color:var(--paper)">Grey</div>
+        <div class="body">
+          <p class="label">Secondary type</p>
+          <dl><dt>hex</dt><dd>#63697A</dd><dt>OKLCH</dt><dd>48.0 .014 246</dd><dt>on paper</dt><dd>5.4 : 1</dd></dl>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="chip" style="background:var(--red);color:var(--paper-on-red)">Red</div>
+        <div class="body">
+          <p class="label">Accent — CTA only</p>
+          <dl><dt>hex</dt><dd>#B93124</dd><dt>OKLCH</dt><dd>52.0 .185 27</dd><dt>on paper</dt><dd>5.2 : 1</dd></dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SPACE
+     ============================================================ -->
+<section class="spec">
+  <div class="frame">
+    <p class="label section-label">§ 5 · Space</p>
+    <h2 class="h-h2">One eight-based scale.</h2>
+    <p>Every gap on the site reaches for a token. If it doesn't fit, the token gets added — never one-offed.</p>
+    <div class="spaces">
+      <div class="space-row"><span>s1 · 4</span>  <span class="space-bar" style="width:4px"></span></div>
+      <div class="space-row"><span>s2 · 8</span>  <span class="space-bar" style="width:8px"></span></div>
+      <div class="space-row"><span>s3 · 12</span> <span class="space-bar" style="width:12px"></span></div>
+      <div class="space-row"><span>s4 · 16</span> <span class="space-bar" style="width:16px"></span></div>
+      <div class="space-row"><span>s6 · 24</span> <span class="space-bar" style="width:24px"></span></div>
+      <div class="space-row"><span>s8 · 32</span> <span class="space-bar" style="width:32px"></span></div>
+      <div class="space-row"><span>s12 · 48</span><span class="space-bar" style="width:48px"></span></div>
+      <div class="space-row"><span>s16 · 64</span><span class="space-bar" style="width:64px"></span></div>
+      <div class="space-row"><span>s24 · 96</span><span class="space-bar" style="width:96px"></span></div>
+      <div class="space-row"><span>s32 · 128</span><span class="space-bar" style="width:128px"></span></div>
+      <div class="space-row"><span>s48 · 192</span><span class="space-bar" style="width:192px"></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     COMPONENTS
+     ============================================================ -->
+<section class="spec">
+  <div class="frame">
+    <p class="label section-label">§ 7 · Components</p>
+    <h2 class="h-h2">Every one, in every state.</h2>
+    <p>Copy-paste-able HTML. All colours, sizes and behaviours defined by the tokens above.</p>
+
+    <!-- Buttons -->
+    <h3 class="h-h3" style="margin-top:var(--block); margin-bottom:var(--s4)">Buttons</h3>
+    <div style="display:flex; gap:var(--s4); flex-wrap:wrap;">
+      <button class="btn btn--primary">Get you findable</button>
+      <button class="btn btn--secondary">See what it costs</button>
+      <button class="btn">Talk to us</button>
+      <button class="btn is-disabled" disabled>Disabled</button>
+    </div>
+    <p class="small" style="margin-top:var(--s4)">Primary is red. There is exactly one primary CTA per page. Focus-ring: 2px solid ink, 2px offset. Tap target minimum 48×48.</p>
+
+    <!-- Nav -->
+    <h3 class="h-h3" style="margin-top:var(--block); margin-bottom:var(--s4)">Nav</h3>
+    <nav class="spec-nav" aria-label="Example">
+      <div>
+        <a href="#" class="brand">
+          <svg viewBox="0 0 100 100" aria-hidden="true" fill="currentColor"><path fill-rule="evenodd" d="M45.653 96.915C43.431 95.607 41.366 94.396 41.064 94.223C40.763 94.05 39.65 93.4 38.593 92.776C37.535 92.153 36.394 91.484 36.058 91.288C35.721 91.093 33.538 89.815 31.206 88.448C28.875 87.081 25.728 85.24 24.213 84.357C22.699 83.474 20.712 82.309 19.799 81.769C18.885 81.229 17.677 80.53 17.114 80.216C16.551 79.901 15.646 79.373 15.104 79.042C14.561 78.71 12.504 77.503 10.533 76.359C8.562 75.215 6.399 73.955 5.726 73.56C5.052 73.164 3.665 72.353 2.641 71.757C1.618 71.161 0.654 70.569 0.5 70.442L0.219 70.211L0.196 50.022L0.174 29.833L0.355 29.602C0.455 29.475 0.898 29.159 1.339 28.9C2.338 28.313 5.554 26.445 7.299 25.438C8.02 25.022 9.535 24.137 10.664 23.472C11.794 22.808 12.994 22.106 13.33 21.913C13.933 21.568 16.746 19.922 19.231 18.462C19.928 18.052 21.049 17.397 21.722 17.005C33.882 9.93 35.56 8.949 37.019 8.06C37.452 7.796 38.199 7.357 38.68 7.085C39.161 6.813 41.324 5.553 43.488 4.286C50.313 0.286 49.901 0.499 50.438 0.686C50.587 0.738 52.034 1.564 53.654 2.522C55.274 3.479 57.721 4.913 59.091 5.708C61.895 7.334 62.097 7.452 63.68 8.391C64.305 8.761 67.924 10.877 71.722 13.091C75.52 15.306 78.982 17.333 79.414 17.595C80.582 18.303 85.146 20.972 86.101 21.506C86.558 21.761 87.483 22.303 88.156 22.711C88.829 23.118 90.382 24.032 91.608 24.74C92.834 25.448 95.076 26.744 96.591 27.62C98.105 28.496 99.453 29.327 99.585 29.468L99.825 29.723L99.825 49.922C99.825 68.42 99.813 70.142 99.683 70.362C99.587 70.524 99.023 70.898 97.957 71.504C97.085 72.0 95.625 72.846 94.712 73.385C93.798 73.924 91.34 75.359 89.248 76.573C87.157 77.787 85.052 79.024 84.572 79.321C84.091 79.619 83.363 80.042 82.955 80.262C82.546 80.482 81.543 81.065 80.726 81.559C79.908 82.052 78.905 82.641 78.497 82.867C78.088 83.094 76.023 84.293 73.907 85.533C71.792 86.773 68.901 88.464 67.483 89.292C66.064 90.119 64.707 90.915 64.467 91.06C64.226 91.206 63.361 91.708 62.544 92.177C61.726 92.646 60.546 93.335 59.921 93.708C59.296 94.082 57.467 95.154 55.857 96.091C54.246 97.028 52.361 98.134 51.669 98.548C49.901 99.604 50.495 99.765 45.653 96.915ZM39.038 88.22C39.091 88.184 39.175 88.077 39.225 87.981C39.287 87.862 39.335 79.481 39.377 61.888C39.411 47.27 39.471 35.936 39.514 35.891C39.625 35.776 39.81 35.958 39.972 36.341C40.206 36.891 41.863 40.857 43.269 44.231C44.001 45.986 44.965 48.287 45.413 49.344C45.861 50.402 46.979 53.075 47.898 55.284C49.641 59.477 49.724 59.64 50.074 59.598C50.455 59.551 50.626 59.183 53.628 51.923C53.976 51.082 55.153 48.289 56.243 45.717C57.334 43.145 58.638 40.037 59.141 38.811C60.226 36.169 60.315 35.981 60.501 35.945C60.741 35.899 60.74 35.727 60.751 62.237C60.761 85.663 60.775 87.993 60.902 88.133C61.16 88.418 61.468 88.308 63.073 87.358C63.936 86.848 65.291 86.057 66.084 85.6C67.872 84.572 68.425 84.204 68.657 83.888L68.837 83.641L68.859 50.015C68.88 17.057 68.877 16.384 68.713 16.116C68.476 15.726 68.136 15.489 66.284 14.425C65.381 13.906 64.145 13.179 63.538 12.809C61.447 11.534 61.869 10.998 58.609 19.056C57.115 22.745 53.486 31.601 52.644 33.61C52.261 34.524 51.917 35.369 51.879 35.49C51.842 35.61 51.568 36.259 51.271 36.932C50.974 37.605 50.642 38.399 50.532 38.696C50.125 39.799 49.908 39.748 49.428 38.436C49.248 37.945 48.93 37.141 48.72 36.649C48.511 36.156 48.339 35.736 48.339 35.714C48.339 35.692 47.037 32.515 45.446 28.655C43.855 24.794 42.108 20.533 41.563 19.187C39.163 13.253 38.821 12.458 38.592 12.26C38.198 11.919 38.01 11.987 35.97 13.2C35.345 13.572 34.193 14.245 33.409 14.696C31.845 15.596 31.435 15.925 31.35 16.35C31.222 16.987 31.288 83.472 31.417 83.78C31.566 84.137 31.87 84.348 33.872 85.488C34.738 85.98 35.544 86.451 35.664 86.535C35.881 86.685 38.04 87.947 38.462 88.17C38.706 88.299 38.895 88.316 39.038 88.22ZM27.266 81.063L27.448 80.833L27.448 49.941L27.448 19.048L27.225 18.825C26.91 18.51 26.826 18.544 24.519 19.907C21.362 21.772 20.614 22.211 20.192 22.45C19.547 22.815 9.269 28.794 7.474 29.85C6.56 30.386 5.577 30.958 5.288 31.12C4.524 31.549 4.307 31.725 4.187 32.014C4.068 32.301 4.006 67.077 4.123 67.657C4.199 68.033 4.571 68.371 5.435 68.85C5.787 69.045 7.235 69.884 8.652 70.715C11.392 72.321 11.713 72.454 12.02 72.115C12.191 71.925 12.194 71.774 12.217 62.171C12.24 52.343 12.245 52.185 12.54 52.185C12.689 52.185 18.617 55.572 18.869 55.8C19.226 56.125 19.231 56.235 19.243 63.315C19.26 74.068 19.318 76.677 19.545 76.981C19.753 77.259 20.415 77.668 23.137 79.199C24.186 79.79 25.348 80.464 25.72 80.698C26.79 81.371 26.987 81.418 27.266 81.063ZM73.57 81.163C73.743 81.091 74.223 80.822 74.638 80.565C75.054 80.308 75.865 79.832 76.442 79.506C77.019 79.18 78.042 78.589 78.715 78.193C79.388 77.796 81.532 76.546 83.479 75.414C85.426 74.282 88.514 72.48 90.341 71.409C92.168 70.338 93.958 69.294 94.318 69.089C96.314 67.956 96.112 68.597 96.102 63.433C96.074 49.613 96.243 51.337 94.843 50.569C94.386 50.318 93.245 49.66 92.308 49.107C90.89 48.27 82.918 43.651 81.666 42.941C80.925 42.521 80.979 42.884 80.907 37.774C80.84 32.992 80.849 32.867 81.224 32.867C81.443 32.867 87.358 36.201 87.668 36.499C87.866 36.69 87.882 36.781 87.933 37.954C88.007 39.659 87.733 39.376 91.215 41.347C92.513 42.082 93.952 42.914 94.414 43.195C96.184 44.275 96.091 44.578 96.08 37.801C96.069 31.1 96.307 31.968 94.143 30.736C93.557 30.402 80.934 23.043 78.977 21.895C78.545 21.641 77.161 20.82 75.903 20.07C74.109 19.0 73.55 18.706 73.308 18.706C72.679 18.706 72.727 17.516 72.727 33.164L72.727 47.233L73.099 47.579C73.44 47.897 77.586 50.31 78.497 50.721C78.713 50.818 79.159 51.071 79.487 51.282C79.816 51.494 81.724 52.611 83.727 53.766C85.73 54.92 87.477 55.982 87.609 56.124L87.85 56.384L87.85 59.782C87.85 62.89 87.837 63.196 87.697 63.363C87.545 63.544 84.971 65.114 84.135 65.535C83.894 65.656 83.18 66.065 82.548 66.444C80.754 67.52 80.857 67.647 80.857 64.341C80.857 61.336 80.919 61.517 79.633 60.776C73.218 57.076 73.291 57.116 73.003 57.207C72.638 57.323 72.64 57.278 72.64 68.077C72.641 82.135 72.6 81.568 73.57 81.163ZM18.341 45.947C16.94 45.2 12.776 42.737 12.522 42.505L12.238 42.245L12.238 39.452C12.238 37.352 12.265 36.624 12.347 36.517C12.407 36.438 13.735 35.637 15.297 34.736C16.86 33.835 18.295 33.007 18.488 32.896C19.36 32.392 19.318 32.058 19.318 39.498C19.318 47.084 19.405 46.513 18.341 45.947Z"/></svg>
+          AIMS Studio
+        </a>
+        <ul>
+          <li><a href="#" aria-current="page">Home</a></li>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Price block -->
+    <h3 class="h-h3" style="margin-top:var(--block); margin-bottom:var(--s4)">Price block — invoice-formatted</h3>
+    <div class="pricebook">
+      <div class="tier">
+        <div class="head"><div class="name">Launch</div><div class="price tab">£399 · $499</div></div>
+        <p class="who">For a business that needs to exist online and be called.</p>
+        <ul>
+          <li><span>Five pages, written for you from one call</span></li>
+          <li><span>Built for phones first</span></li>
+          <li><span>Your Google reviews on the page</span></li>
+          <li><span>Your domain, registered in your name</span></li>
+          <li><span>Hosting and business email, first year included</span></li>
+          <li><span>30-day warranty after launch</span></li>
+        </ul>
+        <p class="note">£99 · $99 to start, the balance when it's live and you have signed it off.</p>
+      </div>
+      <div class="tier">
+        <div class="head"><div class="name">Build</div><div class="price tab">£799 · $999</div></div>
+        <p class="who">For a business that wants the website to take the booking, not just the call.</p>
+        <ul>
+          <li><span>Online booking from your own calendar</span></li>
+          <li><span>Take payments through the site</span></li>
+          <li><span>Customer logins for quotes and job history</span></li>
+          <li><span>Everything in Launch</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Contact form -->
+    <h3 class="h-h3" style="margin-top:var(--block); margin-bottom:var(--s4)">Contact form</h3>
+    <div class="pricebook" style="border:1px solid var(--rule); padding:var(--s8)">
+      <form class="form" onsubmit="event.preventDefault();">
+        <div class="field"><label class="label" for="n">Your name</label><input id="n" type="text" placeholder="Dave Wilson"></div>
+        <div class="field"><label class="label" for="b">Business</label><input id="b" type="text" placeholder="Wilson Plumbing"></div>
+        <div class="field"><label class="label" for="p">Phone</label><input id="p" type="tel" placeholder="07700 900 000"></div>
+        <div class="field is-error"><label class="label" for="e">Email</label><input id="e" type="email" value="not-an-email"><p class="err">That doesn't look right — check the address.</p></div>
+        <div class="field"><label class="label" for="m">What do you need?</label><textarea id="m" placeholder="A few lines is plenty."></textarea></div>
+        <p class="small">Give a phone number or an email — either is enough.</p>
+        <div><button type="submit" class="btn btn--primary">Send enquiry</button></div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     DO / DON'T
+     ============================================================ -->
+<section class="spec">
+  <div class="frame">
+    <p class="label section-label">§ 11 · Do / Don't</p>
+    <h2 class="h-h2">Paired examples.</h2>
+    <p>Left column: banned by name in the guide. Right column: what the system does instead.</p>
+
+    <div class="pairs">
+      <div class="pair dont"><span class="tag">Don't · gradient hero</span>
+        <div class="demo demo--gradient">Elevate your business online.<br/>Digital transformation, seamless.</div>
+        <p class="why">Every agency site does this. Reader sees it and closes the tab.</p>
+      </div>
+      <div class="pair do"><span class="tag">Do · flat paper hero</span>
+        <div class="demo demo--paper">
+          <div class="h-h2 demo--plain">You're good. Nobody can find you. We fix that.</div>
+          <p class="small" style="margin-top:8px">Named price, real language, no ornament.</p>
+        </div>
+        <p class="why">Reads like a supplier, not a marketing agency.</p>
+      </div>
+
+      <div class="pair dont"><span class="tag">Don't · stock handshake</span>
+        <div class="demo--handshake">[Stock handshake photograph]</div>
+        <p class="why">Every reader has seen this photo elsewhere this week.</p>
+      </div>
+      <div class="pair do"><span class="tag">Do · one real photograph</span>
+        <div class="demo demo--photo">
+          <p>Photo — real hand, real tool, real workshop.<br/>Taken on a phone. Never with a filter.</p>
+        </div>
+        <p class="why">One photo of a real client's work worth more than ten stock images.</p>
+      </div>
+
+      <div class="pair dont"><span class="tag">Don't · three-card feature grid</span>
+        <div class="demo--3card">
+          <div>&#128736;<br/>Design</div>
+          <div>&#128295;<br/>Build</div>
+          <div>&#128640;<br/>Grow</div>
+        </div>
+        <p class="why">Icons + noun triads. Reader has no idea what he'd actually receive.</p>
+      </div>
+      <div class="pair do"><span class="tag">Do · invoice-formatted line items</span>
+        <div class="demo--invoice">
+          <div class="r"><span>Home</span><span class="tab">£99</span></div>
+          <div class="r"><span>Services</span><span class="tab">£99</span></div>
+          <div class="r"><span>About</span><span class="tab">£99</span></div>
+          <div class="r"><span>Reviews</span><span class="tab">£51</span></div>
+          <div class="r"><span>Contact</span><span class="tab">£51</span></div>
+          <div class="r" style="font-weight:600"><span>Total</span><span class="tab">£399</span></div>
+        </div>
+        <p class="why">Reader recognises the shape immediately. It's a receipt.</p>
+      </div>
+
+      <div class="pair dont"><span class="tag">Don't · "elevate" headline</span>
+        <div class="h-h2 demo--elevate">Elevate your business online</div>
+        <p class="why">Every word marketing-register. Also a gradient on text. Two fails.</p>
+      </div>
+      <div class="pair do"><span class="tag">Do · one blunt sentence</span>
+        <div class="h-h2">Five-page websites for trades.</div>
+        <p class="why">Names the product, names the buyer.</p>
+      </div>
+
+      <div class="pair dont"><span class="tag">Don't · rounded card + drop shadow</span>
+        <div style="background:#fff;border-radius:16px;padding:24px;box-shadow:0 20px 40px rgba(0,0,0,.15);color:#333">
+          <strong>Card title</strong><br/>Rounded, elevated, floating.<br/>Feels like an app, not a document.
+        </div>
+        <p class="why">SaaS convention. Reader is not on SaaS.</p>
+      </div>
+      <div class="pair do"><span class="tag">Do · rectangular block + 1px rule</span>
+        <div class="demo--flat">
+          <strong>Block title</strong><br/><span class="small">Rectangular. Rule border. Sits still.</span>
+        </div>
+        <p class="why">Reads as a printed document. Ages well.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="doc-foot">
+  <div class="frame">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true" fill="currentColor"><path fill-rule="evenodd" d="M45.653 96.915C43.431 95.607 41.366 94.396 41.064 94.223C40.763 94.05 39.65 93.4 38.593 92.776C37.535 92.153 36.394 91.484 36.058 91.288C35.721 91.093 33.538 89.815 31.206 88.448C28.875 87.081 25.728 85.24 24.213 84.357C22.699 83.474 20.712 82.309 19.799 81.769C18.885 81.229 17.677 80.53 17.114 80.216C16.551 79.901 15.646 79.373 15.104 79.042C14.561 78.71 12.504 77.503 10.533 76.359C8.562 75.215 6.399 73.955 5.726 73.56C5.052 73.164 3.665 72.353 2.641 71.757C1.618 71.161 0.654 70.569 0.5 70.442L0.219 70.211L0.196 50.022L0.174 29.833L0.355 29.602C0.455 29.475 0.898 29.159 1.339 28.9C2.338 28.313 5.554 26.445 7.299 25.438C8.02 25.022 9.535 24.137 10.664 23.472C11.794 22.808 12.994 22.106 13.33 21.913C13.933 21.568 16.746 19.922 19.231 18.462C19.928 18.052 21.049 17.397 21.722 17.005C33.882 9.93 35.56 8.949 37.019 8.06C37.452 7.796 38.199 7.357 38.68 7.085C39.161 6.813 41.324 5.553 43.488 4.286C50.313 0.286 49.901 0.499 50.438 0.686C50.587 0.738 52.034 1.564 53.654 2.522C55.274 3.479 57.721 4.913 59.091 5.708C61.895 7.334 62.097 7.452 63.68 8.391C64.305 8.761 67.924 10.877 71.722 13.091C75.52 15.306 78.982 17.333 79.414 17.595C80.582 18.303 85.146 20.972 86.101 21.506C86.558 21.761 87.483 22.303 88.156 22.711C88.829 23.118 90.382 24.032 91.608 24.74C92.834 25.448 95.076 26.744 96.591 27.62C98.105 28.496 99.453 29.327 99.585 29.468L99.825 29.723L99.825 49.922C99.825 68.42 99.813 70.142 99.683 70.362C99.587 70.524 99.023 70.898 97.957 71.504C97.085 72.0 95.625 72.846 94.712 73.385C93.798 73.924 91.34 75.359 89.248 76.573C87.157 77.787 85.052 79.024 84.572 79.321C84.091 79.619 83.363 80.042 82.955 80.262C82.546 80.482 81.543 81.065 80.726 81.559C79.908 82.052 78.905 82.641 78.497 82.867C78.088 83.094 76.023 84.293 73.907 85.533C71.792 86.773 68.901 88.464 67.483 89.292C66.064 90.119 64.707 90.915 64.467 91.06C64.226 91.206 63.361 91.708 62.544 92.177C61.726 92.646 60.546 93.335 59.921 93.708C59.296 94.082 57.467 95.154 55.857 96.091C54.246 97.028 52.361 98.134 51.669 98.548C49.901 99.604 50.495 99.765 45.653 96.915ZM39.038 88.22C39.091 88.184 39.175 88.077 39.225 87.981C39.287 87.862 39.335 79.481 39.377 61.888C39.411 47.27 39.471 35.936 39.514 35.891C39.625 35.776 39.81 35.958 39.972 36.341C40.206 36.891 41.863 40.857 43.269 44.231C44.001 45.986 44.965 48.287 45.413 49.344C45.861 50.402 46.979 53.075 47.898 55.284C49.641 59.477 49.724 59.64 50.074 59.598C50.455 59.551 50.626 59.183 53.628 51.923C53.976 51.082 55.153 48.289 56.243 45.717C57.334 43.145 58.638 40.037 59.141 38.811C60.226 36.169 60.315 35.981 60.501 35.945C60.741 35.899 60.74 35.727 60.751 62.237C60.761 85.663 60.775 87.993 60.902 88.133C61.16 88.418 61.468 88.308 63.073 87.358C63.936 86.848 65.291 86.057 66.084 85.6C67.872 84.572 68.425 84.204 68.657 83.888L68.837 83.641L68.859 50.015C68.88 17.057 68.877 16.384 68.713 16.116C68.476 15.726 68.136 15.489 66.284 14.425C65.381 13.906 64.145 13.179 63.538 12.809C61.447 11.534 61.869 10.998 58.609 19.056C57.115 22.745 53.486 31.601 52.644 33.61C52.261 34.524 51.917 35.369 51.879 35.49C51.842 35.61 51.568 36.259 51.271 36.932C50.974 37.605 50.642 38.399 50.532 38.696C50.125 39.799 49.908 39.748 49.428 38.436C49.248 37.945 48.93 37.141 48.72 36.649C48.511 36.156 48.339 35.736 48.339 35.714C48.339 35.692 47.037 32.515 45.446 28.655C43.855 24.794 42.108 20.533 41.563 19.187C39.163 13.253 38.821 12.458 38.592 12.26C38.198 11.919 38.01 11.987 35.97 13.2C35.345 13.572 34.193 14.245 33.409 14.696C31.845 15.596 31.435 15.925 31.35 16.35C31.222 16.987 31.288 83.472 31.417 83.78C31.566 84.137 31.87 84.348 33.872 85.488C34.738 85.98 35.544 86.451 35.664 86.535C35.881 86.685 38.04 87.947 38.462 88.17C38.706 88.299 38.895 88.316 39.038 88.22ZM27.266 81.063L27.448 80.833L27.448 49.941L27.448 19.048L27.225 18.825C26.91 18.51 26.826 18.544 24.519 19.907C21.362 21.772 20.614 22.211 20.192 22.45C19.547 22.815 9.269 28.794 7.474 29.85C6.56 30.386 5.577 30.958 5.288 31.12C4.524 31.549 4.307 31.725 4.187 32.014C4.068 32.301 4.006 67.077 4.123 67.657C4.199 68.033 4.571 68.371 5.435 68.85C5.787 69.045 7.235 69.884 8.652 70.715C11.392 72.321 11.713 72.454 12.02 72.115C12.191 71.925 12.194 71.774 12.217 62.171C12.24 52.343 12.245 52.185 12.54 52.185C12.689 52.185 18.617 55.572 18.869 55.8C19.226 56.125 19.231 56.235 19.243 63.315C19.26 74.068 19.318 76.677 19.545 76.981C19.753 77.259 20.415 77.668 23.137 79.199C24.186 79.79 25.348 80.464 25.72 80.698C26.79 81.371 26.987 81.418 27.266 81.063ZM73.57 81.163C73.743 81.091 74.223 80.822 74.638 80.565C75.054 80.308 75.865 79.832 76.442 79.506C77.019 79.18 78.042 78.589 78.715 78.193C79.388 77.796 81.532 76.546 83.479 75.414C85.426 74.282 88.514 72.48 90.341 71.409C92.168 70.338 93.958 69.294 94.318 69.089C96.314 67.956 96.112 68.597 96.102 63.433C96.074 49.613 96.243 51.337 94.843 50.569C94.386 50.318 93.245 49.66 92.308 49.107C90.89 48.27 82.918 43.651 81.666 42.941C80.925 42.521 80.979 42.884 80.907 37.774C80.84 32.992 80.849 32.867 81.224 32.867C81.443 32.867 87.358 36.201 87.668 36.499C87.866 36.69 87.882 36.781 87.933 37.954C88.007 39.659 87.733 39.376 91.215 41.347C92.513 42.082 93.952 42.914 94.414 43.195C96.184 44.275 96.091 44.578 96.08 37.801C96.069 31.1 96.307 31.968 94.143 30.736C93.557 30.402 80.934 23.043 78.977 21.895C78.545 21.641 77.161 20.82 75.903 20.07C74.109 19.0 73.55 18.706 73.308 18.706C72.679 18.706 72.727 17.516 72.727 33.164L72.727 47.233L73.099 47.579C73.44 47.897 77.586 50.31 78.497 50.721C78.713 50.818 79.159 51.071 79.487 51.282C79.816 51.494 81.724 52.611 83.727 53.766C85.73 54.92 87.477 55.982 87.609 56.124L87.85 56.384L87.85 59.782C87.85 62.89 87.837 63.196 87.697 63.363C87.545 63.544 84.971 65.114 84.135 65.535C83.894 65.656 83.18 66.065 82.548 66.444C80.754 67.52 80.857 67.647 80.857 64.341C80.857 61.336 80.919 61.517 79.633 60.776C73.218 57.076 73.291 57.116 73.003 57.207C72.638 57.323 72.64 57.278 72.64 68.077C72.641 82.135 72.6 81.568 73.57 81.163ZM18.341 45.947C16.94 45.2 12.776 42.737 12.522 42.505L12.238 42.245L12.238 39.452C12.238 37.352 12.265 36.624 12.347 36.517C12.407 36.438 13.735 35.637 15.297 34.736C16.86 33.835 18.295 33.007 18.488 32.896C19.36 32.392 19.318 32.058 19.318 39.498C19.318 47.084 19.405 46.513 18.341 45.947Z"/></svg>
+      AIMS Studio
+    </div>
+    <span>&middot;</span>
+    <span>Design guide specimen · v1 · Sept 2026</span>
+    <span style="margin-left:auto">Rendered from tokens on this page. No framework.</span>
+  </div>
+</footer>
+
+</body>
+</html>
