@@ -6,7 +6,7 @@ import { HOME, SITE } from '@/content/site';
 export const runtime = 'nodejs';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = HOME.hero.statement.join(' ');
+export const alt = HOME.hero.statement;
 
 const font = (file: string) => readFileSync(join(process.cwd(), 'app/fonts', file));
 
@@ -27,11 +27,11 @@ export default function Image() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          backgroundColor: '#14161A',
+          backgroundColor: '#F7F5F0',
           padding: '72px 76px',
         }}
       >
-        <div style={{ display: 'flex', fontFamily: 'Mono', fontSize: 20, letterSpacing: 4, color: '#828892' }}>
+        <div style={{ display: 'flex', fontFamily: 'Mono', fontSize: 20, letterSpacing: 4, color: '#4C5260' }}>
           AIMS STUDIO
         </div>
 
@@ -43,14 +43,10 @@ export default function Image() {
             fontSize: 104,
             lineHeight: 0.92,
             letterSpacing: -3,
-            color: '#E8E4DC',
+            color: '#141821',
           }}
         >
-          {HOME.hero.statement.map((line) => (
-            <div key={line} style={{ display: 'flex' }}>
-              {line}
-            </div>
-          ))}
+          <div style={{ display: 'flex' }}>{HOME.hero.statement}</div>
         </div>
 
         <div
@@ -60,7 +56,7 @@ export default function Image() {
             fontFamily: 'Mono',
             fontSize: 20,
             letterSpacing: 2,
-            color: '#828892',
+            color: '#4C5260',
           }}
         >
           <span>WEBSITES FOR SMALL BUSINESSES</span>

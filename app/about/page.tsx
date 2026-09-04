@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main>
-      <Section className="!pt-beat">
+      <Section className="!pt-block">
         <Lede>{ABOUT.head}</Lede>
       </Section>
 
       <Section mark={ABOUT.who.head}>
-        <p className="display display-wide max-w-[24ch] text-say text-bone">{ABOUT.who.body}</p>
+        <p className="display max-w-[24ch] text-h2 text-ink">{ABOUT.who.body}</p>
         <p className="mt-8 max-w-measure text-[1.02rem] leading-relaxed text-grey">{ABOUT.who.why}</p>
       </Section>
 
@@ -35,9 +35,9 @@ export default function Page() {
                     className="w-full"
                   />
                 </div>
-                <h2 className="display display-wide mt-5 text-[1.2rem] text-bone">{p.client}</h2>
+                <h2 className="display mt-5 text-[1.2rem] text-ink">{p.client}</h2>
                 <p className="mt-2 text-[0.93rem] leading-relaxed text-grey">{p.note}</p>
-                <p className="mark mt-2">{p.host}</p>
+                <p className="label mt-2">{p.host}</p>
               </a>
             </article>
           ))}
@@ -45,7 +45,7 @@ export default function Page() {
       </Section>
 
       <Section mark={ABOUT.narrow.head}>
-        <p className="display display-wide max-w-[26ch] text-say text-bone">{ABOUT.narrow.body}</p>
+        <p className="display max-w-[26ch] text-h2 text-ink">{ABOUT.narrow.body}</p>
         <p className="mt-8 max-w-measure text-[1.02rem] leading-relaxed text-grey">{ABOUT.narrow.body2}</p>
       </Section>
 
@@ -55,7 +55,7 @@ export default function Page() {
           {TO_FILL.privacyUrl ? (
             <>
               {' '}
-              <a href={TO_FILL.privacyUrl} className="text-bone">
+              <a href={TO_FILL.privacyUrl} className="text-ink">
                 Our privacy notice
               </a>
               .
@@ -65,21 +65,21 @@ export default function Page() {
       </Section>
 
       <Section id="contact" mark="Contact">
-        <h2 className="display display-wide max-w-[20ch] text-say text-bone">
+        <h2 className="display max-w-[20ch] text-h2 text-ink">
           Tell us what your business does.
         </h2>
         <p className="mt-5 max-w-measure text-[1.02rem] text-grey">
           A ten minute call. If a website is not what you need, we will say so.
         </p>
 
-        <div className="mt-beat">
+        <div className="mt-block">
           <EnquiryForm />
         </div>
 
-        <div className="mt-rest flex flex-col gap-6 border-t border-rule pt-10">
+        <div className="mt-section flex flex-col gap-6 border-t border-rule pt-10">
           <a
             href={`mailto:${SITE.email}`}
-            className="display display-wide text-say text-bone no-underline transition-opacity duration-500 hover:opacity-60"
+            className="display text-h2 text-ink no-underline transition-opacity duration-500 hover:opacity-60"
           >
             {SITE.email}
           </a>
@@ -87,15 +87,15 @@ export default function Page() {
             TO_FILL.phoneHref ? (
               <a
                 href={`tel:${TO_FILL.phoneHref}`}
-                className="tech text-[1.05rem] text-bone no-underline hover:opacity-70"
+                className="tab text-[1.05rem] text-ink no-underline hover:opacity-70"
               >
                 {TO_FILL.phone}
               </a>
             ) : (
-              <p className="tech text-[1.05rem] text-bone">{TO_FILL.phone}</p>
+              <p className="tab text-[1.05rem] text-ink">{TO_FILL.phone}</p>
             )
           ) : null}
-          <p className="mark">Monday to Friday · we reply the same working day</p>
+          <p className="label">Monday to Friday · we reply the same working day</p>
         </div>
       </Section>
     </main>

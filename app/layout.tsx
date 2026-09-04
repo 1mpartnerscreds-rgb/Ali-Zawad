@@ -1,50 +1,35 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Mono, Newsreader } from 'next/font/google';
-import localFont from 'next/font/local';
+import { Inter, Inter_Tight } from 'next/font/google';
 import { Footer } from '@/components/footer';
 import { Nav } from '@/components/nav';
-
 import { SITE } from '@/content/site';
 import './globals.css';
 
 /**
- * Bricolage, subset to the 92 characters this site actually sets in it.
+ * Two faces, one family skeleton.
  *
- * The full latin cut is 78KB and the hero text waits on it, which is most of
- * the LCP. Both variable axes survive the subset — the design needs wdth 88 for
- * the statement and wdth 100 elsewhere — and next/font/local still generates
- * the metric-matched fallback that keeps CLS at zero.
+ * Inter Tight for display: the narrower cut reads as signage rather than
+ * editorial, which is the difference between looking like a supplier and
+ * looking like a magazine. Inter for body — same designer, same skeleton,
+ * so they compose without discord.
  *
- * Regenerate with pyftsubset if the display copy gains characters:
- *   pyftsubset <src>.woff2 --output-file=app/fonts/bricolage-subset.woff2 \
- *     --flavor=woff2 --text-file=<chars> --layout-features='kern,liga,calt'
+ * Dropped in the Trade Van redesign: Bricolage Grotesque (a width axis this
+ * reader is not shopping for), Newsreader (a news face on a trades site),
+ * IBM Plex Mono (mono micro-labels read as "designer"). Labels are now
+ * uppercase Inter with tracking, which costs no extra download.
  */
-const bricolage = localFont({
-  src: './fonts/bricolage-subset.woff2',
-  variable: '--font-bricolage',
-  display: 'swap',
-  weight: '200 800',
-  adjustFontFallback: 'Arial',
-});
-
-const newsreader = Newsreader({
+const interTight = Inter_Tight({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-newsreader',
-  // A single static cut. The variable file with its optical-size axis was
-  // 132KB and sat in the critical chain behind the display face; body copy at
-  // one size gains nothing from opsz that is worth that.
-  weight: ['400'],
-  style: ['normal'],
-  preload: false,
+  variable: '--font-inter-tight',
+  weight: ['500', '600'],
 });
 
-const plexMono = IBM_Plex_Mono({
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-plex-mono',
-  weight: ['400'],
-  preload: false,
+  variable: '--font-inter',
+  weight: ['400', '500'],
 });
 
 export const metadata: Metadata = {
@@ -63,19 +48,18 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#14161A',
+  themeColor: '#F7F5F0',
   width: 'device-width',
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${newsreader.variable} ${plexMono.variable}`}>
+    <html lang="en-GB" className={`${interTight.variable} ${inter.variable}`}>
       <body>
-
         <a href="#main" className="sr-only">Skip to content</a>
         <Nav />
-        <div id="main">{children}</div>
+        <main id="main">{children}</main>
         <Footer />
       </body>
     </html>

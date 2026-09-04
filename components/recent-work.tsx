@@ -70,8 +70,8 @@ export function RecentWork({ compact = false }: { compact?: boolean }) {
               <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/40 to-transparent" />
             </div>
             <div className="mt-4 flex items-baseline justify-between gap-4">
-              <h3 className="display display-wide text-[1.05rem] text-bone">{p.client}</h3>
-              <span className="mark text-grey">{p.host}</span>
+              <h3 className="display text-[1.05rem] text-ink">{p.client}</h3>
+              <span className="label text-grey">{p.host}</span>
             </div>
             {!compact ? <p className="mt-2 max-w-measure text-[0.93rem] leading-relaxed text-grey">{p.note}</p> : null}
           </a>

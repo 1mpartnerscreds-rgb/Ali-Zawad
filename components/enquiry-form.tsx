@@ -123,7 +123,7 @@ export function EnquiryForm() {
         ref={done}
         tabIndex={-1}
         role="status"
-        className="display display-wide max-w-[30ch] text-say text-bone outline-none"
+        className="display max-w-[30ch] text-h2 text-ink outline-none"
       >
         Thank you — we have got that, and we will come back to you within one working day.
       </p>
@@ -131,7 +131,7 @@ export function EnquiryForm() {
   }
 
   const field =
-    'w-full border bg-transparent px-4 py-3.5 text-[16px] md:text-[0.98rem] text-bone ' +
+    'w-full border bg-transparent px-4 py-3.5 text-[16px] md:text-[0.98rem] text-ink ' +
     'placeholder:text-grey focus:border-bone focus:outline-none transition-colors duration-300';
   const ok = 'border-rule';
   const bad = 'border-bone';
@@ -149,7 +149,7 @@ export function EnquiryForm() {
           aria-labelledby="enquiry-problem"
           className="mb-8 border-l-2 border-bone pl-5 outline-none"
         >
-          <h3 id="enquiry-problem" className="display display-wide text-[1.05rem] text-bone">
+          <h3 id="enquiry-problem" className="display text-[1.05rem] text-ink">
             There is a problem
           </h3>
           <ul className="mt-3">
@@ -157,7 +157,7 @@ export function EnquiryForm() {
               <li key={key} className="text-[0.95rem]">
                 <a
                   href={`#enq-${key === 'contact' ? 'phone' : key}`}
-                  className="text-bone underline underline-offset-4"
+                  className="text-ink underline underline-offset-4"
                 >
                   {message}
                 </a>
@@ -169,7 +169,7 @@ export function EnquiryForm() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="mark mb-2 block">Your name</span>
+          <span className="label mb-2 block">Your name</span>
           <input
             id="enq-name"
             name="name"
@@ -181,20 +181,20 @@ export function EnquiryForm() {
             className={`${field} ${show('name') ? bad : ok}`}
           />
           {show('name') ? (
-            <span id="err-name" className="mt-2 block text-[0.9rem] text-bone">
+            <span id="err-name" className="mt-2 block text-[0.9rem] text-ink">
               {errors.name}
             </span>
           ) : null}
         </label>
 
         <label className="block">
-          <span className="mark mb-2 block">Business</span>
+          <span className="label mb-2 block">Business</span>
           <input name="business" autoComplete="organization" placeholder="Wilson Plumbing"
                  className={`${field} ${ok}`} />
         </label>
 
         <label className="block">
-          <span className="mark mb-2 block">Phone</span>
+          <span className="label mb-2 block">Phone</span>
           <input
             id="enq-phone"
             name="phone"
@@ -209,7 +209,7 @@ export function EnquiryForm() {
         </label>
 
         <label className="block">
-          <span className="mark mb-2 block">Email</span>
+          <span className="label mb-2 block">Email</span>
           <input
             id="enq-email"
             name="email"
@@ -222,7 +222,7 @@ export function EnquiryForm() {
             className={`${field} ${show('email') || show('contact') ? bad : ok}`}
           />
           {show('email') ? (
-            <span id="err-email" className="mt-2 block text-[0.9rem] text-bone">
+            <span id="err-email" className="mt-2 block text-[0.9rem] text-ink">
               {errors.email}
             </span>
           ) : null}
@@ -230,13 +230,13 @@ export function EnquiryForm() {
       </div>
 
       {show('contact') ? (
-        <p id="err-contact" className="mt-3 text-[0.9rem] text-bone">
+        <p id="err-contact" className="mt-3 text-[0.9rem] text-ink">
           {errors.contact}
         </p>
       ) : null}
 
       <label className="mt-4 block">
-        <span className="mark mb-2 block">What do you need?</span>
+        <span className="label mb-2 block">What do you need?</span>
         <textarea name="message" rows={4} placeholder="A few lines is plenty."
                   className={`${field} ${ok} resize-y`} />
       </label>
@@ -249,7 +249,7 @@ export function EnquiryForm() {
         </label>
       </div>
 
-      <p className="mark mt-4">Give us a phone number or an email — either is enough.</p>
+      <p className="label mt-4">Give us a phone number or an email — either is enough.</p>
 
       <div className="mt-6 flex flex-wrap items-center gap-5">
         <button type="submit" disabled={state === 'sending'} className="btn btn--solid disabled:opacity-60">
@@ -260,7 +260,7 @@ export function EnquiryForm() {
         </button>
 
         {state === 'error' && sendError ? (
-          <p role="alert" className="text-[0.92rem] text-bone">
+          <p role="alert" className="text-[0.92rem] text-ink">
             {sendError}{' '}
             <a href={`mailto:${SITE.email}`} className="underline">
               {SITE.email}

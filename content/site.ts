@@ -48,10 +48,24 @@ export const NAV = [
 
 export const HOME = {
   hero: {
-    statement: ["You're not hard", 'to recommend.', "You're hard", 'to find.'],
+    statement: "You're good. Nobody can find you. We fix that.",
     body: 'Your customers rate you. Your work speaks for itself. But when someone searches for a tradesman in your town tonight, they find three companies who are worse than you — and one who is not there at all.',
     kicker: 'That last one is you.',
     offer: 'Five-page websites for trades. £399 or $499. Live in two weeks. You own it outright.',
+  },
+
+  /* The hero quote's line items. Deliberately the same six things the
+     Launch tier lists on /pricing — a quote that does not match the price
+     page is the fastest way to lose someone who checks both. */
+  quote: {
+    lines: [
+      'Five pages, written for you from one call',
+      'Built for phones first',
+      'Your Google reviews on the page',
+      'Your domain, registered in your name',
+      'Hosting and business email, first year',
+      '30-day warranty after launch',
+    ],
   },
 
   /* Replaces a registration strip. Every line is true today and every line

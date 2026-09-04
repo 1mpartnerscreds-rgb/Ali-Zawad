@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <main>
-      <Section className="!pt-beat">
+      <Section className="!pt-block">
         <Lede>{PRICING.head}</Lede>
       </Section>
 
@@ -19,15 +19,15 @@ export default function Page() {
           {TIERS.map((t) => (
             <div key={t.name} className="border-t border-rule pt-6">
               <div className="flex items-baseline justify-between gap-4">
-                <h2 className="display display-wide text-say text-bone">{t.name}</h2>
-                <p className="display text-[clamp(2rem,5vw,3.5rem)] leading-none text-bone tabular-nums">
+                <h2 className="display text-h2 text-ink">{t.name}</h2>
+                <p className="display text-[clamp(2rem,5vw,3.5rem)] leading-none text-ink tabular-nums">
                   {t.price}
                 </p>
               </div>
               <p className="mt-4 max-w-measure text-[0.98rem] text-grey">{t.who}</p>
               <ul className="mt-8">
                 {t.includes.map((i) => (
-                  <li key={i} className="border-b border-rule py-3 text-[0.95rem] text-bone/85">{i}</li>
+                  <li key={i} className="border-b border-rule py-3 text-[0.95rem] text-ink/85">{i}</li>
                 ))}
               </ul>
             </div>
@@ -36,7 +36,7 @@ export default function Page() {
       </Section>
 
       <Section mark="Payment">
-        <h2 className="display display-wide max-w-[22ch] text-say text-bone">{PRICING.payHead}</h2>
+        <h2 className="display max-w-[22ch] text-h2 text-ink">{PRICING.payHead}</h2>
         <p className="mt-6 max-w-measure text-[1.05rem] leading-relaxed text-grey">{PRICING.payLead}</p>
 
         <div className="mt-10 overflow-x-auto">
@@ -44,8 +44,8 @@ export default function Page() {
             <tbody>
               {PRICING.table.map(([k, v]) => (
                 <tr key={k} className="border-b border-rule">
-                  <th scope="row" className="w-[19rem] py-4 pr-6 align-top font-medium text-bone">
-                    <span className="display display-wide text-[1.02rem]">{k}</span>
+                  <th scope="row" className="w-[19rem] py-4 pr-6 align-top font-medium text-ink">
+                    <span className="display text-[1.02rem]">{k}</span>
                   </th>
                   <td className="py-4 align-top text-[0.95rem] text-grey">{v}</td>
                 </tr>
@@ -54,8 +54,8 @@ export default function Page() {
           </table>
         </div>
 
-        <div className="mt-beat max-w-measure border-l border-bone pl-6">
-          <h3 className="display display-wide text-[1.2rem] text-bone">{PRICING.domain.head}</h3>
+        <div className="mt-block max-w-measure border-l border-bone pl-6">
+          <h3 className="display text-[1.2rem] text-ink">{PRICING.domain.head}</h3>
           <p className="mt-3 text-[0.98rem] leading-relaxed text-grey">{PRICING.domain.body}</p>
         </div>
       </Section>
@@ -64,8 +64,8 @@ export default function Page() {
         <div><ol className="max-w-measure">
           {PRICING.safeguards.items.map((s, i) => (
             <li key={s} className="flex gap-5 border-b border-rule py-5">
-              <span className="mark shrink-0 pt-1">{String(i + 1).padStart(2, '0')}</span>
-              <span className="text-[0.98rem] leading-relaxed text-bone/85">{s}</span>
+              <span className="label shrink-0 pt-1">{String(i + 1).padStart(2, '0')}</span>
+              <span className="text-[0.98rem] leading-relaxed text-ink/85">{s}</span>
             </li>
           ))}
         </ol></div>

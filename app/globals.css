@@ -1,128 +1,122 @@
 @import 'tailwindcss';
 
 /* ---------------------------------------------------------------------------
-   Two tones. No accent.
+   TRADE VAN — dark ground
 
-   Every colour on this site is Ink, Bone, or a grey derived from Ink. The only
-   chroma anywhere comes from inside the reel pieces themselves.
+   Structure from Direction 1: the offer is set as a printed quote, type is
+   Inter Tight over Inter, motion is near zero. Palette stays dark by the
+   client's call after seeing both.
 
-   One grey cannot serve both surfaces at AA — #828892 is 5.08:1 on Ink and
-   2.81:1 on Bone — so each grey carries an inverted counterpart produced the
-   same way. Two roles, four values.
+   Every value below is measured against the ground it actually sits on, not
+   picked by eye. Secondary type clears 7:1 because the reader is fifty and
+   holding a phone at arm's length in workshop light — AA at 4.5:1 is a floor
+   for a healthy eye at a desk, not for his.
+
+   One note on the accent: the Van Red that carried the CTA on paper measures
+   3.04:1 on this ground and is unusable here. Warm brass replaces it at
+   7.31:1, carrying dark type rather than light.
 --------------------------------------------------------------------------- */
 
 @theme {
   --color-*: initial;
 
-  --color-ink: #14161a;
-  --color-bone: #e8e4dc;
-  --color-grey: #a0a6b0; /* secondary type on Ink — 7.40:1, AAA */
-  --color-rule: #282c32; /* hairlines on Ink */
-  /* One warm accent, used exactly once — the primary CTA. Restraint reads as
-     cheap when there is no evidence carrying the weight, and a single warm
-     note on the button that matters raises the room's temperature without
-     turning the site into a colour piece. Brass, not orange. */
-  --color-accent: #c48b47;
-  --color-accent-ink: #14161a; /* type sitting on the accent surface */
+  --color-surface: #14161a; /* page ground */
+  --color-surface-2: #1d2027; /* panel lift — the only surface change per page */
+  --color-ink: #e8e4dc; /* all type — 14.28:1 on surface, AAA */
+  --color-grey: #a0a6b0; /* secondary type — 7.40:1 on surface, AAA */
+  --color-rule: #2a2f38; /* hairlines only, never carries text */
+  --color-red: #d19a57; /* the accent — 7.31:1 on surface, AAA */
+  --color-red-ink: #14161a; /* dark type on the accent ground — 7.31:1 */
 
   --font-*: initial;
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-newsreader), ui-serif, Georgia, serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--font-inter-tight), 'Arial Narrow', Arial, sans-serif;
+  --font-body: var(--font-inter), Arial, sans-serif;
 
+  /* Ratio 1.25 (major third). Narrower than an editorial scale because this
+     reader is on a phone and needs less range than a magazine. Mobile values
+     here; the desktop step-up lives in the media query below. */
   --text-*: initial;
-  /* The opening runs to 15vw. Everything else is deliberately far below it —
-     the drop from statement to body is the hierarchy. */
-  /* Bound by height as well as width: the statement is four lines, and on a
-     short laptop viewport a purely vw-driven size pushes the last line under
-     the fold. */
-  --text-statement: clamp(2.75rem, min(14.5vw, 15.5vh), 13rem);
-  --text-piece: clamp(2.25rem, 6.2vw, 6rem);
-  --text-say: clamp(1.5rem, 3.2vw, 3.25rem);
-  --text-read: 1.125rem;
-  --text-mark: 0.6875rem;
+  --text-hero: 2.125rem; /* 34px — 44 overflowed a 390px viewport */
+  --text-h1: 1.625rem; /* 26 */
+  --text-h2: 1.375rem; /* 22 */
+  --text-h3: 1.25rem; /* 20 */
+  --text-body: 1.0625rem; /* 17 — the floor. Not 16. He is fifty. */
+  --text-small: 0.875rem; /* 14 */
+  --text-label: 0.75rem; /* 12 */
 
   --font-weight-*: initial;
-  --font-weight-light: 300;
   --font-weight-book: 400;
   --font-weight-medium: 500;
+  --font-weight-bold: 600;
 
-  /* Sharp throughout. No radius language to maintain, nothing to soften. */
+  /* Sharp throughout. A printed quote has no rounded corners. */
   --radius-*: initial;
   --radius-none: 0;
-
   --shadow-*: initial;
   --blur-*: initial;
 
-  /* Namespaces overlap: max-w-* reads --container-* AND --spacing-*, so a key
-     present in both resolves to the wrong one. `hold` existed in each, and the
-     rates table silently took the 15rem spacing value instead of the 78rem
-     container. Keys are kept distinct across the two groups. */
+  /* max-w-* reads --container-* AND --spacing-*; a key in both resolves to the
+     wrong one. Keys stay distinct across the two groups. */
   --container-*: initial;
-  --container-measure: 34rem; /* ~62ch at 18px Newsreader */
-  --container-frame: 78rem;
+  --container-measure: 62ch; /* line length, not a pixel guess */
+  --container-frame: 75rem; /* 1200px */
 
-  /* Vertical rhythm is uneven on purpose. Named, so a section reaches for an
-     interval rather than a number and the unevenness stays intentional. */
-  --spacing-beat: 4.5rem;
-  --spacing-rest: 9rem;
-  --spacing-hold: 15rem;
+  /* One 8-based scale. A component reaching for 20px has broken the system. */
+  --spacing-s1: 0.25rem;
+  --spacing-s2: 0.5rem;
+  --spacing-s3: 0.75rem;
+  --spacing-s4: 1rem;
+  --spacing-s6: 1.5rem;
+  --spacing-s8: 2rem;
+  --spacing-s12: 3rem;
+  --spacing-s16: 4rem;
+  --spacing-s24: 6rem;
+  --spacing-s32: 8rem;
+
+  /* Named vertical intervals, so a section reaches for a rhythm not a number */
+  --spacing-row: 1.5rem;
+  --spacing-block: 3rem;
+  --spacing-section: 6rem;
 }
 
-/* The vertical scale is set for a desktop viewport, where 9rem between
-   movements reads as composure. On a 375px screen the same interval is a
-   third of the viewport and reads as a loading error — the first button on
-   the home page fell below the fold. The utilities compile to var() lookups,
-   so re-declaring the tokens here rescales every section at once rather than
-   scattering responsive padding through the pages.
-
-   The breakpoint matches the nav's `md:` switch at 768px deliberately. Held
-   at 640px instead, a tablet between the two got desktop spacing while the
-   header was still in its stacked mobile form. */
-@media (width < 48rem) {
+@media (width >= 48rem) {
   :root {
-    --spacing-beat: 2.75rem;
-    --spacing-rest: 4.5rem;
-    --spacing-hold: 6.5rem;
+    --text-hero: 3.75rem; /* 60 */
+    --text-h1: 2.5rem; /* 40 */
+    --text-h2: 1.75rem; /* 28 */
+    --text-h3: 1.375rem; /* 22 */
+    --text-body: 1.125rem; /* 18 */
+    --spacing-block: 4rem;
+    --spacing-section: 8rem;
   }
 }
 
 /* --- surfaces ------------------------------------------------------------ */
 
 html {
-  background-color: var(--color-ink);
+  background-color: var(--color-surface);
   -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-bone);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
   font-family: var(--font-body);
-  font-size: var(--text-read);
-  line-height: 1.62;
+  font-size: var(--text-body);
+  line-height: 1.5;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Inverted movements. Token swap, so nothing downstream knows which side it is
-   on. The greys invert by the same derivation rather than being new colours. */
-.inverted {
-  --color-ink: #e8e4dc;
-  --color-bone: #14161a;
-  --color-grey: #42474e; /* 7.38:1 on Bone, AAA */
-  --color-rule: #cfc9be;
-  background-color: var(--color-ink);
-  color: var(--color-bone);
-}
-
 ::selection {
-  background: var(--color-bone);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-surface);
 }
 
+/* 3px, not 1px. A hairline ring on any ground is a ring nobody sees. */
 :focus-visible {
-  outline: 3px solid var(--color-bone);
+  outline: 3px solid var(--color-ink);
   outline-offset: 3px;
 }
 
@@ -130,108 +124,104 @@ body {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.86;
-  letter-spacing: -0.035em;
-  /* Bricolage carries a width axis. The statement is set narrow so it can run
-     large without the line breaking into fragments. */
-  font-variation-settings: 'wdth' 88;
-  text-transform: none;
-}
-
-.display-wide {
-  font-variation-settings: 'wdth' 100;
+  font-weight: 600;
   letter-spacing: -0.02em;
-  line-height: 0.95;
+  line-height: 1.05;
+  overflow-wrap: break-word;
+  text-wrap: balance;
 }
 
-.mark {
-  font-family: var(--font-mono);
-  font-size: var(--text-mark);
-  letter-spacing: 0.18em;
+.h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-h1);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  overflow-wrap: break-word;
+}
+
+.h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-h2);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--text-h3);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+/* Uppercase micro-label. Never longer than five words. */
+.label {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-grey);
-  font-weight: 400;
 }
 
-.tech {
-  font-family: var(--font-mono);
+/* Prices, quantities, anything in a column that has to line up. */
+.tab {
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
 }
 
-/* --- the wipe -----------------------------------------------------------
-   Every text reveal on this site is a mask travelling from a real direction.
-   Nothing fades up from twenty pixels.
+/* --- the quote -----------------------------------------------------------
+   The site's signature. A tradesman receives quotes from suppliers every
+   week; he can read one in four seconds without being taught how. So the
+   offer is set as one — ruled rows, labels left, figures right, a total
+   under a heavier rule. Nothing here is decoration: every line is a number
+   he is being asked to agree to.
 ------------------------------------------------------------------------- */
 
-.wipe {
-  display: block;
-  overflow: hidden;
+.quote {
+  border: 1px solid var(--color-ink);
+  background: var(--color-surface);
 }
 
-.wipe > * {
-  display: block;
-  will-change: transform;
+.quote-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s3);
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--spacing-s4) var(--spacing-s6);
+  border-bottom: 1px solid var(--color-ink);
+  background: var(--color-surface-2);
 }
 
-/* Static fallback: with no JavaScript, or before GSAP takes over, the type is
-   simply in place. The wipe must never be what makes text visible. */
-.wipe > *:not([data-wipe-armed]) {
-  transform: none;
+.quote-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--spacing-s4);
+  align-items: baseline;
+  padding: var(--spacing-s3) var(--spacing-s6);
+  border-bottom: 1px solid var(--color-rule);
 }
 
-/* --- reduced motion ------------------------------------------------------
-   Scrub is removed entirely rather than shortened. What is left is a static
-   page that still reads in order, with the reel as a vertical sequence.
-------------------------------------------------------------------------- */
+.quote-row:last-child {
+  border-bottom: 0;
+}
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
-  }
-
-  .wipe > * {
-    transform: none !important;
-    opacity: 1 !important;
-  }
-
-  /* The reel only works because the track is translated. With no scrub there is
-     nothing to translate it, and two of the three panels would sit outside an
-     overflow-hidden frame with no way to reach them. So it stops being a rail
-     and becomes the vertical sequence the markup already is. Motion may be
-     absent; the work may not. */
-  .reel-frame {
-    height: auto;
-    overflow: visible;
-  }
-
-  .reel-track {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-hold);
-    padding-inline: 1.25rem;
-    transform: none;
-    height: auto;
-  }
-
-  .reel-panel {
-    width: auto;
-    height: auto;
-    padding-inline: 0;
-  }
+.quote-total {
+  border-top: 2px solid var(--color-ink);
+  border-bottom: 0;
+  background: var(--color-surface-2);
+  padding-block: var(--spacing-s4);
 }
 
 /* --- actions -------------------------------------------------------------
-   The label is two copies in a masked band: the visible one leaves upward as
-   its twin arrives from below, while a ground wipes in behind from the same
-   direction. Same grammar as the type reveals — a mask travelling, never a
-   fade. All transform and opacity, so it stays on the compositor.
+   Solid red is the primary and appears once per page. The label is doubled
+   inside a masked band so one copy leaves upward as its twin arrives — the
+   same grammar the rest of the site uses for state change, and the only
+   motion on the button. Transform only, so it stays on the compositor.
 ------------------------------------------------------------------------- */
 
 .btn {
@@ -239,16 +229,20 @@ body {
   display: inline-block;
   isolation: isolate;
   overflow: hidden;
-  padding: 0.95rem 1.7rem;
-  border: 1px solid var(--color-rule);
-  color: var(--color-bone);
-  text-decoration: none;
+  padding: 1rem 1.5rem;
+  min-height: 48px; /* tap target floor */
+  border: 1px solid var(--color-ink);
+  background: transparent;
+  color: var(--color-ink);
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-weight: 500;
+  font-size: var(--text-body);
   letter-spacing: -0.01em;
+  text-decoration: none;
+  cursor: pointer;
   transition:
-    color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    color 200ms ease,
+    border-color 200ms ease;
 }
 
 .btn::after {
@@ -256,34 +250,42 @@ body {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-bone);
+  background: var(--color-ink);
   transform: translateY(101%);
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn:hover,
 .btn:focus-visible {
-  color: var(--color-ink);
-  border-color: var(--color-bone);
+  color: var(--color-surface);
 }
 .btn:hover::after,
 .btn:focus-visible::after {
   transform: translateY(0);
 }
 
-/* Filled: the primary action carries the site's only accent. */
-.btn--solid {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-accent-ink);
+.btn--primary {
+  background: var(--color-red);
+  border-color: var(--color-red);
+  color: var(--color-red-ink);
 }
-.btn--solid::after {
+.btn--primary::after {
   background: var(--color-ink);
 }
-.btn--solid:hover,
-.btn--solid:focus-visible {
-  color: var(--color-bone);
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  color: var(--color-surface);
   border-color: var(--color-ink);
+}
+
+.btn[disabled] {
+  background: var(--color-surface-2);
+  border-color: var(--color-rule);
+  color: var(--color-grey);
+  cursor: not-allowed;
+}
+.btn[disabled]::after {
+  display: none;
 }
 
 .btn-lab {
@@ -294,7 +296,7 @@ body {
 .btn-lab i {
   display: block;
   font-style: normal;
-  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .btn-lab i + i {
   position: absolute;
@@ -310,40 +312,31 @@ body {
   transform: translateY(0);
 }
 
-/* --- nav links -----------------------------------------------------------
-   On a phone the four labels have to share one line or the header becomes
-   three stacked rows and eats a third of the screen before any content.
-   Smaller and tighter buys that line back.
-------------------------------------------------------------------------- */
-
-.navlink {
-  font-size: 0.625rem;
-  letter-spacing: 0.1em;
-}
-
-@media (min-width: 768px) {
-  .navlink {
-    font-size: var(--text-mark);
-    letter-spacing: 0.18em;
-  }
-}
+/* --- nav links ----------------------------------------------------------- */
 
 .navlink {
   position: relative;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  color: var(--color-grey);
   text-decoration: none;
-  transition: color 0.35s ease;
+  transition: color 200ms ease;
 }
 .navlink::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -0.4em;
-  height: 1px;
+  bottom: -0.35em;
+  height: 2px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.navlink:hover,
+.navlink[aria-current='page'] {
+  color: var(--color-ink);
 }
 .navlink:hover::after,
 .navlink:focus-visible::after,
@@ -351,51 +344,46 @@ body {
   transform: scaleX(1);
 }
 
-/* Blocks arrive by uncovering, not by fading. JS sets the start state so the
-   page still reads with no script. */
-.rise[data-rise-armed] {
-  will-change: clip-path, transform;
+/* --- form fields --------------------------------------------------------- */
+
+.field {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  min-height: 48px;
+  font-family: var(--font-body);
+  font-size: 16px; /* below 16 and iOS Safari zooms the page on focus */
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-rule);
+  transition: border-color 200ms ease;
 }
+.field:focus-visible {
+  border-color: var(--color-ink);
+}
+.field--bad {
+  border-color: var(--color-red);
+}
+
+@media (width >= 48rem) {
+  .field {
+    font-size: var(--text-body);
+  }
+}
+
+/* --- motion budget -------------------------------------------------------
+   Three things move: a button's ground, a nav underline, a focus ring. Each
+   is feedback that something is interactive. Nothing animates on scroll,
+   nothing reveals, nothing parallaxes. A printed quote sits still.
+------------------------------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .btn::after,
-  .btn-lab i,
-  .navlink::after {
-    transition: none !important;
-  }
-  .rise {
-    clip-path: none !important;
-    transform: none !important;
-  }
-}
-
-/* Two-column label/value tables become stacked pairs on a phone. Left as a
-   table they are 544px wide in a scroll container, so reading what any price
-   row actually says means swiping sideways — on the one page where the buyer
-   is deciding whether to trust the number. */
-@media (width < 48rem) {
-  .stacktable,
-  .stacktable tbody,
-  .stacktable tr,
-  .stacktable th,
-  .stacktable td {
-    display: block;
-    width: auto;
-  }
-  .stacktable {
-    min-width: 0;
-  }
-  .stacktable tr {
-    padding: 0.85rem 0;
-    border-bottom: 1px solid var(--color-rule);
-  }
-  .stacktable th {
-    padding: 0 0 0.3rem;
-    border: 0;
-  }
-  .stacktable td {
-    padding: 0;
-    border: 0;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
